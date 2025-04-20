@@ -1,4 +1,6 @@
 {
+  "name": "hendriksen-mark.github.io",
+  "version": "1.0.0",
   "homepage": "https://hendriksen-mark.github.io/",
   "dependencies": {
     "@emotion/react": "latest",
