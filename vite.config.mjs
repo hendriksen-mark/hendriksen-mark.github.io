@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
+if (!global.crypto) {
+  global.crypto = require('crypto'); // Use Node.js built-in crypto module
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
