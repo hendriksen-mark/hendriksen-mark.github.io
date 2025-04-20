@@ -16,6 +16,9 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./ # Ensure this points to the directory containing package.json
+      - name: Build project
+        run: npm run build
+        working-directory: ./ # Ensure this points to the directory containing package.json
       - name: Deploy to GitHub Pages
         run: npm run deploy
         working-directory: ./ # Ensure this points to the directory containing package.json
