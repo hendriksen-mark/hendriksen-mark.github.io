@@ -1,0 +1,129 @@
+.options {
+  display: flex;
+  gap: 20px;
+
+  div {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    select {
+      padding: 5px;
+      font-size: 14px;
+    }
+  }
+}
+
+.grid-header {
+    margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    font-weight: bold;
+    text-align: center;
+    width: 100px; // Matches button width
+  }
+
+  input {
+    padding: 5px;
+    font-size: 14px;
+    width: 100px; // Matches button width
+    text-align: center;
+  }
+
+  .player-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    input {
+      padding: 5px;
+      font-size: 14px;
+      width: 100px;
+      text-align: center;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      width: 114px;
+    }
+  }
+}
+
+.grid {
+    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 114px;
+
+    &.available {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    &.unavailable {
+      background-color: #f44336;
+      color: white;
+    }
+  }
+
+  .grid-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      padding: 5px;
+      font-size: 14px;
+      width: 182px;
+    }
+  }
+}
+.grid-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+
+  button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 114px;
+  }
+}
+
+.labels {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+
+  span {
+    font-weight: bold;
+  }
+
+  input {
+    padding: 5px;
+    font-size: 14px;
+    width: 100px;
+  }
+}
