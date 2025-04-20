@@ -2,7 +2,7 @@ import translations from './translations'; // Import translations
 
 export const MAX_CODE_RUNS = 2000;
 
-export function createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames) {
+export function createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language) {
   let codeRuns = 0;
   const homeLocations = locations.filter((loc) => loc.startsWith("THUIS"));
 
@@ -32,7 +32,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
         );
 
         if (availablePlayers.length < requiredPlayers) {
-          throw new Error(`Not enough players available for location: ${loc}`);
+          throw new Error(translations[language].errorNotEnoughPlayers.replace("{location}", loc));
         }
 
         const selectedPlayers = selectPlayers(
@@ -45,7 +45,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
         );
 
         if (selectedPlayers.length < requiredPlayers) {
-          throw new Error(`Unable to select enough players for location: ${loc}`);
+          throw new Error(translations[language].errorUnableToSelectPlayers.replace("{location}", loc));
         }
 
         selectedPlayers.forEach((player) => {
@@ -65,7 +65,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
     }
   }
 
-  throw new Error("Unable to generate schedule after maximum retries.");
+  throw new Error(translations[language].errorMaxRetriesReached);
 }
 
 function getAvailablePlayers(loc, availability, playerMatches, consecutiveGames, maxGames, maxConsecutiveGames, locations) {
@@ -138,7 +138,7 @@ function checkAvailablePlayersForLocation(locations, availability, requiredPlaye
 
 export function createScheduleWithValidation(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, gameType) {
   const validationError =
-    validateLocations(locations, language, gameType) || // Pass gameType to validateLocations
+    validateLocations(locations, language, gameType) ||
     validateAvailability(locations, availability, language) ||
     checkAvailablePlayersForLocation(locations, availability, requiredPlayers, language);
 
@@ -147,7 +147,7 @@ export function createScheduleWithValidation(locations, availability, requiredPl
   }
 
   try {
-    const { schedule, codeRuns } = createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames);
+    const { schedule, codeRuns } = createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language);
     return { schedule, codeRuns };
   } catch (error) {
     return { error: translations[language].errorUnableToGenerateSchedule.replace("{reason}", error.message) };
