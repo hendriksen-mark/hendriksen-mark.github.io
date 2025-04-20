@@ -4,20 +4,25 @@ on:
   push:
 
 jobs:
-  build:
+  build-project:
+    name: Build Project
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Clone repository
+        uses: actions/checkout@v4
+
       - name: Install dependencies
-        run: npm install
+        run: npm install    
         working-directory: ./ # Ensure this points to the directory containing package.json
-      - name: Build project
+      - name: Generate build
         run: npm run build
+        env:
+          CI: false
         working-directory: ./ # Ensure this points to the directory containing package.json
       - name: Deploy to GitHub Pages
         run: npm run deploy
