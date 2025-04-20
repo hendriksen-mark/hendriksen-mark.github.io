@@ -41,7 +41,7 @@ function GameSchedule() {
 
   const handleLocationChange = (index, value) => {
     const updatedRows = [...rows];
-    updatedRows[index].location = value;
+    updatedRows[index].location = value.toUpperCase(); // Capitalize the value
     setRows(updatedRows);
   };
 
