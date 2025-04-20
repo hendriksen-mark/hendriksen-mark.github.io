@@ -2,6 +2,8 @@ name: build page
 
 on:
   push:
+    branches:
+      - main # Adjust this if your default branch is not 'main'
 
 jobs:
   build-project:
@@ -15,7 +17,6 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
-
       - name: Install dependencies
         run: npm install    
         working-directory: ./ # Ensure this points to the directory containing package.json
@@ -25,5 +26,8 @@ jobs:
           CI: false
         working-directory: ./ # Ensure this points to the directory containing package.json
       - name: Deploy to GitHub Pages
-        run: npm run deploy
-        working-directory: ./ # Ensure this points to the directory containing package.json
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist # Folder to deploy
+          publish_branch: gh-pages # Target branch for GitHub Pages
