@@ -10,6 +10,9 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write # Grant write access to the GITHUB_TOKEN
+
     strategy:
       matrix:
         node-version: [22.x]
@@ -26,7 +29,7 @@ jobs:
           CI: false
         working-directory: ./ # Ensure this points to the directory containing package.json
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist # Folder to deploy
