@@ -58,7 +58,23 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
         resetConsecutiveGames(availability, selectedPlayers, consecutiveGames);
       }
 
-      return { schedule, codeRuns };
+      // Extra stap: probeer te garanderen dat elk paar minstens één keer teamgenoten is
+      const enforceResult = enforcePairCoverage(
+        schedule,
+        locations,
+        availability,
+        requiredPlayers,
+        maxConsecutiveGames,
+        maxGames,
+        language
+      );
+
+      if (!enforceResult.success) {
+        // indien niet mogelijk binnen de swap-limiet: gooi fout zodat caller weet dat schema niet volledig voldoet
+        throw new Error(translations[language].errorMaxRetriesReached);
+      }
+
+      return { schedule: enforceResult.schedule, codeRuns };
     } catch (error) {
       codeRuns++;
       continue;
@@ -235,4 +251,195 @@ function setMaxGames(gameType) {
   if (gameType === "squad") return 9;
   if (gameType === "beker") return 5;
   throw new Error("Invalid game type.");
+}
+
+// --- Nieuwe helper functies om pair-coverage af te dwingen ---
+
+function allPairsFromPlayers(players) {
+  const res = new Set();
+  for (let i = 0; i < players.length; i++) {
+    for (let j = i + 1; j < players.length; j++) {
+      res.add(JSON.stringify([players[i], players[j]].sort()));
+    }
+  }
+  return res;
+}
+
+function computeCoveredPairsFromSchedule(schedule) {
+  const covered = new Set();
+  Object.values(schedule).forEach((team) => {
+    for (let i = 0; i < team.length; i++) {
+      for (let j = i + 1; j < team.length; j++) {
+        covered.add(JSON.stringify([team[i], team[j]].sort()));
+      }
+    }
+  });
+  return covered;
+}
+
+function computePlayerStatsFromSchedule(schedule, locations) {
+  // returns { matches: {player:count}, consecutive: {player: max consecutive seen in schedule order} }
+  const players = {};
+  Object.values(schedule).forEach((team) => team.forEach((p) => (players[p] = true)));
+  const matches = {};
+  const consecutive = {};
+  Object.keys(players).forEach((p) => {
+    matches[p] = 0;
+    consecutive[p] = 0;
+  });
+
+  // matches
+  Object.values(schedule).forEach((team) => team.forEach((p) => matches[p++]));
+
+  // compute max consecutive occurrences across ordered locations
+  const order = Object.keys(schedule); // relies on insertion order being locations array order
+  const currentConsec = Object.keys(players).reduce((acc, p) => ({ ...acc, [p]: 0 }), {});
+  order.forEach((loc) => {
+    const team = schedule[loc];
+    Object.keys(currentConsec).forEach((p) => {
+      if (team.includes(p)) {
+        currentConsec[p]++;
+        consecutive[p] = Math.max(consecutive[p], currentConsec[p]);
+      } else {
+        currentConsec[p] = 0;
+      }
+    });
+  });
+
+  return { matches, consecutive };
+}
+
+function enforcePairCoverage(schedule, locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language) {
+  const players = Object.keys(availability);
+  const target = allPairsFromPlayers(players);
+  let covered = computeCoveredPairsFromSchedule(schedule);
+
+  if ([...target].every((p) => covered.has(p))) {
+    return { success: true, schedule };
+  }
+
+  const MAX_SWAP_ITER = 5000;
+  let iter = 0;
+
+  while (iter < MAX_SWAP_ITER) {
+    iter++;
+    covered = computeCoveredPairsFromSchedule(schedule);
+    const missingPairs = [...target].filter((p) => !covered.has(p)).map((p) => JSON.parse(p));
+
+    if (missingPairs.length === 0) return { success: true, schedule };
+
+    // pick a missing pair to try to force together
+    const [a, b] = missingPairs[Math.floor(Math.random() * missingPairs.length)];
+
+    // find locations where a plays and b plays
+    const locsA = locations.filter((loc) => schedule[loc].includes(a));
+    const locsB = locations.filter((loc) => schedule[loc].includes(b));
+
+    let didSwap = false;
+    // Try to move b into one of locA (or a into one of locB) by swapping with a compatible teammate
+    for (const locA of locsA) {
+      if (!availability[b][locations.indexOf(locA)]) continue; // b must be available at locA
+      const teamA = schedule[locA];
+
+      // candidate x in teamA to swap out (x must be available at some locB where b currently plays)
+      for (const x of teamA) {
+        if (x === a) continue; // don't swap out a
+        for (const locB of locsB) {
+          if (locB === locA) continue;
+          // ensure x is available at locB and b is in teamB
+          if (!availability[x][locations.indexOf(locB)]) continue;
+          const teamB = schedule[locB];
+          if (!teamB.includes(b)) continue;
+
+          // perform tentative swap: x <-> b (x moves to locB, b moves to locA)
+          // validate consecutive and maxGames constraints after swap
+          // make swap
+          const idxA = schedule[locA].indexOf(x);
+          const idxB = schedule[locB].indexOf(b);
+          const originalTeamA = [...schedule[locA]];
+          const originalTeamB = [...schedule[locB]];
+          schedule[locA][idxA] = b;
+          schedule[locB][idxB] = x;
+
+          // compute stats to validate swap
+          const { matches, consecutive } = computePlayerStatsFromSchedule(schedule, locations);
+
+          // check maxGames and maxConsecutiveGames constraints
+          const violates =
+            matches[x] > maxGames ||
+            matches[b] > maxGames ||
+            consecutive[x] > maxConsecutiveGames ||
+            consecutive[b] > maxConsecutiveGames;
+
+          if (violates) {
+            // revert
+            schedule[locA] = originalTeamA;
+            schedule[locB] = originalTeamB;
+            continue;
+          }
+
+          // also ensure availability still holds (should, by checks above)
+          if (!availability[b][locations.indexOf(locA)] || !availability[x][locations.indexOf(locB)]) {
+            schedule[locA] = originalTeamA;
+            schedule[locB] = originalTeamB;
+            continue;
+          }
+
+          // successful swap
+          didSwap = true;
+          break;
+        }
+        if (didSwap) break;
+      }
+      if (didSwap) break;
+    }
+
+    if (!didSwap) {
+      // try symmetric: move a into locB by swapping with someone there
+      for (const locB of locsB) {
+        if (!availability[a][locations.indexOf(locB)]) continue;
+        const teamB = schedule[locB];
+        for (const x of teamB) {
+          if (x === b) continue;
+          for (const locA of locsA) {
+            if (locA === locB) continue;
+            if (!availability[x][locations.indexOf(locA)]) continue;
+            // perform swap x <-> a (x to locA, a to locB)
+            const idxB = schedule[locB].indexOf(x);
+            const idxA = schedule[locA].indexOf(a);
+            const originalTeamA = [...schedule[locA]];
+            const originalTeamB = [...schedule[locB]];
+            schedule[locB][idxB] = a;
+            schedule[locA][idxA] = x;
+
+            const { matches, consecutive } = computePlayerStatsFromSchedule(schedule, locations);
+            const violates =
+              matches[x] > maxGames ||
+              matches[a] > maxGames ||
+              consecutive[x] > maxConsecutiveGames ||
+              consecutive[a] > maxConsecutiveGames;
+
+            if (violates || !availability[a][locations.indexOf(locB)] || !availability[x][locations.indexOf(locA)]) {
+              schedule[locA] = originalTeamA;
+              schedule[locB] = originalTeamB;
+              continue;
+            }
+
+            didSwap = true;
+            break;
+          }
+          if (didSwap) break;
+        }
+        if (didSwap) break;
+      }
+    }
+
+    // if no swap found this iteration, continue; random missingPair selection may find another opportunity
+  }
+
+  // After attempts, check remaining missing pairs
+  const finalCovered = computeCoveredPairsFromSchedule(schedule);
+  const finalMissing = [...target].filter((p) => !finalCovered.has(p));
+  if (finalMissing.length === 0) return { success: true, schedule };
+  return { success: false, schedule };
 }

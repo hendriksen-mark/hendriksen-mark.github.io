@@ -8,7 +8,7 @@ function GameSchedule() {
   const [gameType, setGameType] = useState('duo');
   const [maxConsecutiveGames, setMaxConsecutiveGames] = useState(3);
   const [maxGames, setMaxGames] = useState(5);
-  const [requiredPlayers, setrequiredPlayers] = useState(2);
+  const [requiredPlayers, setRequiredPlayers] = useState(2);
   const [playerNames, setPlayerNames] = useState(['Player 1', 'Player 2', 'Player 3', 'Player 4']);
   const [rows, setRows] = useState(
     Array.from({ length: 10 }, (_, i) => ({
@@ -18,7 +18,7 @@ function GameSchedule() {
   );
   const [generatedSchedule, setGeneratedSchedule] = useState("");
 
-  const handleaddLocation = () => {
+  const handleAddLocation = () => {
     setRows([...rows, { location: '', players: Array(playerNames.length).fill(true) }]);
   };
 
@@ -62,7 +62,7 @@ function GameSchedule() {
     if (value === "duo") {
       setMaxConsecutiveGames(3);
       setMaxGames(5);
-      setrequiredPlayers(2);
+      setRequiredPlayers(2);
       if (rows.length < 10) {
         setRows([
           ...rows,
@@ -75,7 +75,7 @@ function GameSchedule() {
     } else if (value === "trio") {
       setMaxConsecutiveGames(4);
       setMaxGames(7);
-      setrequiredPlayers(3);
+      setRequiredPlayers(3);
       if (rows.length < 10) {
         setRows([
           ...rows,
@@ -88,7 +88,7 @@ function GameSchedule() {
     } else if (value === "squad") {
       setMaxConsecutiveGames(7);
       setMaxGames(9);
-      setrequiredPlayers(4);
+      setRequiredPlayers(4);
       if (rows.length < 10) {
         setRows([
           ...rows,
@@ -101,7 +101,7 @@ function GameSchedule() {
     } else if (value === "beker") {
       setMaxConsecutiveGames(2);
       setMaxGames(5);
-      setrequiredPlayers(4);
+      setRequiredPlayers(4);
       setRows(rows.slice(0, 3));
     }
     if (value !== "beker") {
@@ -244,7 +244,7 @@ function GameSchedule() {
         ))}
       </div>
       <div className="grid-actions">
-        <button onClick={handleaddLocation}>{translations[language].addLocation}</button>
+        <button onClick={handleAddLocation}>{translations[language].addLocation}</button>
         <button onClick={handleAddPlayer}>{translations[language].addPlayer}</button>
         <button onClick={handleGenerateSchedule}>{translations[language].generateSchedule}</button>
       </div>
