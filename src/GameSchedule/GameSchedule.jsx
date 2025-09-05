@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations.jsx';
-import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './scheduleGenerator.jsx';
+import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator.jsx';
 
 function GameSchedule() {
   const [language, setLanguage] = useState('nl');
