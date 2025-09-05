@@ -1,20 +1,24 @@
-import { FaCalendarAlt, FaCog, FaHome } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaHome, FaGlobe } from 'react-icons/fa';
+import { useLanguage } from '../contexts/LanguageContext';
+import translations from '../Translation/Translations.jsx';
 import './Home.scss';
 
 function Home({ onNavigate }) {
+  const { language, setLanguage } = useLanguage();
+
   const functions = [
     {
       id: 'game-schedule',
-      title: 'Game Schedule Generator',
-      description: 'Genereer en beheer speelschema\'s voor toernooien',
+      title: translations[language].gameScheduleTitle,
+      description: translations[language].gameScheduleHomeDescription,
       icon: <FaCalendarAlt />,
       color: '#4CAF50'
     },
     // Add more functions here in the future
     {
       id: 'coming-soon',
-      title: 'More Functions Coming Soon',
-      description: 'Aanvullende tools en hulpprogramma\'s worden hier toegevoegd',
+      title: translations[language].moreFunctionsTitle,
+      description: translations[language].moreFunctionsDescription,
       icon: <FaCog />,
       color: '#9E9E9E',
       disabled: true
@@ -31,9 +35,27 @@ function Home({ onNavigate }) {
   return (
     <div className="home">
       <div className="home__header">
-        <FaHome className="home__header-icon" />
-        <h1 className="home__title">Mark Hendriksen's Tools</h1>
-        <p className="home__subtitle">Een verzameling handige hulpprogramma's en tools</p>
+        <div className="home__header-top">
+          <div className="home__title-section">
+            <FaHome className="home__header-icon" />
+            <div>
+              <h1 className="home__title">{translations[language].homeTitle}</h1>
+              <p className="home__subtitle">{translations[language].homeSubtitle}</p>
+            </div>
+          </div>
+          
+          <div className="home__language-selector">
+            <FaGlobe className="home__language-icon" />
+            <select 
+              value={language} 
+              onChange={(e) => setLanguage(e.target.value)}
+              className="home__language-select"
+            >
+              <option value="nl">Nederlands</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="home__functions">
@@ -48,7 +70,7 @@ function Home({ onNavigate }) {
             <h3 className="home__function-title">{func.title}</h3>
             <p className="home__function-description">{func.description}</p>
             {!func.disabled && (
-              <div className="home__function-cta">Klik om te openen →</div>
+              <div className="home__function-cta">{translations[language].clickToOpen} →</div>
             )}
           </div>
         ))}

@@ -39,6 +39,16 @@ const translations = {
     gameTypeTrio: "Trio",
     gameTypeSquad: "Squad",
     gameTypeBeker: "Beker",
+    // Home page translations
+    homeTitle: "Mark Hendriksen's Tools",
+    homeSubtitle: "Een verzameling handige hulpprogramma's en tools",
+    gameScheduleTitle: "Game Schedule Generator",
+    gameScheduleHomeDescription: "Genereer en beheer speelschema's voor toernooien",
+    moreFunctionsTitle: "Meer functies komen eraan",
+    moreFunctionsDescription: "Aanvullende tools en hulpprogramma's worden hier toegevoegd",
+    clickToOpen: "Klik om te openen",
+    // Navigation translations
+    backToHome: "Terug naar home",
   },
   en: {
     selectLanguage: "Select language:",
@@ -80,6 +90,16 @@ const translations = {
     gameTypeTrio: "Trio",
     gameTypeSquad: "Squad",
     gameTypeBeker: "Cup",
+    // Home page translations
+    homeTitle: "Mark Hendriksen's Tools",
+    homeSubtitle: "A collection of useful utilities and tools",
+    gameScheduleTitle: "Game Schedule Generator",
+    gameScheduleHomeDescription: "Generate and manage game schedules for tournaments",
+    moreFunctionsTitle: "More Functions Coming Soon",
+    moreFunctionsDescription: "Additional tools and utilities will be added here",
+    clickToOpen: "Click to open",
+    // Navigation translations
+    backToHome: "Back to home",
   },
 };
 

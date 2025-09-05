@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations.jsx';
-import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator.jsx';
+import { useLanguage } from '../contexts/LanguageContext';
+import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './scheduleGenerator.jsx';
 
 function GameSchedule() {
-  const [language, setLanguage] = useState('nl');
+  const { language, setLanguage } = useLanguage();
   const [gameType, setGameType] = useState('duo');
   const [maxConsecutiveGames, setMaxConsecutiveGames] = useState(3);
   const [maxGames, setMaxGames] = useState(5);

@@ -2,10 +2,13 @@ import { useState } from 'react';
 import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
 import { FaHome } from 'react-icons/fa';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import translations from './Translation/Translations.jsx';
 import './App.scss';
 
-function App() {
+function AppContent() {
   const [currentView, setCurrentView] = useState('home');
+  const { language } = useLanguage();
 
   const handleNavigate = (view) => {
     setCurrentView(view);
@@ -33,10 +36,10 @@ function App() {
           <button 
             className="app__nav-button" 
             onClick={handleBackToHome}
-            title="Terug naar home"
+            title={translations[language].backToHome}
           >
             <FaHome />
-            <span>Terug naar home</span>
+            <span>{translations[language].backToHome}</span>
           </button>
         </nav>
       )}
@@ -44,6 +47,14 @@ function App() {
         {renderView()}
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 
