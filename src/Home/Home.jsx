@@ -1,6 +1,6 @@
 import { FaCalendarAlt, FaCog, FaHome, FaGlobe } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
-import translations from '../Translation/Translations.jsx';
+import translations from '../Translation/Translations';
 import './Home.scss';
 
 function Home({ onNavigate }) {

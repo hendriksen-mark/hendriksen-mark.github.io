@@ -3,7 +3,7 @@ import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
 import { FaHome } from 'react-icons/fa';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
-import translations from './Translation/Translations.jsx';
+import translations from './Translation/Translations';
 import './App.scss';
 
 function AppContent() {

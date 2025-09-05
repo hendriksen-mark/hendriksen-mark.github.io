@@ -1,4 +1,4 @@
-import translations from '../Translation/Translations.jsx'; // Import translations
+import translations from '../Translation/Translations'; // Import translations
 
 export const MAX_CODE_RUNS = 2000;
 
