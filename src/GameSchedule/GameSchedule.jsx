@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations.jsx';
 import { useLanguage } from '../contexts/LanguageContext';
-import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './scheduleGenerator.jsx';
+import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator.jsx';
 
 function GameSchedule() {
   const { language, setLanguage } = useLanguage();
