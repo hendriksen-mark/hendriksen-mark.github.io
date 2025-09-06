@@ -51,6 +51,10 @@
     .home {
       padding-top: calc(80px + 2rem);
     }
+
+    .thread-calculator {
+      padding-top: calc(80px + 2rem);
+    }
   }
 }
 
@@ -77,6 +81,10 @@ body {
       }
       
       .home {
+        padding-top: calc(70px + 1rem);
+      }
+
+      .thread-calculator {
         padding-top: calc(70px + 1rem);
       }
     }

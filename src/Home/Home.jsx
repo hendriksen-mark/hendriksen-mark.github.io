@@ -1,10 +1,11 @@
-import { FaCalendarAlt, FaCog, FaHome, FaGlobe } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaHome, FaBolt } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import translations from '../Translation/Translations';
 import './Home.scss';
 
 function Home({ onNavigate }) {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
 
   const functions = [
     {
@@ -13,6 +14,13 @@ function Home({ onNavigate }) {
       description: translations[language].gameScheduleHomeDescription,
       icon: <FaCalendarAlt />,
       color: '#4CAF50'
+    },
+    {
+      id: 'thread-calculator',
+      title: translations[language].threadCalculatorTitle,
+      description: translations[language].threadCalculatorHomeDescription,
+      icon: <FaBolt />,
+      color: '#FF9800'
     },
     // Add more functions here in the future
     {
@@ -28,6 +36,8 @@ function Home({ onNavigate }) {
   const handleFunctionClick = (functionId) => {
     if (functionId === 'game-schedule') {
       onNavigate('game-schedule');
+    } else if (functionId === 'thread-calculator') {
+      onNavigate('thread-calculator');
     }
     // Add more function handlers here
   };
@@ -45,15 +55,7 @@ function Home({ onNavigate }) {
           </div>
           
           <div className="home__language-selector">
-            <FaGlobe className="home__language-icon" />
-            <select 
-              value={language} 
-              onChange={(e) => setLanguage(e.target.value)}
-              className="home__language-select"
-            >
-              <option value="nl">Nederlands</option>
-              <option value="en">English</option>
-            </select>
+            <LanguageSelector variant="default" />
           </div>
         </div>
       </div>

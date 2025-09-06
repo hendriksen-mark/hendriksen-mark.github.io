@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
+import ThreadCalculator from './ThreadCalculator/ThreadCalculator';
 import { FaHome } from 'react-icons/fa';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import translations from './Translation/Translations';
@@ -24,6 +25,8 @@ function AppContent() {
         return <Home onNavigate={handleNavigate} />;
       case 'game-schedule':
         return <GameSchedule />;
+      case 'thread-calculator':
+        return <ThreadCalculator />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }
