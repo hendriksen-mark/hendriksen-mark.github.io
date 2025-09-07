@@ -42,7 +42,7 @@ function AppContent() {
             onClick={handleBackToHome}
           >
             <FaHome />
-            <span>{translations[language].backToHome}</span>
+            {" " + translations[language].backToHome}
           </AnimatedButton>
         </nav>
       )}

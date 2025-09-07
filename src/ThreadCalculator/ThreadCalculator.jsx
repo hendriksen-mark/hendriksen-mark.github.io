@@ -9,7 +9,8 @@ import { downloadThreadDXF } from '../utils/dwgGenerator';
 import './ThreadCalculator.scss';
 import { formatMM, formatValueWithConversion } from '../utils/converters';
 import calculateThreadDimensions from '../utils/calculators';
-import { FaCog, FaRuler } from 'react-icons/fa';
+import { FaCog } from 'react-icons/fa';
+import { TbAngle } from "react-icons/tb";
 
 function ThreadCalculator() {
   const { language } = useLanguage();
@@ -64,8 +65,8 @@ function ThreadCalculator() {
           <div className="thread-calculator__inputs">
             <StyledSelect
               label={translations[language].unitSystem || 'Unit System'}
-              value={unitSystem}
-              onChange={(e) => { setUnitSystem(e.target.value); setResults(null); }}
+              value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
+              onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
               icon={FaCog}
               variant="thread-calculator"
               options={[
@@ -76,9 +77,9 @@ function ThreadCalculator() {
             
             <StyledSelect
               label={translations[language].threadAngle}
-              value={threadAngle}
-              onChange={(e) => { setThreadAngle(parseInt(e.target.value)); setResults(null); }}
-              icon={FaRuler}
+              value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
+              onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
+              icon={TbAngle}
               variant="thread-calculator"
               options={[
                 { value: 60, label: '60° (ISO/UTS Standard)' },

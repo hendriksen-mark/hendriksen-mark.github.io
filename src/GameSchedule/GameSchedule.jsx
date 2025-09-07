@@ -3,8 +3,10 @@ import './GameSchedule.scss';
 import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import StyledSelect from '../components/StyledSelect/StyledSelect';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
+import { FaGamepad, FaListOl } from 'react-icons/fa';
 
 function GameSchedule() {
   const { language, setLanguage } = useLanguage();
@@ -209,39 +211,45 @@ function GameSchedule() {
           <h2 className="game-schedule__section-title">{translations[language].configuration}</h2>
           <div className="options">
             <div className="options__group">
-              <label>
-                {translations[language].selectGameType}
-              </label>
-              <select value={gameType} onChange={(e) => handleGameTypeChange(e.target.value)}>
-                <option value="duo">{translations[language].gameTypeDuo}</option>
-                <option value="trio">{translations[language].gameTypeTrio}</option>
-                <option value="squad">{translations[language].gameTypeSquad}</option>
-                <option value="beker">{translations[language].gameTypeBeker}</option>
-              </select>
+              <StyledSelect
+                label={translations[language].selectGameType}
+                value={{ value: gameType, label: translations[language][`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
+                onChange={(selectedOption) => handleGameTypeChange(selectedOption.value)}
+                icon={FaGamepad}
+                variant="light"
+                options={[
+                  { value: 'duo', label: translations[language].gameTypeDuo },
+                  { value: 'trio', label: translations[language].gameTypeTrio },
+                  { value: 'squad', label: translations[language].gameTypeSquad },
+                  { value: 'beker', label: translations[language].gameTypeBeker }
+                ]}
+              />
             </div>
             <div className="options__group">
-              <label>
-                {translations[language].maxConsecutiveGames}
-              </label>
-              <select value={maxConsecutiveGames} onChange={(e) => setMaxConsecutiveGames(Number(e.target.value))}>
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
+              <StyledSelect
+                label={translations[language].maxConsecutiveGames}
+                value={{ value: maxConsecutiveGames, label: maxConsecutiveGames.toString() }}
+                onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
+                icon={FaListOl}
+                variant="light"
+                options={Array.from({ length: 10 }, (_, i) => ({ 
+                  value: i + 1, 
+                  label: (i + 1).toString() 
+                }))}
+              />
             </div>
             <div className="options__group">
-              <label>
-                {translations[language].maxGames}
-              </label>
-              <select value={maxGames} onChange={(e) => setMaxGames(Number(e.target.value))}>
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
+              <StyledSelect
+                label={translations[language].maxGames}
+                value={{ value: maxGames, label: maxGames.toString() }}
+                onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
+                icon={FaListOl}
+                variant="light"
+                options={Array.from({ length: 10 }, (_, i) => ({ 
+                  value: i + 1, 
+                  label: (i + 1).toString() 
+                }))}
+              />
             </div>
           </div>
         </div>

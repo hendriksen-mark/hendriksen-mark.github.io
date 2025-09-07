@@ -50,13 +50,9 @@ const translations = {
     // Navigation translations
     backToHome: "Terug naar home",
     // Thread Calculator translations
-    threadCalculatorTitle: "Metrische Draad Calculator",
-    threadCalculatorDescription: "Bereken alle dimensies voor interne en externe metrische schroefdraad",
-    threadCalculatorHomeDescription: "Bereken metrische schroefdraad dimensies voor productie",
-    // TPI Calculator translations
-    tpiCalculatorTitle: "TPI Draad Calculator",
-    tpiCalculatorDescription: "Bereken alle dimensies voor imperiale schroefdraad (Unified Thread Standard)",
-    tpiCalculatorHomeDescription: "Bereken imperiale schroefdraad dimensies met TPI (threads per inch)",
+    threadCalculatorTitle: "Draad Calculator",
+    threadCalculatorDescription: "Bereken interne en externe schroefdraad voor metrische of imperiale schroefdraad",
+    threadCalculatorHomeDescription: "Bereken metrische en imperiale schroefdraad dimensies",
     threadsPerInch: "Draden per Inch",
     inputParameters: "Input Parameters",
     unitSystem: "Eenheid Systeem",
@@ -145,13 +141,9 @@ const translations = {
     // Navigation translations
     backToHome: "Back to home",
     // Thread calculator translations
-    threadCalculatorTitle: 'Metric Thread Calculator',
-    threadCalculatorDescription: 'Calculate comprehensive dimensions for metric threads (ISO standard)',
-    threadCalculatorHomeDescription: 'Calculate metric thread dimensions, tolerances, and manufacturing specifications',
-    // TPI Calculator translations
-    tpiCalculatorTitle: 'TPI Thread Calculator',
-    tpiCalculatorDescription: 'Calculate comprehensive dimensions for imperial threads (Unified Thread Standard)',
-    tpiCalculatorHomeDescription: 'Calculate imperial thread dimensions using TPI (threads per inch)',
+    threadCalculatorTitle: 'Thread Calculator',
+    threadCalculatorDescription: 'Calculate internal and external threads for metric or imperial threads',
+    threadCalculatorHomeDescription: 'Calculate metric and imperial thread dimensions',
     threadsPerInch: 'Threads Per Inch',
     inputParameters: 'Input Parameters',
     unitSystem: 'Unit System',
