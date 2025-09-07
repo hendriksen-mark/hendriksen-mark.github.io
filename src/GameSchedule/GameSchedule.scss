@@ -430,7 +430,7 @@
   }
   
   .pl-descs {
-    min-width: 120px;
+    width: 120px;
     padding: 0.5rem;
     display: flex;
     align-items: center;
@@ -741,7 +741,7 @@
   }
 
   .grid-header {
-    background: #374151;
+    //background: #374151;
     border-color: #4b5563;
 
     &__labels span {

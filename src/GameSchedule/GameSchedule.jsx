@@ -263,9 +263,9 @@ function GameSchedule({ onBackToHome }) {
           </div>
         </div>
 
-        <div className="game-schedule__section">
+        <div className="game-schedule__section grid-header">
           <h2 className="game-schedule__section-title">{translations[language].playersAndLocations}</h2>
-          <div className="grid-header">
+
             <div className="grid-header__labels">
               <span></span>
               <span></span>
@@ -322,7 +322,6 @@ function GameSchedule({ onBackToHome }) {
                 </div>
               ))}
             </div>
-          </div>
 
           <div className="grid-actions">
             <AnimatedButton onClick={handleAddLocation} color="blue">
@@ -360,32 +359,30 @@ function GameSchedule({ onBackToHome }) {
         </div>
 
         {generatedSchedule && (
-          <div className="game-schedule__section">
-            <div className="generated-schedule">
-              <h3 className={
-                generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">')
-                  ? 'success' 
-                  : 'error'
-              }>
-                {generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">') ? (
-                  translations[language].scheduleGenerated
-                ) : (
-                  translations[language].scheduleError
-                )}
-              </h3>
-              {generatedSchedule.includes('<!--SEPARATOR-->') ? (
-                <div>
-                  <div dangerouslySetInnerHTML={{ __html: generatedSchedule.split('<!--SEPARATOR-->')[0] }} />
-                  <div className="code-runs-info">
-                    {generatedSchedule.split('<!--SEPARATOR-->')[1]}
-                  </div>
-                </div>
-              ) : generatedSchedule.startsWith('<div class="ttapp-schedule">') ? (
-                <div dangerouslySetInnerHTML={{ __html: generatedSchedule }} />
+          <div className="game-schedule__section generated-schedule">
+            <h3 className={
+              generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">')
+                ? 'success' 
+                : 'error'
+            }>
+              {generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">') ? (
+                translations[language].scheduleGenerated
               ) : (
-                <pre>{generatedSchedule}</pre>
+                translations[language].scheduleError
               )}
-            </div>
+            </h3>
+            {generatedSchedule.includes('<!--SEPARATOR-->') ? (
+              <div>
+                <div dangerouslySetInnerHTML={{ __html: generatedSchedule.split('<!--SEPARATOR-->')[0] }} />
+                <div className="code-runs-info">
+                  {generatedSchedule.split('<!--SEPARATOR-->')[1]}
+                </div>
+              </div>
+            ) : generatedSchedule.startsWith('<div class="ttapp-schedule">') ? (
+              <div dangerouslySetInnerHTML={{ __html: generatedSchedule }} />
+            ) : (
+              <pre>{generatedSchedule}</pre>
+            )}
           </div>
         )}
       </div>
