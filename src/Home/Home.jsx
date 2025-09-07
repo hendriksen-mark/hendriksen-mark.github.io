@@ -1,4 +1,5 @@
 import { FaCalendarAlt, FaCog, FaHome, FaBolt } from 'react-icons/fa';
+import { GiHexagonalNut } from "react-icons/gi";
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import translations from '../Translation/Translations';
@@ -19,7 +20,7 @@ function Home({ onNavigate }) {
       id: 'thread-calculator',
       title: translations[language].threadCalculatorTitle,
       description: translations[language].threadCalculatorHomeDescription,
-      icon: <FaBolt />,
+      icon: <GiHexagonalNut />,
       color: '#FF9800'
     },
     // Add more functions here in the future
