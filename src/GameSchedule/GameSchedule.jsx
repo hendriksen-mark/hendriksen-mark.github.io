@@ -202,7 +202,7 @@ function GameSchedule() {
             </div>
             
             <div className="game-schedule__language-selector">
-              <LanguageSelector variant="light" />
+              <LanguageSelector variant="GameSchedule" />
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@ function GameSchedule() {
                 value={{ value: gameType, label: translations[language][`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
                 onChange={(selectedOption) => handleGameTypeChange(selectedOption.value)}
                 icon={FaGamepad}
-                variant="light"
+                variant="GameSchedule"
                 options={[
                   { value: 'duo', label: translations[language].gameTypeDuo },
                   { value: 'trio', label: translations[language].gameTypeTrio },
@@ -231,7 +231,7 @@ function GameSchedule() {
                 value={{ value: maxConsecutiveGames, label: maxConsecutiveGames.toString() }}
                 onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
                 icon={FaListOl}
-                variant="light"
+                variant="GameSchedule"
                 options={Array.from({ length: 10 }, (_, i) => ({ 
                   value: i + 1, 
                   label: (i + 1).toString() 
@@ -244,7 +244,7 @@ function GameSchedule() {
                 value={{ value: maxGames, label: maxGames.toString() }}
                 onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
                 icon={FaListOl}
-                variant="light"
+                variant="GameSchedule"
                 options={Array.from({ length: 10 }, (_, i) => ({ 
                   value: i + 1, 
                   label: (i + 1).toString() 

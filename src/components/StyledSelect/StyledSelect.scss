@@ -1,3 +1,154 @@
+// Theme definitions
+:root {
+  --select-default-primary: white;
+  --select-default-bg: rgba(255, 255, 255, 0.1);
+  --select-default-bg-hover: rgba(255, 255, 255, 0.15);
+  --select-default-border: rgba(255, 255, 255, 0.2);
+  --select-default-menu-bg: rgba(26, 32, 44, 0.95);
+  --select-default-text: #eee;
+  --select-default-option-hover: rgba(255, 255, 255, 0.3);
+  --select-default-option-selected: rgba(255, 255, 255, 0.7);
+  --select-default-option-selected-text: #333;
+
+  --select-thread-primary: #e67e22;
+  --select-thread-bg: white;
+  --select-thread-bg-hover: #f8f9fa;
+  --select-thread-border: #e9ecef;
+  --select-thread-border-hover: #e67e22;
+  --select-thread-text: #2c3e50;
+  --select-thread-placeholder: #6c757d;
+  --select-thread-menu-bg: rgba(255, 255, 255, 0.95);
+  --select-thread-option-hover: rgba(230, 126, 34, 0.1);
+  --select-thread-shadow: rgba(230, 126, 34, 0.1);
+
+  --select-GameSchedule-primary: #27ae60;
+  --select-GameSchedule-bg: white;
+  --select-GameSchedule-bg-hover: #f8f9fa;
+  --select-GameSchedule-border: #e9ecef;
+  --select-GameSchedule-border-hover: #27ae60;
+  --select-GameSchedule-text: #2c3e50;
+  --select-GameSchedule-placeholder: #6c757d;
+  --select-GameSchedule-menu-bg: rgba(255, 255, 255, 0.95);
+  --select-GameSchedule-option-hover: rgba(39, 174, 96, 0.1);
+  --select-GameSchedule-shadow: rgba(39, 174, 96, 0.1);
+}
+
+// Common styles mixin
+@mixin select-base-styles {
+  .styled-select__control {
+    border-radius: 12px !important;
+    min-height: 48px !important;
+    padding-left: 2.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  .styled-select__single-value {
+    font-weight: 500 !important;
+    text-align: left !important;
+  }
+
+  .styled-select__menu {
+    backdrop-filter: blur(20px) !important;
+    border-radius: 15px !important;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1) !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding: 4px 0 !important;
+  }
+
+  .styled-select__menu-list {
+    padding: 0 !important;
+  }
+
+  .styled-select__option {
+    padding: 8px 12px !important;
+    cursor: pointer !important;
+    align-items: center !important;
+    display: flex !important;
+
+    &--is-selected {
+      font-weight: 600 !important;
+    }
+  }
+}
+
+// Dark mode mixin
+@mixin select-dark-mode($primary-color, $menu-bg-color) {
+  @media (prefers-color-scheme: dark) {
+    .styled-select__icon {
+      color: $primary-color;
+    }
+
+    .styled-select__control {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(20px);
+      min-height: 48px !important;
+      padding-left: 2.5rem !important;
+      border-radius: 12px !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba($primary-color, 0.5) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba($primary-color, 0.1) !important;
+      }
+    }
+
+    .styled-select__single-value {
+      color: white !important;
+      font-weight: 500 !important;
+      text-align: left !important;
+    }
+
+    .styled-select__placeholder {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .styled-select__dropdown-indicator {
+      color: $primary-color !important;
+    }
+
+    .styled-select__menu {
+      background: $menu-bg-color !important;
+      backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 15px !important;
+      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3) !important;
+      max-height: 300px !important;
+      overflow-y: auto !important;
+      padding: 4px 0 !important;
+    }
+
+    .styled-select__menu-list {
+      padding: 0 !important;
+    }
+
+    .styled-select__option {
+      color: white !important;
+      padding: 8px 12px !important;
+      cursor: pointer !important;
+      align-items: center !important;
+      display: flex !important;
+
+      &:hover,
+      &--is-focused {
+        background: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      &--is-selected {
+        background: rgba(255, 255, 255, 0.25) !important;
+        font-weight: 600 !important;
+      }
+    }
+  }
+}
+
 .styled-select {
   display: flex;
   align-items: center;
@@ -19,7 +170,6 @@
     max-width: 300px !important;
     min-width: 300px !important;
     
-    // Language selector specific sizing
     &.language-selector {
       width: 190px !important;
       max-width: 190px !important;
@@ -27,33 +177,27 @@
     }
   }
 
-  // Default variant (glass morphism)
+  // Default variant
   &--default {
+    @include select-base-styles;
+
     .styled-select__icon {
-      color: white;
+      color: var(--select-default-primary);
     }
 
     .styled-select__control {
-      background: rgba(255, 255, 255, 0.1) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
-      border-radius: 12px !important;
+      background: var(--select-default-bg) !important;
+      border: 1px solid var(--select-default-border) !important;
       backdrop-filter: blur(10px);
-      min-height: 48px !important;
-      padding-left: 2.5rem !important;
-      color: white !important;
-      transition: all 0.3s ease !important;
-      box-shadow: none !important;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
-        transform: translateY(-1px);
+        background: var(--select-default-bg-hover) !important;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
       }
     }
 
     .styled-select__single-value {
-      color: white !important;
-      font-weight: 500 !important;
+      color: var(--select-default-primary) !important;
     }
 
     .styled-select__placeholder {
@@ -61,325 +205,135 @@
     }
 
     .styled-select__dropdown-indicator {
-      color: white !important;
+      color: var(--select-default-primary) !important;
     }
 
     .styled-select__menu {
-      background: rgba(26, 32, 44, 0.95) !important;
-      backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
-      border-radius: 15px !important;
-      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.5) !important;
-      max-height: 300px !important;
-      overflow-y: auto !important;
-      padding: 4px 0 !important;
-    }
-
-    .styled-select__menu-list {
-      padding: 0 !important;
+      background: var(--select-default-menu-bg) !important;
+      border: 1px solid var(--select-default-border) !important;
     }
 
     .styled-select__option {
       background: transparent !important;
-      color: #eee !important;
-      padding: 8px 12px !important;
-      cursor: pointer !important;
-      align-items: center !important;
-      display: flex !important;
+      color: var(--select-default-text) !important;
 
       &:hover,
       &--is-focused {
-        background: rgba(255, 255, 255, 0.3) !important;
+        background: var(--select-default-option-hover) !important;
         color: rgba(0, 0, 0, 0.7) !important;
       }
 
       &--is-selected {
-        background: rgba(255, 255, 255, 0.7) !important;
-        color: #333 !important;
+        background: var(--select-default-option-selected) !important;
+        color: var(--select-default-option-selected-text) !important;
       }
     }
   }
 
   // Thread calculator variant
   &--thread-calculator {
+    @include select-base-styles;
+
     .styled-select__icon {
-      color: #e67e22;
+      color: var(--select-thread-primary);
     }
 
     .styled-select__control {
-      background: white !important;
-      border: 2px solid #e9ecef !important;
-      border-radius: 12px !important;
-      backdrop-filter: blur(10px);
-      min-height: 48px !important;
-      padding-left: 2.5rem !important;
-      transition: all 0.3s ease !important;
-      box-shadow: none !important;
+      background: var(--select-thread-bg) !important;
+      border: 2px solid var(--select-thread-border) !important;
 
       &:hover {
-        background: #f8f9fa !important;
-        border-color: #e67e22 !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1) !important;
+        background: var(--select-thread-bg-hover) !important;
+        border-color: var(--select-thread-border-hover) !important;
+        box-shadow: 0 4px 15px var(--select-thread-shadow) !important;
       }
     }
 
     .styled-select__single-value {
-      color: #2c3e50 !important;
-      font-weight: 500 !important;
+      color: var(--select-thread-text) !important;
     }
 
     .styled-select__placeholder {
-      color: #6c757d !important;
+      color: var(--select-thread-placeholder) !important;
     }
 
     .styled-select__dropdown-indicator {
-      color: #e67e22 !important;
+      color: var(--select-thread-primary) !important;
     }
 
     .styled-select__menu {
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(20px) !important;
-      border: 1px solid #e9ecef !important;
-      border-radius: 15px !important;
-      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1) !important;
-      max-height: 300px !important;
-      overflow-y: auto !important;
-      padding: 4px 0 !important;
-    }
-
-    .styled-select__menu-list {
-      padding: 0 !important;
+      background: var(--select-thread-menu-bg) !important;
+      border: 1px solid var(--select-thread-border) !important;
     }
 
     .styled-select__option {
-      background: transparent !important;
-      color: #2c3e50 !important;
-      padding: 8px 12px !important;
-      cursor: pointer !important;
-      align-items: center !important;
-      display: flex !important;
+      color: var(--select-thread-text) !important;
 
       &:hover,
       &--is-focused {
-        background: rgba(230, 126, 34, 0.1) !important;
+        background: var(--select-thread-option-hover) !important;
       }
 
       &--is-selected {
-        background: #e67e22 !important;
-        color: #2c3e50 !important;
+        background: var(--select-thread-primary) !important;
+        color: white !important;
       }
     }
 
-    // Dark mode support
-    @media (prefers-color-scheme: dark) {
-      .styled-select__icon {
-        color: #e67e22;
-      }
-
-      .styled-select__control {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 12px !important;
-        backdrop-filter: blur(20px);
-        min-height: 48px !important;
-        padding-left: 2.5rem !important;
-        transition: all 0.3s ease !important;
-        box-shadow: none !important;
-
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.15) !important;
-          border-color: rgba(230, 126, 34, 0.5) !important;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1) !important;
-        }
-      }
-
-      .styled-select__single-value {
-        color: white !important;
-        font-weight: 500 !important;
-      }
-
-      .styled-select__placeholder {
-        color: rgba(255, 255, 255, 0.7) !important;
-      }
-
-      .styled-select__dropdown-indicator {
-        color: #e67e22 !important;
-      }
-
-      .styled-select__menu {
-        background: rgba(230, 126, 34, 0.95) !important;
-        backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 15px !important;
-        box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3) !important;
-        max-height: 300px !important;
-        overflow-y: auto !important;
-        padding: 4px 0 !important;
-      }
-
-      .styled-select__menu-list {
-        padding: 0 !important;
-      }
-
-      .styled-select__option {
-        background: transparent !important;
-        color: white !important;
-        padding: 8px 12px !important;
-        cursor: pointer !important;
-        align-items: center !important;
-        display: flex !important;
-
-        &:hover,
-        &--is-focused {
-          background: rgba(255, 255, 255, 0.15) !important;
-        }
-
-        &--is-selected {
-          background: rgba(255, 255, 255, 0.25) !important;
-        }
-      }
-    }
+    @include select-dark-mode(#e67e22, rgba(230, 126, 34, 0.95));
   }
 
-// Light/GameSchedule variant (green theme)
-  &--light {
+  // GameSchedule variant
+  &--GameSchedule {
+    @include select-base-styles;
+
     .styled-select__icon {
-      color: #27ae60;
+      color: var(--select-GameSchedule-primary);
     }
 
     .styled-select__control {
-      background: white !important;
-      border: 2px solid #e9ecef !important;
-      border-radius: 12px !important;
-      min-height: 48px !important;
-      padding-left: 2.5rem !important;
-      transition: all 0.3s ease !important;
-      box-shadow: none !important;
+      background: var(--select-GameSchedule-bg) !important;
+      border: 2px solid var(--select-GameSchedule-border) !important;
 
       &:hover {
-        background: #f8f9fa !important;
-        border-color: #27ae60 !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1) !important;
+        background: var(--select-GameSchedule-bg-hover) !important;
+        border-color: var(--select-GameSchedule-border-hover) !important;
+        box-shadow: 0 4px 15px var(--select-GameSchedule-shadow) !important;
       }
     }
 
     .styled-select__single-value {
-      color: #2c3e50 !important;
-      font-weight: 500 !important;
+      color: var(--select-GameSchedule-text) !important;
     }
 
     .styled-select__placeholder {
-      color: #6c757d !important;
+      color: var(--select-GameSchedule-placeholder) !important;
     }
 
     .styled-select__dropdown-indicator {
-      color: #27ae60 !important;
+      color: var(--select-GameSchedule-primary) !important;
     }
 
     .styled-select__menu {
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(20px) !important;
-      border: 1px solid #e9ecef !important;
-      border-radius: 15px !important;
-      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1) !important;
-      max-height: 300px !important;
-      overflow-y: auto !important;
-      padding: 4px 0 !important;
-    }
-
-    .styled-select__menu-list {
-      padding: 0 !important;
+      background: var(--select-GameSchedule-menu-bg) !important;
+      border: 1px solid var(--select-GameSchedule-border) !important;
     }
 
     .styled-select__option {
-      color: #2c3e50 !important;
-      padding: 8px 12px !important;
-      cursor: pointer !important;
-      align-items: center !important;
-      display: flex !important;
+      color: var(--select-GameSchedule-text) !important;
 
       &:hover,
       &--is-focused {
-        background: rgba(39, 174, 96, 0.1) !important;
+        background: var(--select-GameSchedule-option-hover) !important;
       }
 
       &--is-selected {
-        background: #43c554 !important;
+        background: var(--select-GameSchedule-primary) !important;
         color: white !important;
       }
     }
 
-    // Dark mode support
-    @media (prefers-color-scheme: dark) {
-      .styled-select__icon {
-        color: #27ae60;
-      }
-
-      .styled-select__control {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(20px);
-        min-height: 48px !important;
-        padding-left: 2.5rem !important;
-        border-radius: 12px !important;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.15) !important;
-          border-color: rgba(39, 174, 96, 0.5) !important;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1) !important;
-        }
-      }
-
-      .styled-select__single-value {
-        color: white !important;
-        font-weight: 500 !important;
-      }
-
-      .styled-select__placeholder {
-        color: rgba(255, 255, 255, 0.7) !important;
-      }
-
-      .styled-select__dropdown-indicator {
-        color: #27ae60 !important;
-      }
-
-      .styled-select__menu {
-        background: rgba(39, 174, 96, 0.95) !important;
-        backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 15px !important;
-        box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3) !important;
-        max-height: 300px !important;
-        overflow-y: auto !important;
-        padding: 4px 0 !important;
-      }
-
-      .styled-select__menu-list {
-        padding: 0 !important;
-      }
-
-      .styled-select__option {
-        color: white !important;
-        padding: 8px 12px !important;
-        cursor: pointer !important;
-        align-items: center !important;
-        display: flex !important;
-
-        &:hover,
-        &--is-focused {
-          background: rgba(255, 255, 255, 0.15) !important;
-        }
-
-        &--is-selected {
-          background: rgba(255, 255, 255, 0.25) !important;
-        }
-      }
-    }
+    @include select-dark-mode(#27ae60, rgba(39, 174, 96, 0.95));
   }
 
   @media (max-width: 768px) {
