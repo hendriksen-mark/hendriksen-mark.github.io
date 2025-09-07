@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <defs>
+    <style>
+      .background { fill: #2563eb; }
+      .text { fill: #ffffff; font-family: 'Arial', sans-serif; font-weight: bold; font-size: 7px; }
+    </style>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle class="background" cx="8" cy="8" r="7.5"/>
+  
+  <!-- Letter M -->
+  <text class="text" x="3" y="11">M</text>
+  
+  <!-- Letter H -->
+  <text class="text" x="9" y="11">H</text>
+</svg>
