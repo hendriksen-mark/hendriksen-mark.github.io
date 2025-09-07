@@ -3,6 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import translations from '../Translation/Translations';
+import { downloadThreadDXF } from '../utils/dwgGenerator';
 import './ThreadCalculator.scss';
 
 function ThreadCalculator() {
@@ -125,8 +126,14 @@ function ThreadCalculator() {
     setResults(calculated);
   };
 
-  const formatNumber = (num) => {
-    return typeof num === 'number' ? num.toFixed(4) : num;
+  const handleDownloadDXF = () => {
+    if (results) {
+      downloadThreadDXF(results);
+    }
+  };
+
+  const formatNumber = (num, precision = 4) => {
+    return typeof num === 'number' ? num.toFixed(precision) : num;
   };
 
   return (
@@ -174,9 +181,20 @@ function ThreadCalculator() {
                 max="10"
               />
             </div>
-            <button onClick={handleCalculate} className="calculate-btn">
-              {translations[language].calculate}
-            </button>
+            <div className="button-group">
+              <button onClick={handleCalculate} className="calculate-btn">
+                {translations[language].calculate}
+              </button>
+              {results && (
+                <button 
+                  onClick={handleDownloadDXF} 
+                  className="download-dxf-btn"
+                  title={translations[language].downloadDxfTooltip}
+                >
+                  📐 {translations[language].downloadDxf}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -202,11 +220,11 @@ function ThreadCalculator() {
                     </div>
                     <div className="result-item">
                       <span className="label">H/4:</span>
-                      <span className="value">{formatNumber(results.basicTriangleHeight / 4)} mm</span>
+                      <span className="value">{formatNumber(results.basicTriangleHeight / 4, 10)} mm</span>
                     </div>
                     <div className="result-item">
                       <span className="label">H/8:</span>
-                      <span className="value">{formatNumber(results.threadHeight3)} mm</span>
+                      <span className="value">{formatNumber(results.threadHeight3, 10)} mm</span>
                     </div>
                     <div className="result-item">
                       <span className="label">3H/8:</span>
