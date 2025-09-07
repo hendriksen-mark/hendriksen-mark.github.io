@@ -46,7 +46,7 @@ function Home({ onNavigate }) {
   return (
     <div className="home">
       <div className="home__header">
-        <div className="home__header-top">
+        <div className="home__header-content">
           <div className="home__title-section">
             <FaHome className="home__header-icon" />
             <div>
