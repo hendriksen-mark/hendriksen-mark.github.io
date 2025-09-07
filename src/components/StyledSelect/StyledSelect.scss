@@ -45,7 +45,7 @@
     }
   }
 
-  // Thread calculator variant (white background)
+  // Thread calculator variant (white background in light mode, dark glass in dark mode)
   &--thread-calculator {
     background: white;
     color: #2c3e50;
@@ -70,9 +70,38 @@
         color: #2c3e50;
       }
     }
+
+    // Dark mode support
+    @media (prefers-color-scheme: dark) {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .styled-select__icon {
+        color: white;
+        opacity: 0.9;
+      }
+
+      .styled-select__select {
+        color: white;
+
+        option {
+          background: #667eea;
+          color: white;
+        }
+      }
+    }
   }
 
-  // TPI calculator variant (orange theme)
+  // TPI calculator variant (orange theme, responsive to system theme)
   &--tpi-calculator {
     background: white;
     color: #2c3e50;
@@ -95,6 +124,35 @@
       option {
         background: white;
         color: #2c3e50;
+      }
+    }
+
+    // Dark mode support
+    @media (prefers-color-scheme: dark) {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(230, 126, 34, 0.5);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .styled-select__icon {
+        color: #e67e22;
+        opacity: 0.9;
+      }
+
+      .styled-select__select {
+        color: white;
+
+        option {
+          background: #e67e22;
+          color: white;
+        }
       }
     }
   }

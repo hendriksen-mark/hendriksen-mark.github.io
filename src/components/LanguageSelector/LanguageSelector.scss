@@ -80,6 +80,62 @@
     }
   }
 
+  // Light variant (for light backgrounds like GameSchedule header)
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .language-selector__icon {
+      color: white;
+    }
+
+    .language-selector__select {
+      background: transparent;
+      color: white;
+
+      option {
+        background: #667eea;
+        color: white;
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 0.5rem 0.75rem;
+    }
+
+    // Dark mode support
+    @media (prefers-color-scheme: dark) {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .language-selector__icon {
+        color: white;
+      }
+
+      .language-selector__select {
+        color: white;
+
+        option {
+          background: #1e3a8a;
+          color: white;
+        }
+      }
+    }
+  }
+
   // Future variants can be added here
   // &--nav {
   //   // Navigation bar variant styles

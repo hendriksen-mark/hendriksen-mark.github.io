@@ -181,8 +181,10 @@
 
       // Arrow markers
       marker {
-        fill: #e2e8f0 !important;
-        stroke: #e2e8f0 !important;
+        path {
+          fill: #e2e8f0 !important;
+          stroke: #e2e8f0 !important;
+        }
       }
     }
 

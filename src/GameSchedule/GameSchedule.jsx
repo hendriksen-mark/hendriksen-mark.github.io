@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
 
 function GameSchedule() {
@@ -191,22 +192,21 @@ function GameSchedule() {
     <div className="game-schedule">
       <div className="game-schedule__container">
         <div className="game-schedule__header">
-          <h1>{translations[language].gameScheduleGenerator}</h1>
-          <p>{translations[language].gameScheduleDescription}</p>
+          <div className="game-schedule__header-content">
+            <div className="game-schedule__title-section">
+              <h1>{translations[language].gameScheduleGenerator}</h1>
+              <p>{translations[language].gameScheduleDescription}</p>
+            </div>
+            
+            <div className="game-schedule__language-selector">
+              <LanguageSelector variant="light" />
+            </div>
+          </div>
         </div>
 
         <div className="game-schedule__section">
           <h2 className="game-schedule__section-title">{translations[language].configuration}</h2>
           <div className="options">
-            <div className="options__group">
-              <label>
-                {translations[language].selectLanguage}
-              </label>
-              <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-                <option value="nl">Nederlands</option>
-                <option value="en">English</option>
-              </select>
-            </div>
             <div className="options__group">
               <label>
                 {translations[language].selectGameType}

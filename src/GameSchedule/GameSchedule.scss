@@ -7,49 +7,78 @@
   &__container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
 
   &__header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    color: white;
+    position: relative;
+
+    &-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+
+      @media (max-width: 950px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+  }
+
+  &__title-section {
+    text-align: center;
 
     h1 {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #333;
       margin: 0 0 0.5rem 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+      @media (max-width: 950px) {
+        font-size: 2rem;
+      }
     }
 
     p {
-      color: #666;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      opacity: 0.9;
       margin: 0;
+      font-weight: 300;
+
+      @media (max-width: 950px) {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  &__language-selector {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    @media (max-width: 950px) {
+      position: static;
     }
   }
 
   &__section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
     margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
     &-title {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       font-weight: 600;
       color: #333;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      &::before {
-        content: '';
-        width: 4px;
-        height: 20px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 2px;
-      }
+      margin: 0 0 1.5rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e9ecef;
     }
   }
 }
@@ -193,7 +222,6 @@
       display: flex;
       align-items: flex-end;
       height: 100%;
-      //padding-bottom: 0.75rem;
 
       .location-label {
         font-weight: 600;
@@ -665,6 +693,343 @@
     button {
       width: 100%;
       max-width: 300px;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .game-schedule {
+    // Keep blue-purple theme but darker
+    background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+
+    &__container {
+      color: white;
+    }
+
+    &__header {
+      h1 {
+        color: white;
+      }
+
+      p {
+        color: #d1d5db;
+      }
+    }
+
+    &__section {
+      background: #1f2937;
+      color: white;
+      border: 1px solid #374151;
+
+      &-title {
+        color: white;
+        border-bottom-color: #667eea;
+      }
+    }
+  }
+
+  .options {
+    &__group {
+      background: #374151;
+      border-color: #4b5563;
+      color: white;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      label {
+        color: #d1d5db;
+      }
+
+      select {
+        background: #4b5563;
+        border-color: #6b7280;
+        color: white;
+
+        &:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        &:hover {
+          border-color: #9ca3af;
+        }
+
+        option {
+          background: #4b5563;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .grid-header {
+    background: #374151;
+    border-color: #4b5563;
+
+    &__labels span {
+      color: #d1d5db;
+    }
+
+    .player-column input {
+      background: #4b5563;
+      border-color: #6b7280;
+      color: white;
+
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      }
+
+      &::placeholder {
+        color: #9ca3af;
+      }
+    }
+
+    .location-label-wrapper .location-label {
+      color: #d1d5db;
+    }
+  }
+
+  .grid {
+    &__round {
+      background: #374151;
+      border-color: #4b5563;
+
+      h3 {
+        color: white;
+      }
+    }
+
+    &__row {
+      background: #1f2937;
+      border-color: #4b5563;
+
+      &:hover {
+        background: #2d3748;
+      }
+
+      .location-input {
+        background: #4b5563;
+        border-color: #6b7280;
+        color: white;
+
+        &:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        &:hover {
+          border-color: #9ca3af;
+        }
+
+        &::placeholder {
+          color: #9ca3af;
+        }
+      }
+    }
+
+    &__match {
+      border-color: #4b5563;
+
+      strong {
+        color: #e5e7eb;
+      }
+
+      small {
+        color: #9ca3af;
+      }
+    }
+
+    &__vs {
+      color: #9ca3af;
+    }
+  }
+
+  .grid-actions {
+    background: transparent;
+    border: none;
+
+    button {
+      &.primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        
+        &:hover {
+          background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+      }
+
+      &.secondary {
+        background: #4b5563;
+        color: #d1d5db;
+        border-color: #6b7280;
+
+        &:hover {
+          background: #6b7280;
+        }
+      }
+    }
+  }
+
+  .schedule-output {
+    background: #374151;
+    border-color: #4b5563;
+
+    h3 {
+      color: white;
+    }
+
+    .status {
+      &.success {
+        color: #10b981;
+      }
+
+      &.error {
+        color: #f87171;
+      }
+    }
+
+    pre {
+      background: #1f2937;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+  }
+
+  .generated-schedule {
+    background: #1f2937;
+    border-color: #4b5563;
+
+    h3 {
+      color: white;
+
+      &.success {
+        color: #10b981;
+      }
+
+      &.error {
+        color: #f87171;
+      }
+    }
+
+    pre {
+      background: #0f172a;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+  }
+
+  .code-runs-info {
+    background: #374151;
+    border-color: #4b5563;
+    color: #d1d5db;
+  }
+
+  // TTApp schedule dark mode
+  .ttapp-schedule {
+    background: #1f2937;
+    border-color: #4b5563;
+
+    .pl-header {
+      background: #374151;
+      border-bottom-color: #4b5563;
+    }
+
+    .pl-descs {
+      background: #374151;
+      border-right-color: #4b5563;
+      color: #d1d5db;
+    }
+
+    .pl-location {
+      color: #d1d5db;
+    }
+
+    .pl-tot {
+      color: #d1d5db;
+    }
+
+    .pl-cell {
+      border-right-color: #4b5563;
+    }
+
+    .pl-playername {
+      background: #1e40af;
+      border-color: #1d4ed8;
+      color: #dbeafe;
+    }
+
+    .pl-count {
+      background: #374151;
+      border-color: #4b5563;
+      color: #d1d5db;
+    }
+
+    // Dark mode availability states
+    .av0 {
+      background: #1f2937 !important;
+      border-color: #4b5563 !important;
+      color: #6b7280 !important;
+    }
+
+    .av1 {
+      background: #065f46 !important;
+      border-color: #047857 !important;
+      color: #a7f3d0 !important;
+
+      .fa-check {
+        color: #a7f3d0 !important;
+      }
+    }
+
+    .av1.scheduled {
+      background: #065f46 !important;
+      border-color: #047857 !important;
+      color: #a7f3d0 !important;
+    }
+
+    .av1.not-scheduled {
+      background: #064e3b !important;
+      border-color: #047857 !important;
+      color: #6ee7b7 !important;
+    }
+
+    .av2 {
+      background: #92400e !important;
+      border-color: #b45309 !important;
+      color: #fcd34d !important;
+
+      .fa-check {
+        color: #fcd34d !important;
+      }
+    }
+
+    .av3 {
+      background: #991b1b !important;
+      border-color: #dc2626 !important;
+      color: #fca5a5 !important;
+
+      .fa-check {
+        color: #fca5a5 !important;
+      }
+    }
+
+    .pl-row:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .pl-row:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .pl-row.stats-separator {
+      border-top-color: #4b5563;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
     }
   }
 }
