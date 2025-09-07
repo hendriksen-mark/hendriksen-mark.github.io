@@ -851,26 +851,6 @@
   .grid-actions {
     background: transparent;
     border: none;
-
-    button {
-      &.primary {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        
-        &:hover {
-          background: linear-gradient(135deg, #5a67d8, #6b46c1);
-        }
-      }
-
-      &.secondary {
-        background: #4b5563;
-        color: #d1d5db;
-        border-color: #6b7280;
-
-        &:hover {
-          background: #6b7280;
-        }
-      }
-    }
   }
 
   .schedule-output {
