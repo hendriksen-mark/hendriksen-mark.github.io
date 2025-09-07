@@ -166,12 +166,10 @@
   }
 
   &__container {
-    width: 300px !important;
-    max-width: 300px !important;
-    min-width: 300px !important;
+    width: 100% !important;
+    //max-width: 300px !important;
     
     &.language-selector {
-      width: 190px !important;
       max-width: 190px !important;
       min-width: 190px !important;
     }

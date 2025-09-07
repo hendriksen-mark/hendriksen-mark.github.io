@@ -25,9 +25,9 @@ function AppContent() {
       case 'home':
         return <Home onNavigate={handleNavigate} />;
       case 'game-schedule':
-        return <GameSchedule />;
+        return <GameSchedule onBackToHome={handleBackToHome} />;
       case 'thread-calculator':
-        return <ThreadCalculator />;
+        return <ThreadCalculator onBackToHome={handleBackToHome} />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }
@@ -35,17 +35,6 @@ function AppContent() {
 
   return (
     <div className="app">
-      {currentView !== 'home' && (
-        <nav className="app__nav">
-          <AnimatedButton 
-            color="gray"
-            onClick={handleBackToHome}
-          >
-            <FaHome />
-            {" " + translations[language].backToHome}
-          </AnimatedButton>
-        </nav>
-      )}
       <main className="app__main">
         {renderView()}
       </main>

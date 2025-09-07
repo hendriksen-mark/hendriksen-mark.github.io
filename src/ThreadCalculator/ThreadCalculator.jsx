@@ -9,10 +9,10 @@ import { downloadThreadDXF } from '../utils/dwgGenerator';
 import './ThreadCalculator.scss';
 import { formatMM, formatValueWithConversion } from '../utils/converters';
 import calculateThreadDimensions from '../utils/calculators';
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaHome } from 'react-icons/fa';
 import { TbAngle } from "react-icons/tb";
 
-function ThreadCalculator() {
+function ThreadCalculator({ onBackToHome }) {
   const { language } = useLanguage();
   const [unitSystem, setUnitSystem] = useState('metric'); // 'metric' or 'imperial'
   const [threadAngle, setThreadAngle] = useState(60); // 60° or 55°
@@ -49,6 +49,15 @@ function ThreadCalculator() {
       <div className="thread-calculator__container">
         <div className="thread-calculator__header">
           <div className="thread-calculator__header-content">
+            <div className="thread-calculator__back-button">
+              <AnimatedButton 
+                color="gray"
+                onClick={onBackToHome}
+              >
+                <FaHome />
+                {" " + translations[language].backToHome}
+              </AnimatedButton>
+            </div>
             <div className="thread-calculator__title-section">
               <h1>{translations[language].threadCalculatorTitle}</h1>
               <p>{translations[language].threadCalculatorDescription}</p>
@@ -63,29 +72,32 @@ function ThreadCalculator() {
         <div className="thread-calculator__section">
           <h2 className="thread-calculator__section-title">{translations[language].inputParameters}</h2>
           <div className="thread-calculator__inputs">
-            <StyledSelect
-              label={translations[language].unitSystem || 'Unit System'}
-              value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
-              onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
-              icon={FaCog}
-              variant="thread-calculator"
-              options={[
-                { value: 'metric', label: 'Metric (mm)' },
-                { value: 'imperial', label: 'Imperial (inches)' }
-              ]}
-            />
-            
-            <StyledSelect
-              label={translations[language].threadAngle}
-              value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
-              onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
-              icon={TbAngle}
-              variant="thread-calculator"
-              options={[
-                { value: 60, label: '60° (ISO/UTS Standard)' },
-                { value: 55, label: '55° (British Standard)' }
-              ]}
-            />
+            <div className="select-group">
+              <StyledSelect
+                label={translations[language].unitSystem || 'Unit System'}
+                value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
+                onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
+                icon={FaCog}
+                variant="thread-calculator"
+                options={[
+                  { value: 'metric', label: 'Metric (mm)' },
+                  { value: 'imperial', label: 'Imperial (inches)' }
+                ]}
+              />
+            </div>
+            <div className="select-group">
+              <StyledSelect
+                label={translations[language].threadAngle}
+                value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
+                onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
+                icon={TbAngle}
+                variant="thread-calculator"
+                options={[
+                  { value: 60, label: '60° (ISO/UTS Standard)' },
+                  { value: 55, label: '55° (British Standard)' }
+                ]}
+              />
+            </div>
 
             {unitSystem === 'metric' ? (
               <>
