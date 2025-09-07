@@ -11,15 +11,15 @@ function Home({ onNavigate }) {
   const functions = [
     {
       id: 'game-schedule',
-      title: translations[language].gameScheduleTitle,
-      description: translations[language].gameScheduleHomeDescription,
+      title: translations[language].gameScheduleGenerator,
+      description: translations[language].gameScheduleDescription,
       icon: <FaCalendarAlt />,
       color: '#4CAF50'
     },
     {
       id: 'thread-calculator',
       title: translations[language].threadCalculatorTitle,
-      description: translations[language].threadCalculatorHomeDescription,
+      description: translations[language].threadCalculatorDescription,
       icon: <GiHexagonalNut />,
       color: '#FF9800'
     },

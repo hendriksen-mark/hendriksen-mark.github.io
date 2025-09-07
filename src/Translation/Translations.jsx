@@ -42,8 +42,6 @@ const translations = {
     // Home page translations
     homeTitle: "Mark Hendriksen's Tools",
     homeSubtitle: "Een verzameling handige hulpprogramma's en tools",
-    gameScheduleTitle: "Game Schedule Generator",
-    gameScheduleHomeDescription: "Genereer en beheer speelschema's voor toernooien",
     moreFunctionsTitle: "Meer functies komen eraan",
     moreFunctionsDescription: "Aanvullende tools en hulpprogramma's worden hier toegevoegd",
     clickToOpen: "Klik om te openen",
@@ -59,8 +57,7 @@ const translations = {
     importTooltip: "Upload configuratie van JSON bestand",
     // Thread Calculator translations
     threadCalculatorTitle: "Draad Calculator",
-    threadCalculatorDescription: "Bereken interne en externe schroefdraad voor metrische of imperiale schroefdraad",
-    threadCalculatorHomeDescription: "Bereken metrische en imperiale schroefdraad dimensies",
+    threadCalculatorDescription: "Bereken metrische of imperiale interne en externe schroefdraad",
     threadsPerInch: "Draden per Inch",
     inputParameters: "Input Parameters",
     unitSystem: "Eenheid Systeem",
@@ -141,8 +138,6 @@ const translations = {
     // Home page translations
     homeTitle: "Mark Hendriksen's Tools",
     homeSubtitle: "A collection of useful utilities and tools",
-    gameScheduleTitle: "Game Schedule Generator",
-    gameScheduleHomeDescription: "Generate and manage game schedules for tournaments",
     moreFunctionsTitle: "More Functions Coming Soon",
     moreFunctionsDescription: "Additional tools and utilities will be added here",
     clickToOpen: "Click to open",
@@ -158,8 +153,7 @@ const translations = {
     importTooltip: "Upload configuration from JSON file",
     // Thread calculator translations
     threadCalculatorTitle: 'Thread Calculator',
-    threadCalculatorDescription: 'Calculate internal and external threads for metric or imperial threads',
-    threadCalculatorHomeDescription: 'Calculate metric and imperial thread dimensions',
+    threadCalculatorDescription: 'Calculate metric or imperial internal and external threads',
     threadsPerInch: 'Threads Per Inch',
     inputParameters: 'Input Parameters',
     unitSystem: 'Unit System',
