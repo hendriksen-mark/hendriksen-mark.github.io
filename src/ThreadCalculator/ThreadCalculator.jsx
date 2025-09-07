@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import translations from '../Translation/Translations';
@@ -150,26 +151,22 @@ function ThreadCalculator() {
         {/* Button row - separated from inputs to prevent layout jumping */}
         <div className="thread-calculator__section">
           <div className="button-group">
-            <button onClick={handleCalculate} className="calculate-btn">
+            <AnimatedButton onClick={handleCalculate} color="green">
               {translations[language].calculate}
-            </button>
+            </AnimatedButton>
             {unitSystem === 'imperial' && (
-              <button 
+              <AnimatedButton 
                 onClick={() => setShowMetricConversion(!showMetricConversion)}
-                className="unit-converter-btn"
+                color="orange"
                 title="Toggle inch/mm conversion"
               >
                 {showMetricConversion ? 'Show Inches' : 'Show mm Conversion'}
-              </button>
+              </AnimatedButton>
             )}
             {results && (
-              <button 
-                onClick={handleDownloadDXF} 
-                className="download-dxf-btn"
-                title={translations[language].downloadDxfTooltip}
-              >
+              <AnimatedButton onClick={handleDownloadDXF} color="purple">
                 📐 {translations[language].downloadDxf}
-              </button>
+              </AnimatedButton>
             )}
           </div>
         </div>

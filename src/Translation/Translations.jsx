@@ -93,7 +93,6 @@ const translations = {
     threadDimensions: "Draadafmetingen",
     enterValuesToShowDiagram: "Voer waarden in en bereken om draaddiagram te tonen",
     downloadDxf: "Download DXF",
-    downloadDxfTooltip: "Download draadprofiel als DXF bestand voor CAD software",
   },
   en: {
     selectLanguage: "Select language:",
@@ -189,7 +188,6 @@ const translations = {
     threadDimensions: 'Thread Dimensions',
     enterValuesToShowDiagram: 'Enter values and calculate to show thread diagram',
     downloadDxf: 'Download DXF',
-    downloadDxfTooltip: 'Download thread profile as DXF file for CAD software',
   },
 };
 

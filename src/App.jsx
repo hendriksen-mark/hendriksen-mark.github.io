@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
 import ThreadCalculator from './ThreadCalculator/ThreadCalculator';
+import AnimatedButton from './components/AnimatedButton/AnimatedButton';
 import { FaHome } from 'react-icons/fa';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import translations from './Translation/Translations';
@@ -36,14 +37,13 @@ function AppContent() {
     <div className="app">
       {currentView !== 'home' && (
         <nav className="app__nav">
-          <button 
-            className="app__nav-button" 
+          <AnimatedButton 
+            color="gray"
             onClick={handleBackToHome}
-            title={translations[language].backToHome}
           >
             <FaHome />
             <span>{translations[language].backToHome}</span>
-          </button>
+          </AnimatedButton>
         </nav>
       )}
       <main className="app__main">

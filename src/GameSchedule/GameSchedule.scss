@@ -346,60 +346,6 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 2rem;
-
-  button {
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-    background-size: 200% 100%;
-    background-position: 0% 0%;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 160px;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-      background-position: 100% 0%;
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    &.primary {
-      background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #28a745 100%);
-      background-size: 200% 100%;
-      background-position: 0% 0%;
-
-      &:hover:not(:disabled) {
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-        background-position: 100% 0%;
-      }
-    }
-    
-    &.reset {
-      background: linear-gradient(135deg, #ffc107 0%, #fd7e14 50%, #ffc107 100%);
-      background-size: 200% 100%;
-      background-position: 0% 0%;
-      
-      &:hover {
-        box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
-        background-position: 100% 0%;
-      }
-    }
-    
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      background-position: 0% 0% !important;
-    }
-  }
 }
 
 // Loading states

@@ -3,6 +3,7 @@ import './GameSchedule.scss';
 import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
 
 function GameSchedule() {
@@ -307,12 +308,16 @@ function GameSchedule() {
           </div>
 
           <div className="grid-actions">
-            <button onClick={handleAddLocation}>{translations[language].addLocation}</button>
-            <button onClick={handleAddPlayer}>{translations[language].addPlayer}</button>
-            <button onClick={handleResetAvailability} className="reset">
+            <AnimatedButton onClick={handleAddLocation} color="blue">
+              {translations[language].addLocation}
+            </AnimatedButton>
+            <AnimatedButton onClick={handleAddPlayer} color="blue">
+              {translations[language].addPlayer}
+            </AnimatedButton>
+            <AnimatedButton onClick={handleResetAvailability} color="orange">
               {translations[language].resetAvailability}
-            </button>
-            <button onClick={handleGenerateSchedule} className="primary" disabled={isGenerating}>
+            </AnimatedButton>
+            <AnimatedButton onClick={handleGenerateSchedule} color="green" disabled={isGenerating}>
               {isGenerating ? (
                 <span className="loading-content">
                   <span className="spinner"></span>
@@ -321,7 +326,7 @@ function GameSchedule() {
               ) : (
                 translations[language].generateSchedule
               )}
-            </button>
+            </AnimatedButton>
           </div>
           
           {isGenerating && (
