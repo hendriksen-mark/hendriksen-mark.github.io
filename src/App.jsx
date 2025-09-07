@@ -2,15 +2,12 @@ import { useState } from 'react';
 import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
 import ThreadCalculator from './ThreadCalculator/ThreadCalculator';
-import AnimatedButton from './components/AnimatedButton/AnimatedButton';
-import { FaHome } from 'react-icons/fa';
-import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
-import translations from './Translation/Translations';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { Toaster } from 'react-hot-toast';
 import './App.scss';
 
 function AppContent() {
   const [currentView, setCurrentView] = useState('home');
-  const { language } = useLanguage();
 
   const handleNavigate = (view) => {
     setCurrentView(view);
@@ -35,6 +32,7 @@ function AppContent() {
 
   return (
     <div className="app">
+      <Toaster position="top-right" />
       <main className="app__main">
         {renderView()}
       </main>

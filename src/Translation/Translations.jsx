@@ -49,6 +49,14 @@ const translations = {
     clickToOpen: "Klik om te openen",
     // Navigation translations
     backToHome: "Terug naar home",
+    // Import/Export translations
+    exportConfiguration: "Configuratie exporteren",
+    importConfiguration: "Configuratie importeren",
+    configurationExported: "Configuratie geëxporteerd!",
+    configurationImported: "Configuratie geïmporteerd!",
+    invalidConfigurationFile: "Ongeldig configuratiebestand",
+    exportTooltip: "Download configuratie als JSON bestand",
+    importTooltip: "Upload configuratie van JSON bestand",
     // Thread Calculator translations
     threadCalculatorTitle: "Draad Calculator",
     threadCalculatorDescription: "Bereken interne en externe schroefdraad voor metrische of imperiale schroefdraad",
@@ -140,6 +148,14 @@ const translations = {
     clickToOpen: "Click to open",
     // Navigation translations
     backToHome: "Back to home",
+    // Import/Export translations
+    exportConfiguration: "Export Configuration",
+    importConfiguration: "Import Configuration",
+    configurationExported: "Configuration exported!",
+    configurationImported: "Configuration imported!",
+    invalidConfigurationFile: "Invalid configuration file",
+    exportTooltip: "Download configuration as JSON file",
+    importTooltip: "Upload configuration from JSON file",
     // Thread calculator translations
     threadCalculatorTitle: 'Thread Calculator',
     threadCalculatorDescription: 'Calculate internal and external threads for metric or imperial threads',

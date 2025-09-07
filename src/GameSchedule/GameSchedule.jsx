@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -6,7 +6,8 @@ import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
-import { FaGamepad, FaListOl, FaHome } from 'react-icons/fa';
+import { FaGamepad, FaListOl, FaHome, FaDownload, FaUpload } from 'react-icons/fa';
+import { toast } from "react-hot-toast";
 
 function GameSchedule({ onBackToHome }) {
   const { language } = useLanguage();
@@ -24,6 +25,7 @@ function GameSchedule({ onBackToHome }) {
   const [generatedSchedule, setGeneratedSchedule] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentCalculations, setCurrentCalculations] = useState(0);
+  const fileInputRef = useRef(null);
 
   const handleAddLocation = () => {
     setRows([...rows, { location: '', players: Array(playerNames.length).fill(true) }]);
@@ -191,6 +193,70 @@ function GameSchedule({ onBackToHome }) {
     );
   };
 
+  const exportConfiguration = () => {
+    const config = {
+      version: "1.0",
+      timestamp: new Date().toISOString(),
+      gameType,
+      maxConsecutiveGames,
+      maxGames,
+      requiredPlayers,
+      playerNames,
+      rows
+    };
+
+    const dataStr = JSON.stringify(config, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `game-schedule-config-${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+
+  const importConfiguration = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const config = JSON.parse(e.target.result);
+        
+        // Validate required fields
+        if (!config.gameType || !config.playerNames || !config.rows) {
+          toast.error(translations[language].invalidConfigurationFile);
+          return;
+        }
+
+        // Apply the configuration
+        setGameType(config.gameType);
+        setMaxConsecutiveGames(config.maxConsecutiveGames || 3);
+        setMaxGames(config.maxGames || 5);
+        setRequiredPlayers(config.requiredPlayers || 2);
+        setPlayerNames(config.playerNames);
+        setRows(config.rows);
+        
+        // Reset the file input
+        event.target.value = '';
+
+        setTimeout(() => {
+          toast.success(translations[language].configurationImported);
+        }, 100);
+        
+      } catch (error) {
+        toast.error(translations[language].invalidConfigurationFile);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="game-schedule">
       <div className="game-schedule__container">
@@ -260,6 +326,33 @@ function GameSchedule({ onBackToHome }) {
                 }))}
               />
             </div>
+          </div>
+
+          <div className="import-export-actions">
+            <AnimatedButton 
+              onClick={exportConfiguration} 
+              color="blue"
+              title={translations[language].exportTooltip}
+            >
+              <FaDownload />
+              {" " + translations[language].exportConfiguration}
+            </AnimatedButton>
+            
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={importConfiguration}
+              style={{ display: 'none' }}
+            />
+            <AnimatedButton 
+              onClick={triggerFileInput}
+              color="green"
+              title={translations[language].importTooltip}
+            >
+              <FaUpload />
+              {" " + translations[language].importConfiguration}
+            </AnimatedButton>
           </div>
         </div>
 
