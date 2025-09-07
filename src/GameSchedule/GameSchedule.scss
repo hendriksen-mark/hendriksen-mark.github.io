@@ -180,7 +180,7 @@
 
   &__labels {
     display: grid;
-    grid-template-columns: 140px 140px 1fr;
+    grid-template-columns: 120px 140px 1fr;
     gap: 1rem;
     //margin-bottom: 1.5rem;
     align-items: center;
@@ -197,7 +197,7 @@
 
   &__players {
     display: grid;
-    grid-template-columns: 140px 140px repeat(auto-fit, minmax(120px, 120px));
+    grid-template-columns: 120px 140px repeat(auto-fit, minmax(120px, 120px));
     gap: 1rem;
     align-items: start;
     padding: 1rem 1.5rem;
@@ -280,7 +280,7 @@
 
   &__row {
     display: grid;
-    grid-template-columns: 140px 140px repeat(auto-fit, minmax(120px, 120px));
+    grid-template-columns: 120px 140px repeat(auto-fit, minmax(120px, 120px));
     gap: 1rem;
     padding: 1rem 1.5rem;
     align-items: center;
