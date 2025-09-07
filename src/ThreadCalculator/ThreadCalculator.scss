@@ -69,6 +69,97 @@
       padding-bottom: 0.5rem;
       border-bottom: 2px solid #e9ecef;
     }
+
+    // Button styling for any section
+    .calculate-btn {
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: fit-content;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .download-dxf-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #6f42c1, #8e44ad);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        height: fit-content;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+          background: linear-gradient(135deg, #7952d1, #9c56c7);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      .unit-converter-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        height: fit-content;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+          background: linear-gradient(135deg, #2980b9, #1abc9c);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
   }
 
   &__inputs {
@@ -159,6 +250,33 @@
           transform: translateY(-2px);
           box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
           background: linear-gradient(135deg, #7952d1, #9c56c7);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      .unit-converter-btn {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        height: fit-content;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+          background: linear-gradient(135deg, #2980b9, #21618c);
         }
 
         &:active {

@@ -1,4 +1,4 @@
-import { FaCalendarAlt, FaCog, FaHome, FaBolt } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaRuler } from 'react-icons/fa';
 import { GiHexagonalNut } from "react-icons/gi";
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';

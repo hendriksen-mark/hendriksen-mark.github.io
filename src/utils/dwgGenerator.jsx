@@ -1,8 +1,10 @@
 import DxfWriter from 'dxf-writer';
+import { formatValue } from './converters';
 
 /**
  * Generate a DXF file containing the thread profile and dimensions
  * @param {Object} results - The calculated thread results
+ * @param {number} threadAngle - Thread angle (60° for ISO/UTS, 55° for British)
  * @returns {Blob} - DXF file as a blob
  */
 export const generateThreadDXF = (results) => {
@@ -79,12 +81,13 @@ export const generateThreadDXF = (results) => {
   dxf.drawPolyline(threadPoints, true);
   
   // Add thread designation as title
+  const threadType = results.threadAngle === 55 ? 'BRITISH STANDARD' : (results.threadDesignation.includes('M') ? 'METRIC ISO' : 'IMPERIAL UTS');
   dxf.drawText(
     baseX,
     baseY + triangleHeight + 5,
     2,
     0,
-    `METRIC THREAD ${results.threadDesignation} - ISO PROFILE`
+    `${threadType} THREAD ${results.threadDesignation} - ${results.threadAngle}° PROFILE`
   );
   
   // Add basic dimensions table
@@ -93,12 +96,16 @@ export const generateThreadDXF = (results) => {
   const lineSpacing = 3;
   let currentY = tableY;
   
+  // Determine if this is imperial thread (based on thread designation)
+  const isImperial = !results.threadDesignation.includes('M');
+  
   const dimensions = [
     `${results.threadDesignation}`,
-    `Ø${results.nominalDiameter} x ${results.pitch}`,
-    `H: ${H.toFixed(4)}mm`,
-    `h: ${h.toFixed(4)}mm`,
-    `h/8: ${h3.toFixed(4)}mm`,
+    `${results.nominalDiameter ? `Ø${results.nominalDiameter}` : ''} ${results.pitch ? `x ${results.pitch}` : `${results.tpi} TPI`}`,
+    `Angle: ${results.threadAngle}°`,
+    `H: ${formatValue(H, isImperial)}`,
+    `h: ${formatValue(h, isImperial)}`,
+    `h/8: ${formatValue(h3, isImperial)}`,
   ];
   
   dimensions.forEach((dim, index) => {
@@ -121,11 +128,13 @@ export const generateThreadDXF = (results) => {
 /**
  * Download the generated DXF file
  * @param {Object} results - The calculated thread results
+ * @param {number} threadAngle - Thread angle (60° for ISO/UTS, 55° for British)
  * @param {string} filename - Optional filename (defaults to thread designation)
  */
 export const downloadThreadDXF = (results, filename) => {
   const blob = generateThreadDXF(results);
-  const defaultFilename = `thread_${results.threadDesignation.replace('x', '_x_')}.dxf`;
+  const angleSuffix = results.threadAngle === 55 ? '_55deg' : '_60deg';
+  const defaultFilename = `thread_${results.threadDesignation.replace(/[x"]/g, '_')}${angleSuffix}.dxf`;
   const finalFilename = filename || defaultFilename;
   
   // Create download link

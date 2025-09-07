@@ -1,0 +1,106 @@
+.styled-select {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  min-width: 200px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  &__icon {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  &__select {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    width: 100%;
+    flex: 1;
+
+    option {
+      background: #667eea;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
+  }
+
+  // Thread calculator variant (white background)
+  &--thread-calculator {
+    background: white;
+    color: #2c3e50;
+    border: 2px solid #e9ecef;
+
+    &:hover {
+      background: #f8f9fa;
+      border-color: #667eea;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+    }
+
+    .styled-select__icon {
+      color: #667eea;
+    }
+
+    .styled-select__select {
+      color: #2c3e50;
+
+      option {
+        background: white;
+        color: #2c3e50;
+      }
+    }
+  }
+
+  // TPI calculator variant (orange theme)
+  &--tpi-calculator {
+    background: white;
+    color: #2c3e50;
+    border: 2px solid #e9ecef;
+
+    &:hover {
+      background: #f8f9fa;
+      border-color: #e67e22;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1);
+    }
+
+    .styled-select__icon {
+      color: #e67e22;
+    }
+
+    .styled-select__select {
+      color: #2c3e50;
+
+      option {
+        background: white;
+        color: #2c3e50;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 0.75rem;
+    min-width: 150px;
+  }
+}

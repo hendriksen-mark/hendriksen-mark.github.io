@@ -1,9 +1,28 @@
 import { useLanguage } from '../../contexts/LanguageContext';
 import translations from '../../Translation/Translations';
 import './ThreadDiagram.scss';
+import { formatValue, inchesToMm, mmToInches } from '../../utils/converters';
 
-function ThreadDiagram({ results }) {
+function ThreadDiagram({ results, isImperial = false, threadAngle = 60, originalUnitSystem = 'metric' }) {
     const { language } = useLanguage();
+
+    // Helper function to convert values if needed
+    const getDisplayValue = (value) => {
+        if (typeof value !== 'number') return value;
+        
+        // If original was imperial and we want to show metric, convert
+        if (originalUnitSystem === 'imperial' && !isImperial) {
+            return inchesToMm(value);
+        }
+        
+        // If original was metric and we want to show imperial, convert  
+        if (originalUnitSystem === 'metric' && isImperial) {
+            return mmToInches(value);
+        }
+        
+        // Otherwise return original value
+        return value;
+    };
 
     if (!results) {
         return (
@@ -18,7 +37,7 @@ function ThreadDiagram({ results }) {
     return (
         <div className="thread-diagram">
             <h3 className="thread-diagram__title">
-                {translations[language].threadProfile} - {results.threadDesignation}
+                {translations[language].threadProfile} - {results.threadDesignation} ({threadAngle}°)
             </h3>
 
             <div className="thread-diagram__container">
@@ -316,59 +335,59 @@ function ThreadDiagram({ results }) {
 
                         {/* Static labels that don't change */}
                         <text x="389.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">Axis of screw thread</text>
-                        <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">30°</text>
-                        <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">60°</text>
+                        <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">{threadAngle/2}°</text>
+                        <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">{threadAngle}°</text>
                         <text x="234.67" y="470.13" textAnchor="middle" fontSize="16" fontFamily="Arial">90°</text>
 
                         {/* Pitch labels with calculated values */}
                         <text x="354.88" y="49.74" textAnchor="middle" fontSize="16" fontFamily="Arial" className="calculated-value">
-                            P = {results.pitch} mm
+                            P = {formatValue(getDisplayValue(results.pitch), isImperial)}
                         </text>
                         <text x="355.72" y="95.14" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            P/8 = {(results.pitch / 8).toFixed(3)} mm
+                            P/8 = {formatValue(getDisplayValue(results.pitch / 8), isImperial)}
                         </text>
                         <text x="353.81" y="294.60" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            P/2 = {(results.pitch / 2).toFixed(3)} mm
+                            P/2 = {formatValue(getDisplayValue(results.pitch / 2), isImperial)}
                         </text>
                         <text x="497.43" y="426.97" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            P/4 = {(results.pitch / 4).toFixed(3)} mm
+                            P/4 = {formatValue(getDisplayValue(results.pitch / 4), isImperial)}
                         </text>
 
                         {/* Thread height labels with calculated values */}
                         <text x="690" y="255.33" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 690, 255.33)">
-                            H = {results.basicTriangleHeight.toFixed(3)} mm
+                            H = {formatValue(getDisplayValue(results.basicTriangleHeight), isImperial)}
                         </text>
                         <text x="580" y="346.81" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            H/4 = {(results.basicTriangleHeight / 4).toFixed(3)} mm
+                            H/4 = {formatValue(getDisplayValue(results.basicTriangleHeight / 4), isImperial)}
                         </text>
                         <text x="580" y="154.67" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            H/8 = {results.threadHeight3.toFixed(3)} mm
+                            H/8 = {formatValue(getDisplayValue(results.threadHeight3), isImperial)}
                         </text>
                         <text x="653" y="240" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 653, 240)">
-                            5H/8 = {results.threadHeight.toFixed(3)} mm
+                            5H/8 = {formatValue(getDisplayValue(results.threadHeight), isImperial)}
                         </text>
                         <text x="543" y="197.03" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
-                            3H/8 = {(3 * results.basicTriangleHeight / 8).toFixed(3)} mm
+                            3H/8 = {formatValue(getDisplayValue(3 * results.basicTriangleHeight / 8), isImperial)}
                         </text>
 
                         {/* Dynamic calculated values - vertical text next to dimension lines */}
                         <text x="35" y="320" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 35, 320)">
-                            d = {results.externalMajorDiameter.toFixed(3)} mm
+                            d = {formatValue(getDisplayValue(results.externalMajorDiameter), isImperial)}
                         </text>
                         <text x="141" y="390" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 141, 390)">
-                            d₁ = {results.externalMinorDiameter.toFixed(3)} mm
+                            d₁ = {formatValue(getDisplayValue(results.externalMinorDiameter), isImperial)}
                         </text>
                         <text x="88" y="360" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 88, 360)">
-                            d₂ = {results.externalPitchDiameter.toFixed(3)} mm
+                            d₂ = {formatValue(getDisplayValue(results.externalPitchDiameter), isImperial)}
                         </text>
                         <text x="195" y="420" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 195, 420)">
-                            d₃ = {results.externalCoreDiameter.toFixed(3)} mm
+                            d₃ = {formatValue(getDisplayValue(results.externalCoreDiameter), isImperial)}
                         </text>
                     </svg>
                 </div>
