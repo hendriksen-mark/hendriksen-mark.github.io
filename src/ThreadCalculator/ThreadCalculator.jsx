@@ -159,28 +159,27 @@ function ThreadCalculator({ onBackToHome }) {
               </>
             )}
           </div>
-        </div>
 
-        {/* Button row - separated from inputs to prevent layout jumping */}
-        <div className="thread-calculator__section">
-          <div className="button-group">
-            <AnimatedButton onClick={handleCalculate} color="green">
-              {translations[language].calculate}
-            </AnimatedButton>
-            {unitSystem === 'imperial' && (
-              <AnimatedButton 
-                onClick={() => setShowMetricConversion(!showMetricConversion)}
-                color="orange"
-                title="Toggle inch/mm conversion"
-              >
-                {showMetricConversion ? 'Show Inches' : 'Show mm Conversion'}
+          <div className="thread-calculator-actions">
+            <div className="button-group">
+              <AnimatedButton onClick={handleCalculate} color="green">
+                {translations[language].calculate}
               </AnimatedButton>
-            )}
-            {results && (
-              <AnimatedButton onClick={handleDownloadDXF} color="purple">
-                📐 {translations[language].downloadDxf}
-              </AnimatedButton>
-            )}
+              {unitSystem === 'imperial' && (
+                <AnimatedButton 
+                  onClick={() => setShowMetricConversion(!showMetricConversion)}
+                  color="orange"
+                  title="Toggle inch/mm conversion"
+                >
+                  {showMetricConversion ? translations[language].showInch : translations[language].showMm}
+                </AnimatedButton>
+              )}
+              {results && (
+                <AnimatedButton onClick={handleDownloadDXF} color="purple">
+                  📐 {translations[language].downloadDxf}
+                </AnimatedButton>
+              )}
+            </div>
           </div>
         </div>
 

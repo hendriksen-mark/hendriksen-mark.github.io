@@ -58,6 +58,8 @@ const translations = {
     // Thread Calculator translations
     threadCalculatorTitle: "Draad Calculator",
     threadCalculatorDescription: "Bereken metrische of imperiale interne en externe schroefdraad",
+    showInch: "Toon Inches",
+    showMm: "Toon Millimeters",
     threadsPerInch: "Draden per Inch",
     inputParameters: "Input Parameters",
     unitSystem: "Eenheid Systeem",
@@ -154,6 +156,8 @@ const translations = {
     // Thread calculator translations
     threadCalculatorTitle: 'Thread Calculator',
     threadCalculatorDescription: 'Calculate metric or imperial internal and external threads',
+    showInch: 'Show Inches',
+    showMm: 'Show Millimeters',
     threadsPerInch: 'Threads Per Inch',
     inputParameters: 'Input Parameters',
     unitSystem: 'Unit System',
