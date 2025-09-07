@@ -26,7 +26,7 @@ function ThreadDiagram({ results }) {
                     <svg
                         width="100%"
                         height="auto"
-                        viewBox="0 0 708.66 566.93"
+                        viewBox="0 0 700 500"
                         className="thread-diagram__svg"
                         xmlns="http://www.w3.org/2000/svg"
                     >
@@ -372,28 +372,6 @@ function ThreadDiagram({ results }) {
                             d₃ = {results.externalCoreDiameter.toFixed(3)} mm
                         </text>
                     </svg>
-
-                    {/* Additional calculated values display */}
-                    <div className="thread-diagram__calculated-values">
-                        <div className="calculated-values-grid">
-                            <div className="value-pair">
-                                <span className="value-label">{translations[language].majorDiameter}:</span>
-                                <span className="value-number">d = {results.externalMajorDiameter.toFixed(3)} mm</span>
-                            </div>
-                            <div className="value-pair">
-                                <span className="value-label">{translations[language].pitchDiameter}:</span>
-                                <span className="value-number">d₂ = {results.externalPitchDiameter.toFixed(3)} mm</span>
-                            </div>
-                            <div className="value-pair">
-                                <span className="value-label">{translations[language].minorDiameter}:</span>
-                                <span className="value-number">d₁ = {results.externalMinorDiameter.toFixed(3)} mm</span>
-                            </div>
-                            <div className="value-pair">
-                                <span className="value-label">{translations[language].pitch}:</span>
-                                <span className="value-number">P = {results.pitch} mm</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
