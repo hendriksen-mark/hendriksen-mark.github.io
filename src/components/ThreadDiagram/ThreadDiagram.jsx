@@ -334,7 +334,8 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         />
 
                         {/* Static labels that don't change */}
-                        <text x="389.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">Axis of screw thread</text>
+                        <text x="359.73" y="405.64" textAnchor="middle" fontSize="16" fontFamily="Arial">External thread</text>
+                        <text x="359.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">Axis of screw thread</text>
                         <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle / 2}°</text>
                         <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle}°</text>
                         <text x="234.67" y="470.13" textAnchor="middle" fontSize="16" fontFamily="Arial">90°</text>
