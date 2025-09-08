@@ -8,6 +8,7 @@ import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
 import { FaGamepad, FaListOl, FaHome, FaDownload, FaUpload } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
+import html2canvas from 'html2canvas';
 
 function GameSchedule({ onBackToHome }) {
   const { language } = useLanguage();
@@ -26,6 +27,7 @@ function GameSchedule({ onBackToHome }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentCalculations, setCurrentCalculations] = useState(0);
   const fileInputRef = useRef(null);
+  const scheduleRef = useRef(null);
 
   const handleAddLocation = () => {
     setRows([...rows, { location: '', players: Array(playerNames.length).fill(true) }]);
@@ -127,7 +129,7 @@ function GameSchedule({ onBackToHome }) {
     setIsGenerating(true);
     setCurrentCalculations(0);
     setGeneratedSchedule("");
-    
+
     const availability = playerNames.reduce((acc, player, index) => {
       acc[player] = rows.map((row) => row.players[index]);
       return acc;
@@ -148,7 +150,7 @@ function GameSchedule({ onBackToHome }) {
         gameType,
         onProgress
       );
-      
+
       const { schedule, codeRuns, error } = result;
 
       if (error) {
@@ -171,7 +173,7 @@ function GameSchedule({ onBackToHome }) {
 
       const formattedSchedule = printSchedule(schedule, players, homeAwayCount, language, availability);
       const codeRunsText = `${translations[language].recalculations}: ${codeRuns}`;
-      
+
       if (formattedSchedule.startsWith('<div class="ttapp-schedule">')) {
         setGeneratedSchedule(`${formattedSchedule}<!--SEPARATOR-->${codeRunsText}`);
       } else {
@@ -185,12 +187,23 @@ function GameSchedule({ onBackToHome }) {
   };
 
   const handleResetAvailability = () => {
-    setRows(prevRows => 
+    setRows(prevRows =>
       prevRows.map(row => ({
         ...row,
         players: Array(playerNames.length).fill(true)
       }))
     );
+  };
+
+  const handleDownloadImage = () => {
+    if (scheduleRef.current) {
+      html2canvas(scheduleRef.current).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'game-schedule.jpg';
+        link.href = canvas.toDataURL("image/jpeg");
+        link.click();
+      });
+    }
   };
 
   const exportConfiguration = () => {
@@ -206,10 +219,10 @@ function GameSchedule({ onBackToHome }) {
     };
 
     const dataStr = JSON.stringify(config, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
     const exportFileDefaultName = `game-schedule-config-${new Date().toISOString().split('T')[0]}.json`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -224,7 +237,7 @@ function GameSchedule({ onBackToHome }) {
     reader.onload = (e) => {
       try {
         const config = JSON.parse(e.target.result);
-        
+
         // Validate required fields
         if (!config.gameType || !config.playerNames || !config.rows) {
           toast.error(translations[language].invalidConfigurationFile);
@@ -238,14 +251,14 @@ function GameSchedule({ onBackToHome }) {
         setRequiredPlayers(config.requiredPlayers || 2);
         setPlayerNames(config.playerNames);
         setRows(config.rows);
-        
+
         // Reset the file input
         event.target.value = '';
 
         setTimeout(() => {
           toast.success(translations[language].configurationImported);
         }, 100);
-        
+
       } catch (error) {
         toast.error(translations[language].invalidConfigurationFile);
       }
@@ -263,7 +276,7 @@ function GameSchedule({ onBackToHome }) {
         <div className="game-schedule__header">
           <div className="game-schedule__header-content">
             <div className="game-schedule__back-button">
-              <AnimatedButton 
+              <AnimatedButton
                 color="gray"
                 onClick={onBackToHome}
               >
@@ -275,7 +288,7 @@ function GameSchedule({ onBackToHome }) {
               <h1>{translations[language].gameScheduleGenerator}</h1>
               <p>{translations[language].gameScheduleDescription}</p>
             </div>
-            
+
             <div className="game-schedule__language-selector">
               <LanguageSelector variant="GameSchedule" />
             </div>
@@ -307,9 +320,9 @@ function GameSchedule({ onBackToHome }) {
                 onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
                 icon={FaListOl}
                 variant="GameSchedule"
-                options={Array.from({ length: 10 }, (_, i) => ({ 
-                  value: i + 1, 
-                  label: (i + 1).toString() 
+                options={Array.from({ length: 10 }, (_, i) => ({
+                  value: i + 1,
+                  label: (i + 1).toString()
                 }))}
               />
             </div>
@@ -320,24 +333,24 @@ function GameSchedule({ onBackToHome }) {
                 onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
                 icon={FaListOl}
                 variant="GameSchedule"
-                options={Array.from({ length: 10 }, (_, i) => ({ 
-                  value: i + 1, 
-                  label: (i + 1).toString() 
+                options={Array.from({ length: 10 }, (_, i) => ({
+                  value: i + 1,
+                  label: (i + 1).toString()
                 }))}
               />
             </div>
           </div>
 
           <div className="import-export-actions">
-            <AnimatedButton 
-              onClick={exportConfiguration} 
+            <AnimatedButton
+              onClick={exportConfiguration}
               color="blue"
               title={translations[language].exportTooltip}
             >
               <FaDownload />
               {" " + translations[language].exportConfiguration}
             </AnimatedButton>
-            
+
             <input
               ref={fileInputRef}
               type="file"
@@ -345,7 +358,7 @@ function GameSchedule({ onBackToHome }) {
               onChange={importConfiguration}
               style={{ display: 'none' }}
             />
-            <AnimatedButton 
+            <AnimatedButton
               onClick={triggerFileInput}
               color="green"
               title={translations[language].importTooltip}
@@ -358,63 +371,62 @@ function GameSchedule({ onBackToHome }) {
 
         <div className="game-schedule__section grid-header">
           <h2 className="game-schedule__section-title">{translations[language].playersAndLocations}</h2>
-
-            <div className="grid-header__labels">
-              <span></span>
-              <span></span>
-              <span>{translations[language].players}</span>
+          <div className="grid-header__labels">
+            <span></span>
+            <span></span>
+            <span>{translations[language].players}</span>
+          </div>
+          <div className="grid-header__players">
+            <div></div>
+            <div className="location-label-wrapper">
+              <span className="location-label">{translations[language].location}</span>
             </div>
-            <div className="grid-header__players">
-              <div></div>
-              <div className="location-label-wrapper">
-                <span className="location-label">{translations[language].location}</span>
+            {playerNames.map((name, index) => (
+              <div key={index} className="player-column">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => handlePlayerNameChange(index, e.target.value)}
+                  placeholder={`Player ${index + 1}`}
+                />
+                <button onClick={() => handleRemovePlayer(index)}>
+                  {translations[language].remove}
+                </button>
               </div>
-              {playerNames.map((name, index) => (
-                <div key={index} className="player-column">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => handlePlayerNameChange(index, e.target.value)}
-                    placeholder={`Player ${index + 1}`}
-                  />
-                  <button onClick={() => handleRemovePlayer(index)}>
-                    {translations[language].remove}
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-            <div className="grid">
-              {rows.map((row, rowIndex) => (
-                <div key={rowIndex} className="grid__row">
+            ))}
+          </div>
+
+          <div className="grid">
+            {rows.map((row, rowIndex) => (
+              <div key={rowIndex} className="grid__row">
+                <button
+                  onClick={() => handleRemoveRow(rowIndex)}
+                  className="remove-btn"
+                >
+                  {translations[language].remove}
+                </button>
+                <input
+                  id={`location-${rowIndex}`}
+                  type="text"
+                  className="location-input"
+                  placeholder={translations[language].location.slice(0, -2)}
+                  value={row.location}
+                  onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
+                />
+                {row.players.map((available, playerIndex) => (
                   <button
-                    onClick={() => handleRemoveRow(rowIndex)}
-                    className="remove-btn"
+                    key={playerIndex}
+                    className={`availability-btn ${available ? 'available' : 'unavailable'}`}
+                    onClick={() => handlePlayerAvailability(rowIndex, playerIndex)}
                   >
-                    {translations[language].remove}
+                    {available
+                      ? translations[language].available
+                      : translations[language].unavailable}
                   </button>
-                  <input
-                    id={`location-${rowIndex}`}
-                    type="text"
-                    className="location-input"
-                    placeholder={translations[language].location.slice(0, -2)}
-                    value={row.location}
-                    onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
-                  />
-                  {row.players.map((available, playerIndex) => (
-                    <button
-                      key={playerIndex}
-                      className={`availability-btn ${available ? 'available' : 'unavailable'}`}
-                      onClick={() => handlePlayerAvailability(rowIndex, playerIndex)}
-                    >
-                      {available
-                        ? translations[language].available
-                        : translations[language].unavailable}
-                    </button>
-                  ))}
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ))}
+          </div>
 
           <div className="grid-actions">
             <AnimatedButton onClick={handleAddLocation} color="blue">
@@ -437,7 +449,7 @@ function GameSchedule({ onBackToHome }) {
               )}
             </AnimatedButton>
           </div>
-          
+
           {isGenerating && (
             <div className="loading-progress">
               <div className="progress-info">
@@ -455,7 +467,7 @@ function GameSchedule({ onBackToHome }) {
           <div className="game-schedule__section generated-schedule">
             <h3 className={
               generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">')
-                ? 'success' 
+                ? 'success'
                 : 'error'
             }>
               {generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">') ? (
@@ -466,16 +478,21 @@ function GameSchedule({ onBackToHome }) {
             </h3>
             {generatedSchedule.includes('<!--SEPARATOR-->') ? (
               <div>
-                <div dangerouslySetInnerHTML={{ __html: generatedSchedule.split('<!--SEPARATOR-->')[0] }} />
+                <div dangerouslySetInnerHTML={{ __html: generatedSchedule.split('<!--SEPARATOR-->')[0] }} ref={scheduleRef} />
                 <div className="code-runs-info">
                   {generatedSchedule.split('<!--SEPARATOR-->')[1]}
                 </div>
               </div>
             ) : generatedSchedule.startsWith('<div class="ttapp-schedule">') ? (
-              <div dangerouslySetInnerHTML={{ __html: generatedSchedule }} />
+              <div dangerouslySetInnerHTML={{ __html: generatedSchedule }} ref={scheduleRef} />
             ) : (
               <pre>{generatedSchedule}</pre>
             )}
+            <div className="generated-actions">
+              <AnimatedButton onClick={handleDownloadImage} color="blue">
+                <FaDownload /> {translations[language].downloadAsImage}
+              </AnimatedButton>
+            </div>
           </div>
         )}
       </div>

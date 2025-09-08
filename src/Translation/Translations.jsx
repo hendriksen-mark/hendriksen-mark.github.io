@@ -39,6 +39,7 @@ const translations = {
     gameTypeTrio: "Trio",
     gameTypeSquad: "Squad",
     gameTypeBeker: "Beker",
+    downloadAsImage: "Download als afbeelding",
     // Home page translations
     homeTitle: "Mark Hendriksen's Tools",
     homeSubtitle: "Een verzameling handige hulpprogramma's en tools",
@@ -138,6 +139,7 @@ const translations = {
     gameTypeTrio: "Trio",
     gameTypeSquad: "Squad",
     gameTypeBeker: "Cup",
+    downloadAsImage: "Download as Image",
     // Home page translations
     homeTitle: "Mark Hendriksen's Tools",
     homeSubtitle: "A collection of useful utilities and tools",

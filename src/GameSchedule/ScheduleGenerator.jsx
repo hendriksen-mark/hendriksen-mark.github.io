@@ -245,10 +245,10 @@ export async function createScheduleWithValidationAsync(locations, availability,
 }
 
 export function printSchedule(schedule, players, homeAwayCount, language, availability = null) {
-  const locationHeader = translations[language]?.location || "Location";
-  const homeHeader = translations[language]?.home || "Home";
-  const awayHeader = translations[language]?.away || "Away";
-  const totalHeader = translations[language]?.total || "Total";
+  const locationHeader = translations[language].location;
+  const homeHeader = translations[language].home;
+  const awayHeader = translations[language].away;
+  const totalHeader = translations[language].total;
 
   // Create HTML table
   let html = '<div class="ttapp-schedule">';

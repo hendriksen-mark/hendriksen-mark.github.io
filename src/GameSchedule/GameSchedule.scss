@@ -384,6 +384,14 @@
   margin-bottom: 2rem;
 }
 
+.generated-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
 // Loading states
 .loading-content {
   display: flex;
@@ -689,6 +697,15 @@
       max-width: 300px;
     }
   }
+  .generated-actions {
+    flex-direction: column;
+    align-items: center;
+
+    button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
 }
 
 // Dark mode support
@@ -843,6 +860,11 @@
   }
 
   .grid-actions {
+    background: transparent;
+    border: none;
+  }
+
+  .generated-actions {
     background: transparent;
     border: none;
   }
