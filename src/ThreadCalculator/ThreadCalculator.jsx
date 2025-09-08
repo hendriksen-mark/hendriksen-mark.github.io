@@ -241,6 +241,10 @@ function ThreadCalculator({ onBackToHome }) {
                       <span className="value">{formatValueWithConversion(results.externalMajorDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
+                      <span className="label">{translations[language].effectiveDiameter} (d₁+2h):</span>
+                      <span className="value">{formatValueWithConversion(results.externalEffectiveDiameter, unitSystem, showMetricConversion)}</span>
+                    </div>
+                    <div className="result-item">
                       <span className="label">{translations[language].pitchDiameter} (d₂):</span>
                       <span className="value">{formatValueWithConversion(results.externalPitchDiameter, unitSystem, showMetricConversion)}</span>
                     </div>

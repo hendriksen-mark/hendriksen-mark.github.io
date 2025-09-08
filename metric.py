@@ -1,6 +1,6 @@
 import math
 
-def calculate_metric_thread_dimensions(nominal_diameter, pitch):
+def calculate_metric_thread_dimensions(nominal_diameter, pitch, angle=60):
     """
     Calculate all metric thread dimensions for bolt and nut manufacturing
     
@@ -13,8 +13,9 @@ def calculate_metric_thread_dimensions(nominal_diameter, pitch):
     """
     
     # Fundamental triangle calculations
-    # Basic height of fundamental triangle
-    H = (math.sqrt(3) / 2) * pitch  # 0.866025 * pitch
+    # General formula that works for any thread angle (60° ISO, 55° BSW, etc.)
+    angle_rad = math.radians(angle)
+    H = pitch / (2 * math.tan(angle_rad / 2))  # General formula for any angle
     
     # Thread heights
     h3 = H / 8  # 1/8 of basic triangle height
@@ -28,9 +29,16 @@ def calculate_metric_thread_dimensions(nominal_diameter, pitch):
     d2 = d - (3 * H) / 4  # d - 0.64952 * pitch
     D2 = D - (3 * H) / 4  # Same calculation for nut
     
-    # Minor diameter
-    d1 = d - (5 * H) / 4  # d - 1.08253 * pitch
-    D1 = D - H  # D - 0.86603 * pitch (for nut)
+    # Minor diameter with 6H/6g tolerance classes
+    d1_basic = d - (5 * H) / 4  # Basic minor diameter: d - 1.08253 * pitch
+    
+    # Apply 6g tolerance to external thread (ISO 965)
+    angle_ratio = math.sin(angle_rad / 2) / math.sin(math.radians(30))  # Normalize to 60° reference
+    d1_tolerance = max(0.1, pitch * 0.144 * angle_ratio)  # Angle-adjusted tolerance
+    d1 = d1_basic - d1_tolerance  # External minor diameter with 6g tolerance
+    
+    # For internal threads, D1 uses basic minor diameter (6H has no allowance)
+    D1 = d1_basic  # Internal minor diameter = basic minor diameter for 6H class
     
     # Core diameter (actual minor diameter for bolt)
     d3 = d1 - (H / 4)  # d1 - 0.21651 * pitch
