@@ -187,8 +187,7 @@ function ThreadCalculator({ onBackToHome }) {
           <div className="thread-calculator__results">
             <ThreadDiagram 
               results={results} 
-              isImperial={unitSystem === 'imperial' && !showMetricConversion} 
-              threadAngle={results.threadAngle}
+              isImperial={unitSystem === 'imperial' && !showMetricConversion}
               originalUnitSystem={unitSystem}
             />
             <div className="thread-calculator__section">
@@ -205,7 +204,7 @@ function ThreadCalculator({ onBackToHome }) {
                       <span className="value">{formatValueWithConversion(results.basicTriangleHeight, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].threadHeight} (5H/8):</span>
+                      <span className="label">{translations[language].threadHeight} (5H/8)(h):</span>
                       <span className="value">{formatValueWithConversion(results.threadHeight, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">

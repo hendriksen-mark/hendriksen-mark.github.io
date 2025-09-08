@@ -3,7 +3,7 @@ import translations from '../../Translation/Translations';
 import './ThreadDiagram.scss';
 import { formatValue, inchesToMm, mmToInches } from '../../utils/converters';
 
-function ThreadDiagram({ results, isImperial = false, threadAngle = 60, originalUnitSystem = 'metric' }) {
+function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metric' }) {
     const { language } = useLanguage();
 
     // Helper function to convert values if needed
@@ -37,7 +37,7 @@ function ThreadDiagram({ results, isImperial = false, threadAngle = 60, original
     return (
         <div className="thread-diagram">
             <h3 className="thread-diagram__title">
-                {translations[language].threadProfile} - {results.threadDesignation} ({threadAngle}°)
+                {translations[language].threadProfile} - {results.threadDesignation} ({results.threadAngle}°)
             </h3>
 
             <div className="thread-diagram__container">
@@ -335,8 +335,8 @@ function ThreadDiagram({ results, isImperial = false, threadAngle = 60, original
 
                         {/* Static labels that don't change */}
                         <text x="389.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">Axis of screw thread</text>
-                        <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">{threadAngle/2}°</text>
-                        <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">{threadAngle}°</text>
+                        <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle / 2}°</text>
+                        <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle}°</text>
                         <text x="234.67" y="470.13" textAnchor="middle" fontSize="16" fontFamily="Arial">90°</text>
 
                         {/* Pitch labels with calculated values */}
@@ -366,7 +366,7 @@ function ThreadDiagram({ results, isImperial = false, threadAngle = 60, original
                         </text>
                         <text x="653" y="240" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 653, 240)">
-                            5H/8 = {formatValue(getDisplayValue(results.threadHeight), isImperial)}
+                            5H/8(h) = {formatValue(getDisplayValue(results.threadHeight), isImperial)}
                         </text>
                         <text x="543" y="197.03" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
                             3H/8 = {formatValue(getDisplayValue(3 * results.basicTriangleHeight / 8), isImperial)}
@@ -375,7 +375,7 @@ function ThreadDiagram({ results, isImperial = false, threadAngle = 60, original
                         {/* Dynamic calculated values - vertical text next to dimension lines */}
                         <text x="35" y="320" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 35, 320)">
-                            d = {formatValue(getDisplayValue(results.externalMajorDiameter), isImperial)}
+                            d₁ + 2h = {formatValue(getDisplayValue(results.externalEffectiveDiameter), isImperial)}
                         </text>
                         <text x="141" y="390" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
                               transform="rotate(-90, 141, 390)">
