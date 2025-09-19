@@ -1,5 +1,8 @@
-import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaRuler } from 'react-icons/fa';
-import { GiHexagonalNut } from "react-icons/gi";
+import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaRuler, FaCloud } from 'react-icons/fa';
+import { BiSolidDollarCircle } from "react-icons/bi";
+import { SiCreality } from "react-icons/si";
+import { GiHexagonalNut, GiOctopus } from "react-icons/gi";
+import { PiMonitorDuotone } from "react-icons/pi";
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import translations from '../Translation/Translations';
@@ -23,6 +26,62 @@ function Home({ onNavigate }) {
       icon: <GiHexagonalNut />,
       color: '#FF9800'
     },
+    {
+      id: 'maybe',
+      title: translations[language].maybeTitle,
+      description: translations[language].maybeDescription,
+      url: 'https://hendriksen-mark.webredirect.org:81',
+      color: '#6a4cff',
+      icon: <BiSolidDollarCircle />
+    },
+    {
+      id: 'pihole',
+      title: translations[language].piholeTitle,
+      description: translations[language].piholeDescription,
+      url: 'https://hendriksen-mark.webredirect.org:82',
+      color: '#e53935',
+      icon: <FaCog />
+    },
+    {
+      id: 'octoprint-crx',
+      title: translations[language].octoprintCrxTitle,
+      description: translations[language].octoprintCrxDescription,
+      url: 'https://hendriksen-mark.webredirect.org:83',
+      color: '#43a047',
+      icon: <SiCreality />
+    },
+    {
+      id: 'octoprint-aliexpress',
+      title: translations[language].octoprintAliexpressTitle,
+      description: translations[language].octoprintAliexpressDescription,
+      url: 'https://hendriksen-mark.webredirect.org:84',
+      color: '#00897b',
+      icon: <GiOctopus />
+    },
+    {
+      id: 'p1monitor',
+      title: translations[language].p1monitorTitle,
+      description: translations[language].p1monitorDescription,
+      url: 'https://hendriksen-mark.webredirect.org:85',
+      color: '#fbc02d',
+      icon: <PiMonitorDuotone />
+    },
+    {
+      id: 'uptimekuma',
+      title: translations[language].uptimekumaTitle,
+      description: translations[language].uptimekumaDescription,
+      url: 'https://hendriksen-mark.webredirect.org:86',
+      color: '#00bcd4',
+      icon: <FaBolt />
+    },
+    {
+      id: 'nextcloud',
+      title: translations[language].nextcloudTitle,
+      description: translations[language].nextcloudDescription,
+      url: 'https://hendriksen-mark.webredirect.org:443',
+      color: '#1976d2',
+      icon: <FaCloud />
+    },
     // Add more functions here in the future
     {
       id: 'coming-soon',
@@ -34,10 +93,14 @@ function Home({ onNavigate }) {
     }
   ];
 
-  const handleFunctionClick = (functionId) => {
-    if (functionId === 'game-schedule') {
+  const handleFunctionClick = (func) => {
+    if (func.url) {
+      window.open(func.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    if (func.id === 'game-schedule') {
       onNavigate('game-schedule');
-    } else if (functionId === 'thread-calculator') {
+    } else if (func.id === 'thread-calculator') {
       onNavigate('thread-calculator');
     }
     // Add more function handlers here
@@ -66,7 +129,7 @@ function Home({ onNavigate }) {
           <div
             key={func.id}
             className={`home__function-card ${func.disabled ? 'home__function-card--disabled' : ''}`}
-            onClick={() => !func.disabled && handleFunctionClick(func.id)}
+            onClick={() => !func.disabled && handleFunctionClick(func)}
             style={{ '--card-color': func.color }}
           >
             <div className="home__function-icon">{func.icon}</div>

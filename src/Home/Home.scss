@@ -95,6 +95,8 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    color: inherit;
 
     &:hover:not(&--disabled) {
       transform: translateY(-4px);
@@ -125,6 +127,9 @@
       height: 4px;
       background: var(--card-color);
     }
+  }
+  &__function-card:visited {
+    color: inherit;
   }
 
   &__function-icon {
