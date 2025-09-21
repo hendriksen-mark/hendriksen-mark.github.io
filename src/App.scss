@@ -39,10 +39,11 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: #f9f9f9; // matches a light neutral background
 }
 
 @media (max-width: 768px) {
@@ -68,6 +69,9 @@ body {
 }
   // Dark mode support
   @media (prefers-color-scheme: dark) {
+    html, body {
+      background: #2d3748; // matches dark nav background
+    }
     .app {
       &__nav {
         background: rgba(45, 55, 72, 0.95);
