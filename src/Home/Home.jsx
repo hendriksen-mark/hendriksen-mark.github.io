@@ -98,12 +98,9 @@ function Home({ onNavigate }) {
       window.open(func.url, '_blank', 'noopener,noreferrer');
       return;
     }
-    if (func.id === 'game-schedule') {
-      onNavigate('game-schedule');
-    } else if (func.id === 'thread-calculator') {
-      onNavigate('thread-calculator');
+    if (func.id) {
+      onNavigate(func.id);
     }
-    // Add more function handlers here
   };
 
   return (
