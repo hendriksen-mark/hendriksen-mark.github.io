@@ -1,4 +1,4 @@
-import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaRuler, FaCloud } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaCloud } from 'react-icons/fa';
 import { BiSolidDollarCircle } from "react-icons/bi";
 import { SiCreality } from "react-icons/si";
 import { GiHexagonalNut, GiOctopus } from "react-icons/gi";
@@ -11,27 +11,40 @@ import './Home.scss';
 function Home({ onNavigate }) {
   const { language } = useLanguage();
 
+  // Generate color for function card if not explicitly set
+  const getCardColor = (functions, func) => {
+    if (func.color) {
+      return func.color; // Use explicit color if set
+    }
+    
+    // Generate color using HSL like your diyhue project
+    // Using 79% saturation and 43% lightness to match your previous colors
+    for (let i = 0; i < functions.length; i++) {
+      if (functions[i].id === func.id) {
+        return `hsl(${(360 / functions.length) * i}, 79%, 43%)`;
+      }
+    }
+    return '#9E9E9E'; // fallback color
+  };
+
   const functions = [
     {
       id: 'game-schedule',
       title: translations[language].gameScheduleGenerator,
       description: translations[language].gameScheduleDescription,
-      icon: <FaCalendarAlt />,
-      color: '#4CAF50'
+      icon: <FaCalendarAlt />
     },
     {
       id: 'thread-calculator',
       title: translations[language].threadCalculatorTitle,
       description: translations[language].threadCalculatorDescription,
-      icon: <GiHexagonalNut />,
-      color: '#FF9800'
+      icon: <GiHexagonalNut />
     },
     {
       id: 'maybe',
       title: translations[language].maybeTitle,
       description: translations[language].maybeDescription,
       url: 'https://hendriksen-mark.webredirect.org:81',
-      color: '#6a4cff',
       icon: <BiSolidDollarCircle />
     },
     {
@@ -39,7 +52,6 @@ function Home({ onNavigate }) {
       title: translations[language].piholeTitle,
       description: translations[language].piholeDescription,
       url: 'https://hendriksen-mark.webredirect.org:82',
-      color: '#e53935',
       icon: <FaCog />
     },
     {
@@ -47,7 +59,6 @@ function Home({ onNavigate }) {
       title: translations[language].octoprintCrxTitle,
       description: translations[language].octoprintCrxDescription,
       url: 'https://hendriksen-mark.webredirect.org:83',
-      color: '#43a047',
       icon: <SiCreality />
     },
     {
@@ -55,7 +66,6 @@ function Home({ onNavigate }) {
       title: translations[language].octoprintAliexpressTitle,
       description: translations[language].octoprintAliexpressDescription,
       url: 'https://hendriksen-mark.webredirect.org:84',
-      color: '#00897b',
       icon: <GiOctopus />
     },
     {
@@ -63,7 +73,6 @@ function Home({ onNavigate }) {
       title: translations[language].p1monitorTitle,
       description: translations[language].p1monitorDescription,
       url: 'https://hendriksen-mark.webredirect.org:85',
-      color: '#fbc02d',
       icon: <PiMonitorDuotone />
     },
     {
@@ -71,7 +80,6 @@ function Home({ onNavigate }) {
       title: translations[language].uptimekumaTitle,
       description: translations[language].uptimekumaDescription,
       url: 'https://hendriksen-mark.webredirect.org:86',
-      color: '#00bcd4',
       icon: <FaBolt />
     },
     {
@@ -79,7 +87,6 @@ function Home({ onNavigate }) {
       title: translations[language].nextcloudTitle,
       description: translations[language].nextcloudDescription,
       url: 'https://hendriksen-mark.webredirect.org:443',
-      color: '#1976d2',
       icon: <FaCloud />
     },
     // Add more functions here in the future
@@ -127,7 +134,7 @@ function Home({ onNavigate }) {
             key={func.id}
             className={`home__function-card ${func.disabled ? 'home__function-card--disabled' : ''}`}
             onClick={() => !func.disabled && handleFunctionClick(func)}
-            style={{ '--card-color': func.color }}
+            style={{ '--card-color': getCardColor(functions, func) }}
           >
             <div className="home__function-icon">{func.icon}</div>
             <h3 className="home__function-title">{func.title}</h3>
