@@ -3,6 +3,7 @@ import { BiSolidDollarCircle } from "react-icons/bi";
 import { SiCreality } from "react-icons/si";
 import { GiHexagonalNut, GiOctopus } from "react-icons/gi";
 import { PiMonitorDuotone } from "react-icons/pi";
+import { IoIosSpeedometer } from "react-icons/io";
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import translations from '../Translation/Translations';
@@ -88,6 +89,13 @@ function Home({ onNavigate }) {
       description: translations[language].nextcloudDescription,
       url: 'https://hendriksen-mark.webredirect.org:443',
       icon: <FaCloud />
+    },
+    {
+      id: 'speedtest',
+      title: translations[language].speedtestTitle,
+      description: translations[language].speedtestDescription,
+      url: 'https://hendriksen-mark.webredirect.org:88',
+      icon: <IoIosSpeedometer />
     },
     // Add more functions here in the future
     {
