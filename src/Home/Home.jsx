@@ -42,9 +42,9 @@ function Home({ onNavigate }) {
       icon: <GiHexagonalNut />
     },
     {
-      id: 'maybe',
-      title: translations[language].maybeTitle,
-      description: translations[language].maybeDescription,
+      id: 'sure',
+      title: translations[language].sureTitle,
+      description: translations[language].sureDescription,
       url: 'https://hendriksen-mark.webredirect.org:81',
       icon: <BiSolidDollarCircle />
     },
