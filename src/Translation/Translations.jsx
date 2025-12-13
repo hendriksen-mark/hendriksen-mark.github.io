@@ -25,6 +25,8 @@ const translations = {
     nextcloudDescription: "Een zelfgehoste cloudoplossing voor bestandsopslag en samenwerking",
     speedtestTitle: "Speedtest",
     speedtestDescription: "Test de internetsnelheid van je netwerk",
+    speedtestlocalTitle: "Speedtest (Lokaal)",
+    speedtestlocalDescription: "Test de internetsnelheid van je lokale netwerk",
     clickToOpen: "Klik om te openen",
     backToHome: "Terug naar home",
     // schedule translations
@@ -138,6 +140,8 @@ const translations = {
     nextcloudDescription: "A self-hosted cloud solution for file storage and collaboration",
     speedtestTitle: "Speedtest",
     speedtestDescription: "Test the internet speed of your network",
+    speedtestlocalTitle: "Speedtest (Local)",
+    speedtestlocalDescription: "Test the internet speed of your local network",
     clickToOpen: "Click to open",
     backToHome: "Back to home",
     // schedule translations

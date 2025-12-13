@@ -2,7 +2,7 @@ import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaCloud } from 'react-icons/fa';
 import { BiSolidDollarCircle } from "react-icons/bi";
 import { SiCreality } from "react-icons/si";
 import { GiHexagonalNut, GiOctopus } from "react-icons/gi";
-import { PiMonitorDuotone } from "react-icons/pi";
+import { PiMonitorDuotone, PiSpeedometerFill } from "react-icons/pi";
 import { IoIosSpeedometer } from "react-icons/io";
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
@@ -91,11 +91,18 @@ function Home({ onNavigate }) {
       icon: <FaCloud />
     },
     {
+      id: 'speedtest-local',
+      title: translations[language].speedtestlocalTitle,
+      description: translations[language].speedtestlocalDescription,
+      url: 'https://hendriksen-mark.webredirect.org:88',
+      icon: <IoIosSpeedometer />
+    },
+    {
       id: 'speedtest',
       title: translations[language].speedtestTitle,
       description: translations[language].speedtestDescription,
-      url: 'https://hendriksen-mark.webredirect.org:88',
-      icon: <IoIosSpeedometer />
+      url: 'https://hendriksen-mark.webredirect.org:89',
+      icon: <PiSpeedometerFill />
     },
     // Add more functions here in the future
     {
