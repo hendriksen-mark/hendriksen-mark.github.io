@@ -312,6 +312,22 @@ function ResistorCalculator({ onBackToHome }) {
     setIsListModalOpen(false);
   };
 
+  const handleResetAll = () => {
+    setRegulator('MP1482');
+    setCustomVfb(0.8);
+    setTargetVout(3.3);
+    setVoltageTolerance(0.05);
+    setResistorTolerancePercent(5);
+    setMaxWattage(0.125);
+    setMaxResults(20);
+    setResistorValues(DEFAULT_RESISTOR_VALUES);
+    setResistorListText(toListText(DEFAULT_RESISTOR_VALUES));
+    setResistorListError('');
+    setCalculationError('');
+    setResults([]);
+    setIsListModalOpen(false);
+  };
+
   const topResults = results.slice(0, maxResults);
   const recommendedPair = results[0] || null;
 
@@ -456,15 +472,15 @@ function ResistorCalculator({ onBackToHome }) {
             <span>{t.possibleCombinations}: {combinationCount}</span>
           </div>
 
-          <div className="resistor-calculator__list-editor-trigger">
+          <div className="resistor-calculator__actions">
             <AnimatedButton color="orange" onClick={handleOpenListModal}>
               {t.editResistorList}
             </AnimatedButton>
-          </div>
-
-          <div className="resistor-calculator__actions">
             <AnimatedButton color="green" onClick={handleCalculate}>
               {t.calculatePairs}
+            </AnimatedButton>
+            <AnimatedButton color="gray" onClick={handleResetAll}>
+              {t.resetAll}
             </AnimatedButton>
           </div>
           {calculationError && <p className="resistor-calculator__list-error">{calculationError}</p>}
