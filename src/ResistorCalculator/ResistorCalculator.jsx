@@ -243,7 +243,13 @@ function ResistorCalculator({ onBackToHome }) {
 
   const activeSpec = REGULATOR_SPECS[regulator];
   const activeVfb = regulator === 'CUSTOM' ? customVfb : activeSpec.vfb;
+  const activeRegulatorName = regulator === 'CUSTOM' ? t.customIc : activeSpec.name;
   const combinationCount = useMemo(() => resistorValues.length * resistorValues.length, [resistorValues]);
+
+  const clearCalculatedResults = () => {
+    setCalculationError('');
+    setResults([]);
+  };
 
   const handleCalculate = () => {
     setCalculationError('');
@@ -340,7 +346,13 @@ function ResistorCalculator({ onBackToHome }) {
           <div className="resistor-calculator__inputs">
             <div className="input-group">
               <label>{t.regulator}</label>
-              <select value={regulator} onChange={(e) => setRegulator(e.target.value)}>
+              <select
+                value={regulator}
+                onChange={(e) => {
+                  setRegulator(e.target.value);
+                  clearCalculatedResults();
+                }}
+              >
                 {Object.keys(REGULATOR_SPECS).map((key) => (
                   <option key={key} value={key}>
                     {REGULATOR_SPECS[key].name} (Vfb: {REGULATOR_SPECS[key].vfb} V)
@@ -358,7 +370,10 @@ function ResistorCalculator({ onBackToHome }) {
                   step="0.001"
                   min="0"
                   value={customVfb}
-                  onChange={(e) => setCustomVfb(Number(e.target.value))}
+                  onChange={(e) => {
+                    setCustomVfb(Number(e.target.value));
+                    clearCalculatedResults();
+                  }}
                 />
               </div>
             )}
@@ -370,7 +385,10 @@ function ResistorCalculator({ onBackToHome }) {
                 step="0.01"
                 min="0"
                 value={targetVout}
-                onChange={(e) => setTargetVout(Number(e.target.value))}
+                onChange={(e) => {
+                  setTargetVout(Number(e.target.value));
+                  clearCalculatedResults();
+                }}
               />
             </div>
 
@@ -381,7 +399,10 @@ function ResistorCalculator({ onBackToHome }) {
                 step="0.01"
                 min="0"
                 value={voltageTolerance}
-                onChange={(e) => setVoltageTolerance(Number(e.target.value))}
+                onChange={(e) => {
+                  setVoltageTolerance(Number(e.target.value));
+                  clearCalculatedResults();
+                }}
               />
             </div>
 
@@ -393,7 +414,10 @@ function ResistorCalculator({ onBackToHome }) {
                 min="0"
                 max="100"
                 value={resistorTolerancePercent}
-                onChange={(e) => setResistorTolerancePercent(Number(e.target.value))}
+                onChange={(e) => {
+                  setResistorTolerancePercent(Number(e.target.value));
+                  clearCalculatedResults();
+                }}
               />
             </div>
 
@@ -404,7 +428,10 @@ function ResistorCalculator({ onBackToHome }) {
                 step="0.001"
                 min="0"
                 value={maxWattage}
-                onChange={(e) => setMaxWattage(Number(e.target.value))}
+                onChange={(e) => {
+                  setMaxWattage(Number(e.target.value));
+                  clearCalculatedResults();
+                }}
               />
             </div>
 
@@ -416,7 +443,10 @@ function ResistorCalculator({ onBackToHome }) {
                 min="1"
                 max="100"
                 value={maxResults}
-                onChange={(e) => setMaxResults(Number(e.target.value))}
+                onChange={(e) => {
+                  setMaxResults(Number(e.target.value));
+                  clearCalculatedResults();
+                }}
               />
             </div>
           </div>
@@ -451,7 +481,7 @@ function ResistorCalculator({ onBackToHome }) {
 
               {recommendedPair && (
                 <div className="resistor-calculator__recommendation">
-                  <h3>{t.recommendedPair}</h3>
+                  <h3>{t.recommendedPair} {activeRegulatorName}</h3>
                   <div className="recommendation-grid">
                     <div className="recommendation-item">
                       <span className="recommendation-label">{t.r1}</span>
@@ -532,7 +562,10 @@ function ResistorCalculator({ onBackToHome }) {
               <textarea
                 id="resistor-list-input"
                 value={resistorListText}
-                onChange={(e) => setResistorListText(e.target.value)}
+                onChange={(e) => {
+                  setResistorListText(e.target.value);
+                  clearCalculatedResults();
+                }}
                 placeholder={t.resistorListPlaceholder}
               />
               <p className="resistor-calculator__list-help">{t.resistorListHelp}</p>
