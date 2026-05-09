@@ -14,8 +14,6 @@ function Home({ onNavigate }) {
     const i = VIEW_TO_INDEX[func.id];
     if (i === undefined) return '#9E9E9E';
 
-    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
     const hue = (360 / TOTAL_FUNCTIONS) * i;
     const saturation = 79;
     const lightness = 43;
