@@ -16,15 +16,15 @@ function ThreadCalculator({ onBackToHome }) {
   const { language } = useLanguage();
   const [unitSystem, setUnitSystem] = useState('metric'); // 'metric' or 'imperial'
   const [threadAngle, setThreadAngle] = useState(60); // 60° or 55°
-  
+
   // Metric inputs
   const [nominalDiameter, setNominalDiameter] = useState(10);
   const [pitch, setPitch] = useState(1.5);
-  
+
   // Imperial inputs
   const [imperialDiameter, setImperialDiameter] = useState(0.25);
   const [tpi, setTpi] = useState(20);
-  
+
   const [results, setResults] = useState(null);
   const [showMetricConversion, setShowMetricConversion] = useState(true);
 
@@ -50,7 +50,7 @@ function ThreadCalculator({ onBackToHome }) {
         <div className="thread-calculator__header">
           <div className="thread-calculator__header-content">
             <div className="thread-calculator__back-button">
-              <AnimatedButton 
+              <AnimatedButton
                 color="gray"
                 onClick={onBackToHome}
               >
@@ -62,7 +62,7 @@ function ThreadCalculator({ onBackToHome }) {
               <h1>{translations[language].threadCalculatorTitle}</h1>
               <p>{translations[language].threadCalculatorDescription}</p>
             </div>
-            
+
             <div className="thread-calculator__language-selector">
               <LanguageSelector variant="thread-calculator" />
             </div>
@@ -166,7 +166,7 @@ function ThreadCalculator({ onBackToHome }) {
                 {translations[language].calculate}
               </AnimatedButton>
               {unitSystem === 'imperial' && (
-                <AnimatedButton 
+                <AnimatedButton
                   onClick={() => setShowMetricConversion(!showMetricConversion)}
                   color="orange"
                   title="Toggle inch/mm conversion"
@@ -185,8 +185,8 @@ function ThreadCalculator({ onBackToHome }) {
 
         {results && (
           <div className="thread-calculator__results">
-            <ThreadDiagram 
-              results={results} 
+            <ThreadDiagram
+              results={results}
               isImperial={unitSystem === 'imperial' && !showMetricConversion}
               originalUnitSystem={unitSystem}
             />

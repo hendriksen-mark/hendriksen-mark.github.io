@@ -163,7 +163,7 @@
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    
+
     button {
       width: 100%;
     }
@@ -405,7 +405,7 @@
   padding: 1.5rem;
   margin: 1rem 0;
   overflow: hidden;
-  
+
   .progress-info {
     display: flex;
     align-items: center;
@@ -414,7 +414,7 @@
     font-size: 1rem;
     color: #495057;
     font-weight: 600;
-    
+
     .calculation-count {
       font-weight: 600;
       color: #28a745;
@@ -433,8 +433,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 // TTApp-inspired schedule styling
@@ -446,18 +451,18 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #ddd;
-  
+
   .pl-header,
   .pl-row {
     display: flex;
     align-items: stretch;
   }
-  
+
   .pl-header {
     background: #f8f9fa;
     border-bottom: 2px solid #dee2e6;
   }
-  
+
   .pl-descs {
     width: 120px;
     padding: 0.5rem;
@@ -468,23 +473,23 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
-  
+
   .pl-location {
     color: #495057;
     font-weight: 600;
   }
-  
+
   .pl-tot {
     color: #495057;
     font-weight: 600;
     font-size: 0.85rem;
   }
-  
+
   .pl-cells {
     display: flex;
     flex: 1;
   }
-  
+
   .pl-cell {
     flex: 1;
     height: 32px;
@@ -498,23 +503,23 @@
     border-radius: 2px;
     cursor: default;
     transition: all 0.2s ease;
-    
+
     &:last-child {
       border-right: none;
     }
-    
+
     &.first {
       border-top-left-radius: 2px;
       border-bottom-left-radius: 2px;
     }
-    
+
     &.last {
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
       border-right: none;
     }
   }
-  
+
   .pl-playername {
     background: #d9edf7;
     border: 1px solid #bce8f1;
@@ -525,81 +530,81 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  
+
   .pl-count {
     background: #f8f8f8;
     border: 1px solid #eee;
     color: #495057;
     font-weight: 600;
   }
-  
+
   // Availability states (matching ttapp colors)
   .av0 {
     background: white !important;
     border: 1px solid #ddd !important;
     color: #999 !important;
   }
-  
+
   .av1 {
     background: #dff0d8 !important;
     border: 1px solid #d6e9c6 !important;
     color: #3c763d !important;
-    
+
     .fa-check {
       color: #3c763d !important;
       font-size: 14px;
     }
   }
-  
+
   .av1.scheduled {
     // Scheduled players - bright green with checkmark
     background: #dff0d8 !important;
     border: 1px solid #d6e9c6 !important;
     color: #3c763d !important;
   }
-  
+
   .av1.not-scheduled {
     // Available but not scheduled - lighter green, no checkmark
     background: #f0f8f0 !important;
     border: 1px solid #d6e9c6 !important;
     color: #5a8a5a !important;
   }
-  
+
   .av2 {
     background: #fcf8e3 !important;
     border: 1px solid #faebcc !important;
     color: #8a6d3b !important;
-    
+
     .fa-check {
       color: #8a6d3b !important;
       font-size: 14px;
     }
   }
-  
+
   .av3 {
     background: #f2dede !important;
     border: 1px solid #ebccd1 !important;
     color: #a94442 !important;
-    
+
     .fa-check {
       color: #a94442 !important;
       font-size: 14px;
     }
   }
-  
+
   .pl-row:nth-child(even) {
     background: rgba(0, 0, 0, 0.01);
   }
-  
+
   .pl-row:hover {
     background: rgba(102, 126, 234, 0.05);
   }
-  
+
   // Separator between schedule and stats
   .pl-row.stats-separator {
     border-top: 2px solid #dee2e6;
     //margin-top: 8px;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.02);
     }
@@ -679,6 +684,7 @@
   }
 
   .grid-header {
+
     &__labels,
     &__players {
       grid-template-columns: 1fr;
@@ -702,6 +708,7 @@
       max-width: 300px;
     }
   }
+
   .generated-actions {
     flex-direction: column;
     align-items: center;

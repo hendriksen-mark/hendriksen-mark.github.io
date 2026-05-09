@@ -1,7 +1,7 @@
 import Select from "react-select";
 import "./selectMenu.scss";
 
-const SelectMenu = ({ label, value, placeholder, options, onChange, close = true , multie = false, classOptions = ""}) => {
+const SelectMenu = ({ label, value, placeholder, options, onChange, close = true, multie = false, classOptions = "" }) => {
     const selectId = `select-${label.replace(/\s+/g, '-').toLowerCase()}`;
     return (
         <div className={`dropdown ${classOptions}`}>

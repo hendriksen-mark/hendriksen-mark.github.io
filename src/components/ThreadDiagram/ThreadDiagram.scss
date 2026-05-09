@@ -49,7 +49,7 @@
     border-radius: 8px;
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
+
     .calculated-value {
       fill: #2196F3;
       font-weight: 600;
@@ -167,7 +167,8 @@
       border-color: #718096;
 
       // SVG elements styling for dark mode
-      line, path {
+      line,
+      path {
         stroke: #e2e8f0 !important; // Light gray lines
       }
 

@@ -8,7 +8,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
 
   while (codeRuns < MAX_CODE_RUNS) {
     codeRuns++;
-    
+
     const playerMatches = {};
     const consecutiveGames = {};
     Object.keys(availability).forEach((player) => {
@@ -30,7 +30,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
           maxConsecutiveGames,
           locations
         );
-        
+
         if (availablePlayers.length < requiredPlayers) {
           throw new Error(translations[language].errorNotEnoughPlayers.replace("{location}", loc));
         }
@@ -71,14 +71,14 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
 
   while (codeRuns < MAX_CODE_RUNS) {
     codeRuns++;
-    
+
     // Update progress every 10 iterations to avoid too many updates
     if (codeRuns % 10 === 0 && onProgress) {
       onProgress(codeRuns);
       // Yield control to allow UI updates
       await new Promise(resolve => setTimeout(resolve, 0));
     }
-    
+
     const playerMatches = {};
     const consecutiveGames = {};
     Object.keys(availability).forEach((player) => {
@@ -100,7 +100,7 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
           maxConsecutiveGames,
           locations
         );
-        
+
         if (availablePlayers.length < requiredPlayers) {
           throw new Error(translations[language].errorNotEnoughPlayers.replace("{location}", loc));
         }
@@ -127,7 +127,7 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
       if (onProgress) {
         onProgress(codeRuns);
       }
-      
+
       // Success! Return the schedule
       return { schedule, codeRuns };
     } catch (error) {
@@ -252,7 +252,7 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
 
   // Create HTML table
   let html = '<div class="ttapp-schedule">';
-  
+
   // Header row with player names
   html += '<div class="pl-header">';
   html += '<div class="pl-descs"></div>';
@@ -273,15 +273,15 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
     html += `<div class="pl-location">${location}</div>`;
     html += '</div>';
     html += '<div class="pl-cells">';
-    
+
     players.forEach((player, playerIndex) => {
       const isFirst = playerIndex === 0;
       const isLast = playerIndex === players.length - 1;
       const isSelected = locPlayers.includes(player);
-      
+
       // Build class step by step for clarity
       let classes = ['pl-cell', 'av'];
-      
+
       if (isSelected) {
         // Player is scheduled - bright green with checkmark
         classes.push('av1', 'scheduled');
@@ -300,20 +300,20 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
           classes.push('av0');
         }
       }
-      
+
       // Add position classes
       if (isFirst) classes.push('first');
       if (isLast) classes.push('last');
-      
+
       const cellClass = classes.join(' ');
-      
+
       html += `<div class="${cellClass}">`;
       if (isSelected) {
         html += '<i class="fa fa-check"></i>';
       }
       html += '</div>';
     });
-    
+
     html += '</div>';
     html += '</div>';
   });
@@ -362,7 +362,7 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
   html += '</div>';
 
   html += '</div>';
-  
+
   return html;
 }
 

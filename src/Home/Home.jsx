@@ -47,7 +47,7 @@ function Home({ onNavigate }) {
               <p className="home__subtitle">{translations[language].homeSubtitle}</p>
             </div>
           </div>
-          
+
           <div className="home__language-selector">
             <LanguageSelector variant="default" />
           </div>

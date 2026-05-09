@@ -1,21 +1,21 @@
 import Select from "react-select";
 import './StyledSelect.scss';
 
-function StyledSelect({ 
-  label, 
-  value, 
-  onChange, 
-  options, 
-  icon: Icon, 
+function StyledSelect({
+  label,
+  value,
+  onChange,
+  options,
+  icon: Icon,
   variant = 'default',
   placeholder,
   closeMenuOnSelect = true,
   isMulti = false,
   className = '',
-  ...props 
+  ...props
 }) {
   const selectId = `styled-select-${label?.replace(/\s+/g, '-').toLowerCase() || 'select'}`;
-  
+
   return (
     <div className="input-group">
       <label htmlFor={selectId}>{label}</label>

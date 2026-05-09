@@ -9,17 +9,17 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
     // Helper function to convert values if needed
     const getDisplayValue = (value) => {
         if (typeof value !== 'number') return value;
-        
+
         // If original was imperial and we want to show metric, convert
         if (originalUnitSystem === 'imperial' && !isImperial) {
             return inchesToMm(value);
         }
-        
+
         // If original was metric and we want to show imperial, convert  
         if (originalUnitSystem === 'metric' && isImperial) {
             return mmToInches(value);
         }
-        
+
         // Otherwise return original value
         return value;
     };
@@ -141,133 +141,133 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         />{/* Thread profile */}
 
                         {/* Dimension lines with arrows */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 219.62,55.02 L 488.91,55.02" 
+                            }}
+                            d="M 219.62,55.02 L 488.91,55.02"
                         />{/* Pitch dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 343.64,102.77 L 364.90,102.77" 
+                            }}
+                            d="M 343.64,102.77 L 364.90,102.77"
                         />{/* Pitch/8 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 290.55,301.36 L 418.11,301.36" 
+                            }}
+                            d="M 290.55,301.36 L 418.11,301.36"
                         />{/* Pitch/2 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 467.72,408.76 L 524.41,408.76" 
+                            }}
+                            d="M 467.72,408.76 L 524.41,408.76"
                         />{/* Pitch/4 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 602.36,169.41 L 602.36,249.19" 
+                            }}
+                            d="M 602.36,169.41 L 602.36,249.19"
                         />{/* 3H/8 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 637.80,138.73 L 637.80,157.14" 
+                            }}
+                            d="M 637.80,138.73 L 637.80,157.14"
                         />{/* H/8 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 637.80,169.41 L 637.80,310.56" 
+                            }}
+                            d="M 637.80,169.41 L 637.80,310.56"
                         />{/* 5H/8 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 637.80,322.84 L 637.80,371.93" 
+                            }}
+                            d="M 637.80,322.84 L 637.80,371.93"
                         />{/* H/4 dimension lines */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowStart)',
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 673.23,138.73 L 673.23,371.93" 
+                            }}
+                            d="M 673.23,138.73 L 673.23,371.93"
                         />{/* H dimension lines */}
 
                         {/* Vertical dimension lines for diameters */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 124.02,480 L 124.02,322.84" 
+                            }}
+                            d="M 124.02,480 L 124.02,322.84"
                         />{/* Minor diameter dimension line */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 70.87,480 L 70.87,261.47" 
+                            }}
+                            d="M 70.87,480 L 70.87,261.47"
                         />{/* Pitch diameter dimension line */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 17.72,480 L 17.72,169.41" 
+                            }}
+                            d="M 17.72,480 L 17.72,169.41"
                         />{/* Major diameter dimension line */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerEnd: 'url(#arrowEnd)'
-                            }} 
-                            d="M 177,480 L 177,384.2" 
+                            }}
+                            d="M 177,480 L 177,384.2"
                         />{/* Core diameter dimension line */}
 
                         {/* Other dimension lines without arrows */}
@@ -290,36 +290,36 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         <path style={{ fill: 'none', stroke: '#000000', strokeWidth: 0.88 }} d="M 425.20,255.33 L 425.20,307.50" />{/* Pitch/2 dimension line right */}
 
                         {/* 60 degree angle indicator */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerEnd: 'url(#arrowSmall)'
-                            }} 
-                            d="M 318.90,197.03 C 318.90,197.03 336.34,209.30 354.33,209.30 C 372.32,209.30 382.68,200.10 382.68,200.10" 
+                            }}
+                            d="M 318.90,197.03 C 318.90,197.03 336.34,209.30 354.33,209.30 C 372.32,209.30 382.68,200.10 382.68,200.10"
                         />
-                        
+
                         {/* 30 degree angle indicator */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowSmallFlipped)'
-                            }} 
-                            d="M 222.78,271.66 A 124.69,106.77 0 0 1 268.04,282.44" 
+                            }}
+                            d="M 222.78,271.66 A 124.69,106.77 0 0 1 268.04,282.44"
                         />
-                        
+
                         {/* 90 degree angle indicator */}
-                        <path 
-                            style={{ 
-                                fill: 'none', 
-                                stroke: '#000000', 
+                        <path
+                            style={{
+                                fill: 'none',
+                                stroke: '#000000',
                                 strokeWidth: 0.88,
                                 markerStart: 'url(#arrowSmallFlipped)'
-                            }} 
-                            d="M 221.31,440.09 A 53.06,45.97 0 0 1 265.66,485.75" 
+                            }}
+                            d="M 221.31,440.09 A 53.06,45.97 0 0 1 265.66,485.75"
                         />
 
                         {/* Axis line */}
@@ -355,8 +355,8 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         </text>
 
                         {/* Thread height labels with calculated values */}
-                        <text x="690" y="255.33" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 690, 255.33)">
+                        <text x="690" y="255.33" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 690, 255.33)">
                             H = {formatValue(getDisplayValue(results.basicTriangleHeight), isImperial)}
                         </text>
                         <text x="580" y="346.81" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
@@ -365,8 +365,8 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         <text x="580" y="154.67" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
                             H/8 = {formatValue(getDisplayValue(results.threadHeight3), isImperial)}
                         </text>
-                        <text x="653" y="240" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 653, 240)">
+                        <text x="653" y="240" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 653, 240)">
                             5H/8(h) = {formatValue(getDisplayValue(results.threadHeight), isImperial)}
                         </text>
                         <text x="543" y="197.03" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value">
@@ -374,20 +374,20 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         </text>
 
                         {/* Dynamic calculated values - vertical text next to dimension lines */}
-                        <text x="35" y="320" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 35, 320)">
+                        <text x="35" y="320" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 35, 320)">
                             d₁ + 2h = {formatValue(getDisplayValue(results.externalEffectiveDiameter), isImperial)}
                         </text>
-                        <text x="141" y="390" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 141, 390)">
+                        <text x="141" y="390" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 141, 390)">
                             d₁ = {formatValue(getDisplayValue(results.externalMinorDiameter), isImperial)}
                         </text>
-                        <text x="88" y="360" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 88, 360)">
+                        <text x="88" y="360" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 88, 360)">
                             d₂ = {formatValue(getDisplayValue(results.externalPitchDiameter), isImperial)}
                         </text>
-                        <text x="195" y="420" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value" 
-                              transform="rotate(-90, 195, 420)">
+                        <text x="195" y="420" textAnchor="middle" fontSize="14" fontFamily="Arial" className="calculated-value"
+                            transform="rotate(-90, 195, 420)">
                             d₃ = {formatValue(getDisplayValue(results.externalCoreDiameter), isImperial)}
                         </text>
                     </svg>

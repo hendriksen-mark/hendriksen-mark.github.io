@@ -40,23 +40,23 @@ function AppContent() {
         document.body.style.background = '';
         return;
       }
-      
+
       const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const color1 = getViewColor(currentView, dark);
-      
+
       if (color1) {
         const funcIndex = VIEW_TO_INDEX[currentView];
         const hue2 = ((360 / TOTAL_FUNCTIONS) * funcIndex + 30) % 360;
         const saturation = dark ? 60 : 79;
         const lightness = dark ? 20 : 38; // Slightly darker for gradient
         const color2Modified = `hsl(${hue2}, ${saturation}%, ${lightness}%)`;
-        
+
         const bg = `linear-gradient(135deg, ${color1} 0%, ${color2Modified} 100%)`;
         document.documentElement.style.background = bg;
         document.body.style.background = bg;
       }
     };
-    
+
     setBg();
     // Listen for color scheme changes
     const mq = window.matchMedia('(prefers-color-scheme: dark)');

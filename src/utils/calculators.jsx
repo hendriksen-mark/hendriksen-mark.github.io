@@ -24,7 +24,7 @@ const calculateThreadDimensions = (nominalDiameter, pitch = NaN, tpi = NaN, angl
     const d = nominalDiameter; // Major diameter
     const d2 = d - (3 * H) / 4; // Pitch diameter: d - 0.64952 * pitch
     const d1_basic = d - (5 * H) / 4; // Basic minor diameter: d - 1.08253 * pitch
-    
+
     // Apply 6g tolerance to external thread (small allowance for tight fit)
     // ISO 965 tolerance calculation for 6g class external threads
     // Tolerance proportional to pitch and adjusted for thread angle

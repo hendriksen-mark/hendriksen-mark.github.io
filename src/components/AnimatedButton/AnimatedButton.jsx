@@ -1,14 +1,14 @@
 import React from 'react';
 import './AnimatedButton.scss';
 
-const AnimatedButton = ({ 
-  children, 
-  color = 'blue', 
-  disabled = false, 
-  onClick, 
+const AnimatedButton = ({
+  children,
+  color = 'blue',
+  disabled = false,
+  onClick,
   className = '',
   type = 'button',
-  ...props 
+  ...props
 }) => {
   const handleClick = (e) => {
     if (!disabled && onClick) {

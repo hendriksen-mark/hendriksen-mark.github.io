@@ -19,11 +19,11 @@
   }
 
   // Add padding to main content when nav is present
-  &__nav + &__main {
+  &__nav+&__main {
     .game-schedule {
       padding-top: calc(80px + 2rem);
     }
-    
+
     .home {
       padding-top: calc(80px + 2rem);
     }
@@ -43,7 +43,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
@@ -56,11 +57,11 @@ html, body {
       padding: 1rem;
     }
 
-    &__nav + &__main {
+    &__nav+&__main {
       .game-schedule {
         padding-top: calc(70px + 1rem);
       }
-      
+
       .home {
         padding-top: calc(70px + 1rem);
       }
@@ -75,16 +76,20 @@ html, body {
     }
   }
 }
-  // Dark mode support
-  @media (prefers-color-scheme: dark) {
-    html, body {
-      background: #2d3748; // matches dark nav background
-    }
-    .app {
-      &__nav {
-        background: rgba(45, 55, 72, 0.95);
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-        color: white;
-      }
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+
+  html,
+  body {
+    background: #2d3748; // matches dark nav background
+  }
+
+  .app {
+    &__nav {
+      background: rgba(45, 55, 72, 0.95);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+      color: white;
     }
   }
+}

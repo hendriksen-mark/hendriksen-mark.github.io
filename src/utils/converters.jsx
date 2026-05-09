@@ -32,7 +32,7 @@ const formatValue = (value, isImperial, precision) => {
 // Advanced formatValue for ThreadCalculator (supports conversion toggle)
 const formatValueWithConversion = (value, unitSystem, showMetricConversion = false, precision) => {
     if (typeof value !== 'number') return value;
-    
+
     if (unitSystem === 'imperial') {
         return formatWithConverter(value, showMetricConversion, precision || 3);
     } else {
@@ -40,13 +40,13 @@ const formatValueWithConversion = (value, unitSystem, showMetricConversion = fal
     }
 };
 
-export { 
-    formatNumber, 
-    inchesToMm, 
-    mmToInches, 
-    formatInches, 
-    formatMM, 
-    formatWithConverter, 
+export {
+    formatNumber,
+    inchesToMm,
+    mmToInches,
+    formatInches,
+    formatMM,
+    formatWithConverter,
     formatValue,
     formatValueWithConversion
 };
