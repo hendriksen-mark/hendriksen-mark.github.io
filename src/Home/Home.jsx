@@ -1,119 +1,32 @@
-import { FaCalendarAlt, FaCog, FaHome, FaBolt, FaCloud } from 'react-icons/fa';
-import { BiSolidDollarCircle } from "react-icons/bi";
-import { SiCreality } from "react-icons/si";
-import { GiHexagonalNut, GiOctopus } from "react-icons/gi";
-import { PiMonitorDuotone, PiSpeedometerFill } from "react-icons/pi";
-import { IoIosSpeedometer } from "react-icons/io";
+import { FaHome } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import translations from '../Translation/Translations';
+import { FUNCTION_CARDS, TOTAL_FUNCTIONS, VIEW_TO_INDEX } from '../config/functionCards';
 import './Home.scss';
 
 function Home({ onNavigate }) {
   const { language } = useLanguage();
 
   // Generate color for function card if not explicitly set
-  const getCardColor = (functions, func) => {
-    if (func.color) {
-      return func.color; // Use explicit color if set
-    }
-    
-    // Generate color using HSL like your diyhue project
-    // Using 79% saturation and 43% lightness to match your previous colors
-    for (let i = 0; i < functions.length; i++) {
-      if (functions[i].id === func.id) {
-        return `hsl(${(360 / functions.length) * i}, 79%, 43%)`;
-      }
-    }
-    return '#9E9E9E'; // fallback color
+  const getCardColor = (func) => {
+    if (func.color) return func.color;
+    const i = VIEW_TO_INDEX[func.id];
+    if (i === undefined) return '#9E9E9E';
+
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    const hue = (360 / TOTAL_FUNCTIONS) * i;
+    const saturation = 79;
+    const lightness = 43;
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   };
 
-  const functions = [
-    {
-      id: 'game-schedule',
-      title: translations[language].gameScheduleGenerator,
-      description: translations[language].gameScheduleDescription,
-      icon: <FaCalendarAlt />
-    },
-    {
-      id: 'thread-calculator',
-      title: translations[language].threadCalculatorTitle,
-      description: translations[language].threadCalculatorDescription,
-      icon: <GiHexagonalNut />
-    },
-    {
-      id: 'sure',
-      title: translations[language].sureTitle,
-      description: translations[language].sureDescription,
-      url: 'https://hendriksen-mark.webredirect.org:81',
-      icon: <BiSolidDollarCircle />
-    },
-    {
-      id: 'pihole',
-      title: translations[language].piholeTitle,
-      description: translations[language].piholeDescription,
-      url: 'https://hendriksen-mark.webredirect.org:82',
-      icon: <FaCog />
-    },
-    {
-      id: 'octoprint-crx',
-      title: translations[language].octoprintCrxTitle,
-      description: translations[language].octoprintCrxDescription,
-      url: 'https://hendriksen-mark.webredirect.org:83',
-      icon: <SiCreality />
-    },
-    {
-      id: 'octoprint-aliexpress',
-      title: translations[language].octoprintAliexpressTitle,
-      description: translations[language].octoprintAliexpressDescription,
-      url: 'https://hendriksen-mark.webredirect.org:84',
-      icon: <GiOctopus />
-    },
-    {
-      id: 'p1monitor',
-      title: translations[language].p1monitorTitle,
-      description: translations[language].p1monitorDescription,
-      url: 'https://hendriksen-mark.webredirect.org:85',
-      icon: <PiMonitorDuotone />
-    },
-    {
-      id: 'uptimekuma',
-      title: translations[language].uptimekumaTitle,
-      description: translations[language].uptimekumaDescription,
-      url: 'https://hendriksen-mark.webredirect.org:86',
-      icon: <FaBolt />
-    },
-    {
-      id: 'nextcloud',
-      title: translations[language].nextcloudTitle,
-      description: translations[language].nextcloudDescription,
-      url: 'https://hendriksen-mark.webredirect.org:443',
-      icon: <FaCloud />
-    },
-    {
-      id: 'speedtest-local',
-      title: translations[language].speedtestlocalTitle,
-      description: translations[language].speedtestlocalDescription,
-      url: 'https://hendriksen-mark.webredirect.org:88',
-      icon: <IoIosSpeedometer />
-    },
-    {
-      id: 'speedtest',
-      title: translations[language].speedtestTitle,
-      description: translations[language].speedtestDescription,
-      url: 'https://hendriksen-mark.webredirect.org:89',
-      icon: <PiSpeedometerFill />
-    },
-    // Add more functions here in the future
-    {
-      id: 'coming-soon',
-      title: translations[language].moreFunctionsTitle,
-      description: translations[language].moreFunctionsDescription,
-      icon: <FaCog />,
-      color: '#9E9E9E',
-      disabled: true
-    }
-  ];
+  const functions = FUNCTION_CARDS.map((card) => ({
+    ...card,
+    title: translations[language][card.titleKey],
+    description: translations[language][card.descriptionKey],
+  }));
 
   const handleFunctionClick = (func) => {
     if (func.url) {
@@ -149,7 +62,7 @@ function Home({ onNavigate }) {
             key={func.id}
             className={`home__function-card ${func.disabled ? 'home__function-card--disabled' : ''}`}
             onClick={() => !func.disabled && handleFunctionClick(func)}
-            style={{ '--card-color': getCardColor(functions, func) }}
+            style={{ '--card-color': getCardColor(func) }}
           >
             <div className="home__function-icon">{func.icon}</div>
             <h3 className="home__function-title">{func.title}</h3>

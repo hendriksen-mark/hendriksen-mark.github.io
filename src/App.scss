@@ -31,6 +31,10 @@
     .thread-calculator {
       padding-top: calc(80px + 2rem);
     }
+
+    .resistor-calculator {
+      padding-top: calc(80px + 2rem);
+    }
   }
 }
 
@@ -62,6 +66,10 @@ html, body {
       }
 
       .thread-calculator {
+        padding-top: calc(70px + 1rem);
+      }
+
+      .resistor-calculator {
         padding-top: calc(70px + 1rem);
       }
     }
