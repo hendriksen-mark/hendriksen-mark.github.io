@@ -1,5 +1,7 @@
-import DxfWriter from 'dxf-writer';
+import DxfWriterPackage from "@hendriksen-mark/dxf-writer";
 import { formatValue } from './converters';
+
+const { BrowserFriendlyDrawing, StringWritableStream } = DxfWriterPackage;
 
 /**
  * Generate a DXF file containing the thread profile and dimensions
@@ -7,8 +9,18 @@ import { formatValue } from './converters';
  * @param {number} threadAngle - Thread angle (60° for ISO/UTS, 55° for British)
  * @returns {Blob} - DXF file as a blob
  */
-export const generateThreadDXF = (results) => {
-  const dxf = new DxfWriter();
+export const generateThreadDXF = async (results) => {
+  // Fallback for packages that expect process.nextTick in browser environments.
+  if (!globalThis.process) {
+    globalThis.process = {
+      nextTick: (callback) => queueMicrotask(callback)
+    };
+  } else if (!globalThis.process.nextTick) {
+    globalThis.process.nextTick = (callback) => queueMicrotask(callback);
+  }
+
+  const stream = new StringWritableStream();
+  const dxf = new BrowserFriendlyDrawing(stream);
 
   // Set up the drawing units (millimeters)
   dxf.setUnits('Millimeters');
@@ -36,7 +48,7 @@ export const generateThreadDXF = (results) => {
 
   // Add basic triangle as a polyline (closed)
   dxf.setActiveLayer("0");
-  dxf.drawPolyline(trianglePoints, true);
+  await dxf.drawPolyline(trianglePoints, true);
 
   // Draw the actual thread profile (truncated triangle)
   // Correct ISO metric thread standard:
@@ -78,11 +90,11 @@ export const generateThreadDXF = (results) => {
   ];
 
   // Add thread profile as a polyline (closed)
-  dxf.drawPolyline(threadPoints, true);
+  await dxf.drawPolyline(threadPoints, true);
 
   // Add thread designation as title
   const threadType = results.threadAngle === 55 ? 'BRITISH STANDARD' : (results.threadDesignation.includes('M') ? 'METRIC ISO' : 'IMPERIAL UTS');
-  dxf.drawText(
+  await dxf.drawText(
     baseX,
     baseY + triangleHeight + 5,
     2,
@@ -108,18 +120,21 @@ export const generateThreadDXF = (results) => {
     `h/8: ${formatValue(h3, isImperial)}`,
   ];
 
-  dimensions.forEach((dim, index) => {
-    dxf.drawText(
+  for (let index = 0; index < dimensions.length; index += 1) {
+    const dim = dimensions[index];
+    await dxf.drawText(
       tableX,
       currentY - (index * lineSpacing),
       1.5,
       0,
       dim
     );
-  });
+  }
 
   // Generate the DXF content
-  const dxfContent = dxf.toDxfString();
+  await dxf.end();
+  stream.end();
+  const dxfContent = stream.toString();
 
   // Create and return blob
   return new Blob([dxfContent], { type: 'application/dxf' });
@@ -131,8 +146,8 @@ export const generateThreadDXF = (results) => {
  * @param {number} threadAngle - Thread angle (60° for ISO/UTS, 55° for British)
  * @param {string} filename - Optional filename (defaults to thread designation)
  */
-export const downloadThreadDXF = (results, filename) => {
-  const blob = generateThreadDXF(results);
+export const downloadThreadDXF = async (results, filename) => {
+  const blob = await generateThreadDXF(results);
   const angleSuffix = results.threadAngle === 55 ? '_55deg' : '_60deg';
   const defaultFilename = `thread_${results.threadDesignation.replace(/[x"]/g, '_')}${angleSuffix}.dxf`;
   const finalFilename = filename || defaultFilename;

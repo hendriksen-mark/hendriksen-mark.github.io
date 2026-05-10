@@ -4,7 +4,7 @@
   "homepage": "https://hendriksen-mark.github.io/",
   "dependencies": {
     "@vitejs/plugin-react-swc": "4.0.0",
-    "dxf-writer": "^1.18.4",
+    "@hendriksen-mark/dxf-writer": "github:hendriksen-mark/js-dxf#master",
     "html2canvas": "^1.4.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",

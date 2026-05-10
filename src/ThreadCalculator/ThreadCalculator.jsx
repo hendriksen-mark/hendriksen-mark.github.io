@@ -38,9 +38,9 @@ function ThreadCalculator({ onBackToHome }) {
     setResults(calculated);
   };
 
-  const handleDownloadDXF = () => {
+  const handleDownloadDXF = async () => {
     if (results) {
-      downloadThreadDXF(results);
+      await downloadThreadDXF(results);
     }
   };
 
