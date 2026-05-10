@@ -4,6 +4,7 @@ import { formatValue } from './converters';
 const { BrowserFriendlyDrawing, StringWritableStream } = DxfWriterPackage;
 
 const DEG_90 = Math.PI / 2;
+const PROFILE_BOND_DEPTH_MM = 1;
 
 const rotateY90 = ([x, y, z]) => {
   const cos = Math.cos(DEG_90);
@@ -122,6 +123,15 @@ export const generateThreadDXF = async (results) => {
     bottomRight,  // Go to bottom right (parallel to triangle's right side)
   ];
 
+  const threadSweepProfilePoints = [
+    bottomLeft,
+    topRight,
+    topLeft,
+    bottomRight,
+    [bottomRight[0], bottomRight[1] - PROFILE_BOND_DEPTH_MM],
+    [bottomLeft[0], bottomLeft[1] - PROFILE_BOND_DEPTH_MM],
+  ];
+
   // Add thread profile as a polyline (closed)
   await dxf.drawPolyline(threadPoints, true);
 
@@ -160,7 +170,7 @@ export const generateThreadDXF = async (results) => {
   );
   await dxf.drawCircle(boltAxisBase[0], boltAxisBase[1], boltRadius);
 
-  const rotatedBoltProfile = threadPoints.map(rotateProfilePoint);
+  const rotatedBoltProfile = threadSweepProfilePoints.map(rotateProfilePoint);
   const boltProfileAtHelixStart = alignProfileStartToPoint(rotatedBoltProfile, boltHelixStart);
   await dxf.drawPolyline3d([...boltProfileAtHelixStart, boltProfileAtHelixStart[0]]);
 
@@ -189,7 +199,7 @@ export const generateThreadDXF = async (results) => {
   );
   await dxf.drawCircle(nutAxisBase[0], nutAxisBase[1], nutRadius);
 
-  const rotatedNutProfile = threadPoints.map(rotateProfilePoint);
+  const rotatedNutProfile = threadSweepProfilePoints.map(rotateProfilePoint);
   const nutProfileAtHelixStart = alignProfileStartToPoint(rotatedNutProfile, nutHelixStart);
   await dxf.drawPolyline3d([...nutProfileAtHelixStart, nutProfileAtHelixStart[0]]);
 
