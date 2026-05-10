@@ -1,7 +1,40 @@
-import DxfWriterPackage from "@hendriksen-mark/dxf-writer";
+import DxfWriterPackage from "@markhhh/dxf-writer";
 import { formatValue } from './converters';
 
 const { BrowserFriendlyDrawing, StringWritableStream } = DxfWriterPackage;
+
+const DEG_90 = Math.PI / 2;
+
+const rotateY90 = ([x, y, z]) => {
+  const cos = Math.cos(DEG_90);
+  const sin = Math.sin(DEG_90);
+  return [x * cos + z * sin, y, -x * sin + z * cos];
+};
+
+const rotateZ90 = ([x, y, z]) => {
+  const cos = Math.cos(-DEG_90);
+  const sin = Math.sin(-DEG_90);
+  return [x * cos - y * sin, x * sin + y * cos, z];
+};
+
+const rotateProfilePoint = (point2d) => {
+  const point3d = [point2d[0], point2d[1], 0];
+  return rotateZ90(rotateY90(point3d));
+};
+
+const translatePoints = (points, offset) => {
+  return points.map(([x, y, z]) => [x + offset[0], y + offset[1], z + offset[2]]);
+};
+
+const alignProfileStartToPoint = (profilePoints, startPoint) => {
+  const first = profilePoints[0];
+  const delta = [
+    startPoint[0] - first[0],
+    startPoint[1] - first[1],
+    startPoint[2] - first[2]
+  ];
+  return translatePoints(profilePoints, delta);
+};
 
 /**
  * Generate a DXF file containing the thread profile and dimensions
@@ -48,7 +81,7 @@ export const generateThreadDXF = async (results) => {
 
   // Add basic triangle as a polyline (closed)
   dxf.setActiveLayer("0");
-  await dxf.drawPolyline(trianglePoints, true);
+  // await dxf.drawPolyline(trianglePoints, true);
 
   // Draw the actual thread profile (truncated triangle)
   // Correct ISO metric thread standard:
@@ -92,6 +125,77 @@ export const generateThreadDXF = async (results) => {
   // Add thread profile as a polyline (closed)
   await dxf.drawPolyline(threadPoints, true);
 
+  // ---------------------------------------------------------------------------
+  // 3D helpers for manufacturing reference (bolt + nut)
+  // Requested orientation: profile rotated 90 degrees on Y then 90 degrees on Z.
+  // Profile start point is aligned to each helix start point.
+  // ---------------------------------------------------------------------------
+
+  // Ensure dedicated layers exist for easier CAD visibility toggles.
+  dxf.addLayer('BOLT_3D', BrowserFriendlyDrawing.ACI.CYAN, 'CONTINUOUS');
+  dxf.addLayer('NUT_3D', BrowserFriendlyDrawing.ACI.YELLOW, 'CONTINUOUS');
+
+  const turns = 6;
+
+  // --------------------
+  // Bolt geometry
+  // --------------------
+  const boltD1 = results.externalMinorDiameter; // Requested: bolt helix/circle diameter = d1
+  const boltRadius = boltD1 / 2;
+  const boltAxisBase = [0, 0, 0];
+  const boltAxisVector = [0, 0, 1];
+  const boltHelixStart = [boltRadius, 0, 0];
+
+  dxf.setActiveLayer('BOLT_3D');
+  await dxf.drawHelixLean(
+    boltAxisBase,
+    boltHelixStart,
+    boltAxisVector,
+    turns,
+    pitch,
+    1,
+    0,
+    29,
+    63
+  );
+  await dxf.drawCircle(boltAxisBase[0], boltAxisBase[1], boltRadius);
+
+  const rotatedBoltProfile = threadPoints.map(rotateProfilePoint);
+  const boltProfileAtHelixStart = alignProfileStartToPoint(rotatedBoltProfile, boltHelixStart);
+  await dxf.drawPolyline3d([...boltProfileAtHelixStart, boltProfileAtHelixStart[0]]);
+
+  // --------------------
+  // Nut geometry
+  // --------------------
+  // For nut reference, use internal minor diameter as matching inner thread reference.
+  const nutD1 = results.internalMinorDiameter;
+  const nutRadius = nutD1 / 2;
+  const nutOffsetX = results.externalMajorDiameter * 3;
+  const nutAxisBase = [nutOffsetX, 0, 0];
+  const nutAxisVector = [0, 0, 1];
+  const nutHelixStart = [nutOffsetX + nutRadius, 0, 0];
+
+  dxf.setActiveLayer('NUT_3D');
+  await dxf.drawHelixLean(
+    nutAxisBase,
+    nutHelixStart,
+    nutAxisVector,
+    turns,
+    pitch,
+    1,
+    0,
+    29,
+    63
+  );
+  await dxf.drawCircle(nutAxisBase[0], nutAxisBase[1], nutRadius);
+
+  const rotatedNutProfile = threadPoints.map(rotateProfilePoint);
+  const nutProfileAtHelixStart = alignProfileStartToPoint(rotatedNutProfile, nutHelixStart);
+  await dxf.drawPolyline3d([...nutProfileAtHelixStart, nutProfileAtHelixStart[0]]);
+
+  // Reset to default annotation layer before writing text/table.
+  dxf.setActiveLayer('0');
+
   // Add thread designation as title
   const threadType = results.threadAngle === 55 ? 'BRITISH STANDARD' : (results.threadDesignation.includes('M') ? 'METRIC ISO' : 'IMPERIAL UTS');
   await dxf.drawText(
@@ -99,7 +203,7 @@ export const generateThreadDXF = async (results) => {
     baseY + triangleHeight + 5,
     2,
     0,
-    `${threadType} THREAD ${results.threadDesignation} - ${results.threadAngle}° PROFILE`
+    `${threadType} THREAD ${results.threadDesignation} - ${results.threadAngle}° PROFILE + 3D BOLT/NUT HELPERS`
   );
 
   // Add basic dimensions table

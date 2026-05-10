@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "homepage": "https://hendriksen-mark.github.io/",
   "dependencies": {
+    "@markhhh/dxf-writer": "^4.2.2",
     "@vitejs/plugin-react-swc": "4.0.0",
-    "@hendriksen-mark/dxf-writer": "github:hendriksen-mark/js-dxf#master",
     "html2canvas": "^1.4.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
