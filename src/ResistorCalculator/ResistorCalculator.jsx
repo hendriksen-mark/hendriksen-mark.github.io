@@ -13,7 +13,7 @@ const REGULATOR_SPECS = {
     LM317: { vfb: 1.25, name: 'LM317' }
 };
 
-const DEFAULT_RESISTOR_VALUES = [
+const SMD_0805_RESISTOR_VALUES = [
     0,
     1,
     7.5,
@@ -67,6 +67,41 @@ const DEFAULT_RESISTOR_VALUES = [
     3300000,
     4700000,
     10000000
+];
+
+// 1/4W through-hole resistors (user's actual stock)
+const THROUGH_HOLE_RESISTOR_VALUES = [
+    0,
+    10,
+    22,
+    47,
+    100,
+    150,
+    200,
+    220,
+    270,
+    330,
+    470,
+    510,
+    680,
+    1000,
+    2000,
+    2200,
+    3300,
+    4700,
+    5100,
+    6800,
+    10000,
+    20000,
+    47000,
+    51000,
+    68000,
+    100000,
+    220000,
+    300000,
+    470000,
+    680000,
+    1000000
 ];
 
 function toListText(values) {
@@ -224,6 +259,17 @@ function formatPower(value) {
     return `${value.toFixed(4)} W`;
 }
 
+function buildTypeMap(useSmd, useTh, customValues) {
+    const map = {};
+    const add = (val, flag) => {
+        map[val] = map[val] ? `${map[val]}+${flag}` : flag;
+    };
+    if (useSmd) SMD_0805_RESISTOR_VALUES.forEach((v) => add(v, 'smd'));
+    if (useTh) THROUGH_HOLE_RESISTOR_VALUES.forEach((v) => add(v, 'th'));
+    customValues.forEach((v) => add(v, 'custom'));
+    return map;
+}
+
 function ResistorCalculator({ onBackToHome }) {
     const { language } = useLanguage();
     const t = translations[language];
@@ -237,9 +283,12 @@ function ResistorCalculator({ onBackToHome }) {
     const [maxResults, setMaxResults] = useState(20);
     const [calculationError, setCalculationError] = useState('');
     const [results, setResults] = useState([]);
-    const [resistorValues, setResistorValues] = useState(DEFAULT_RESISTOR_VALUES);
-    const [resistorListText, setResistorListText] = useState(toListText(DEFAULT_RESISTOR_VALUES));
+    const [resistorValues, setResistorValues] = useState(SMD_0805_RESISTOR_VALUES);
+    const [useSmd0805, setUseSmd0805] = useState(true);
+    const [useThroughHole, setUseThroughHole] = useState(false);
+    const [customResistorText, setCustomResistorText] = useState('');
     const [resistorListError, setResistorListError] = useState('');
+    const [resistorTypeMap, setResistorTypeMap] = useState(() => buildTypeMap(true, false, []));
     const [isListModalOpen, setIsListModalOpen] = useState(false);
     const [hasCalculated, setHasCalculated] = useState(false);
 
@@ -281,28 +330,40 @@ function ResistorCalculator({ onBackToHome }) {
     };
 
     const handleApplyResistorList = () => {
-        const { values, invalidTokens } = parseResistorList(resistorListText);
+        const { values: customValues, invalidTokens } = parseResistorList(customResistorText);
 
         if (invalidTokens.length > 0) {
             setResistorListError(`${t.invalidResistorList}: ${invalidTokens.join(', ')}`);
             return;
         }
 
-        if (!values.length) {
+        const combined = [];
+        if (useSmd0805) combined.push(...SMD_0805_RESISTOR_VALUES);
+        if (useThroughHole) combined.push(...THROUGH_HOLE_RESISTOR_VALUES);
+        combined.push(...customValues);
+
+        const merged = Array.from(new Set(combined)).sort((a, b) => a - b);
+        if (!merged.length) {
             setResistorListError(t.resistorListNeedsValues);
             return;
         }
 
         setResistorListError('');
-        setResistorValues(values);
+        setResistorValues(merged);
+        setResistorTypeMap(buildTypeMap(useSmd0805, useThroughHole, customValues));
+        setHasCalculated(false);
         setResults([]);
         setIsListModalOpen(false);
     };
 
     const handleResetResistorList = () => {
-        setResistorListText(toListText(DEFAULT_RESISTOR_VALUES));
-        setResistorValues(DEFAULT_RESISTOR_VALUES);
+        setUseSmd0805(true);
+        setUseThroughHole(false);
+        setCustomResistorText('');
+        setResistorValues(SMD_0805_RESISTOR_VALUES);
+        setResistorTypeMap(buildTypeMap(true, false, []));
         setResistorListError('');
+        setHasCalculated(false);
         setResults([]);
     };
 
@@ -324,8 +385,11 @@ function ResistorCalculator({ onBackToHome }) {
         setResistorTolerancePercent(5);
         setMaxWattage(0.125);
         setMaxResults(20);
-        setResistorValues(DEFAULT_RESISTOR_VALUES);
-        setResistorListText(toListText(DEFAULT_RESISTOR_VALUES));
+        setResistorValues(SMD_0805_RESISTOR_VALUES);
+        setUseSmd0805(true);
+        setUseThroughHole(false);
+        setCustomResistorText('');
+        setResistorTypeMap(buildTypeMap(true, false, []));
         setResistorListError('');
         setCalculationError('');
         setResults([]);
@@ -335,6 +399,17 @@ function ResistorCalculator({ onBackToHome }) {
 
     const topResults = results.slice(0, maxResults);
     const recommendedPair = results[0] || null;
+
+    const getTypeLabel = (value) => {
+        const type = resistorTypeMap[value];
+        if (!type) return '';
+        return type.split('+').map((k) => {
+            if (k === 'smd') return t.resistorTypeSmd;
+            if (k === 'th') return t.resistorTypeTh;
+            if (k === 'custom') return t.resistorTypeCustom;
+            return k;
+        }).join(' + ');
+    };
 
     return (
         <div className="resistor-calculator">
@@ -491,8 +566,9 @@ function ResistorCalculator({ onBackToHome }) {
                     {calculationError && <p className="resistor-calculator__list-error">{calculationError}</p>}
                 </div>
 
+                {hasCalculated && (
                 <div className="resistor-calculator__section">
-                    {hasCalculated && !results.length && <p className="resistor-calculator__list-error">{t.noPairsFound}</p>}
+                    {!results.length && <p className="resistor-calculator__list-error">{t.noPairsFound}</p>}
 
                     {!!results.length && (
                         <>
@@ -506,11 +582,17 @@ function ResistorCalculator({ onBackToHome }) {
                                     <div className="recommendation-grid">
                                         <div className="recommendation-item">
                                             <span className="recommendation-label">{t.r1}</span>
-                                            <span className="recommendation-value">{formatOhms(recommendedPair.r1)}</span>
+                                            <span className="recommendation-value">
+                                                {formatOhms(recommendedPair.r1)}
+                                                {getTypeLabel(recommendedPair.r1) && <span className="resistor-type-badge">{getTypeLabel(recommendedPair.r1)}</span>}
+                                            </span>
                                         </div>
                                         <div className="recommendation-item">
                                             <span className="recommendation-label">{t.r2}</span>
-                                            <span className="recommendation-value">{formatOhms(recommendedPair.r2)}</span>
+                                            <span className="recommendation-value">
+                                                {formatOhms(recommendedPair.r2)}
+                                                {getTypeLabel(recommendedPair.r2) && <span className="resistor-type-badge">{getTypeLabel(recommendedPair.r2)}</span>}
+                                            </span>
                                         </div>
                                         <div className="recommendation-item">
                                             <span className="recommendation-label">{t.nominalVout}</span>
@@ -559,8 +641,8 @@ function ResistorCalculator({ onBackToHome }) {
                                         {topResults.map((item, index) => (
                                             <tr key={`${item.r1}-${item.r2}-${index}`}>
                                                 <td>{index + 1}</td>
-                                                <td>{formatResistorNotation(item.r1)}</td>
-                                                <td>{formatResistorNotation(item.r2)}</td>
+                                                <td>{formatResistorNotation(item.r1)}{getTypeLabel(item.r1) && <span className="resistor-type-badge">{getTypeLabel(item.r1)}</span>}</td>
+                                                <td>{formatResistorNotation(item.r2)}{getTypeLabel(item.r2) && <span className="resistor-type-badge">{getTypeLabel(item.r2)}</span>}</td>
                                                 <td>{formatVoltage(item.nominalVout)}</td>
                                                 <td>{formatVoltage(item.minVout)}</td>
                                                 <td>{formatVoltage(item.maxVout)}</td>
@@ -575,17 +657,45 @@ function ResistorCalculator({ onBackToHome }) {
                         </>
                     )}
                 </div>
+                )}
 
                 {isListModalOpen && (
                     <div className="resistor-calculator__modal-backdrop" onClick={handleCloseListModal}>
                         <div className="resistor-calculator__modal" onClick={(e) => e.stopPropagation()}>
                             <h3>{t.editResistorList}</h3>
+
+                            <div className="resistor-calculator__preset-selection">
+                                <label className="resistor-calculator__preset-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={useSmd0805}
+                                        onChange={(e) => {
+                                            setUseSmd0805(e.target.checked);
+                                            setResistorListError('');
+                                        }}
+                                    />
+                                    {t.presetSmd0805}
+                                </label>
+                                <label className="resistor-calculator__preset-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={useThroughHole}
+                                        onChange={(e) => {
+                                            setUseThroughHole(e.target.checked);
+                                            setResistorListError('');
+                                        }}
+                                    />
+                                    {t.presetThroughHole}
+                                </label>
+                            </div>
+
+                            <p className="resistor-calculator__list-help">{t.customResistorAdditions}</p>
                             <textarea
                                 id="resistor-list-input"
-                                value={resistorListText}
+                                value={customResistorText}
                                 onChange={(e) => {
-                                    setResistorListText(e.target.value);
-                                    clearCalculatedResults();
+                                    setCustomResistorText(e.target.value);
+                                    setResistorListError('');
                                 }}
                                 placeholder={t.resistorListPlaceholder}
                             />

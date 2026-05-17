@@ -157,6 +157,34 @@
         }
     }
 
+    &__preset-selection {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+    }
+
+    &__preset-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #1f2937;
+
+        input[type='checkbox'] {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+            accent-color: #3182ce;
+        }
+    }
+
     &__list-help {
         margin: 0.5rem 0 0;
         color: #4b5563;
@@ -168,6 +196,20 @@
         color: #b91c1c;
         font-weight: 600;
         font-size: 0.9rem;
+    }
+
+    .resistor-type-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        color: #3b82f6;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 4px;
+        padding: 0.05rem 0.3rem;
+        margin-left: 0.35rem;
+        vertical-align: middle;
+        font-weight: 500;
+        white-space: nowrap;
     }
 
     &__list-actions {
@@ -205,7 +247,7 @@
 
         textarea {
             width: 100%;
-            min-height: 140px;
+            min-height: 100px;
             resize: vertical;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
