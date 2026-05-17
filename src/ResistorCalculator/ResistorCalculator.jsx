@@ -9,7 +9,8 @@ import './ResistorCalculator.scss';
 const REGULATOR_SPECS = {
     LMR16006: { vfb: 0.765, name: 'LMR16006' },
     ISL85415: { vfb: 0.6, name: 'ISL85415' },
-    MP1482: { vfb: 0.923, name: 'MP1482' }
+    MP1482: { vfb: 0.923, name: 'MP1482' },
+    LM317: { vfb: 1.25, name: 'LM317' }
 };
 
 const DEFAULT_RESISTOR_VALUES = [
