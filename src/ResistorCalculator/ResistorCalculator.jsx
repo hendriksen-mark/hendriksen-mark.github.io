@@ -241,6 +241,7 @@ function ResistorCalculator({ onBackToHome }) {
     const [resistorListText, setResistorListText] = useState(toListText(DEFAULT_RESISTOR_VALUES));
     const [resistorListError, setResistorListError] = useState('');
     const [isListModalOpen, setIsListModalOpen] = useState(false);
+    const [hasCalculated, setHasCalculated] = useState(false);
 
     const activeSpec = REGULATOR_SPECS[regulator];
     const activeVfb = regulator === 'CUSTOM' ? customVfb : activeSpec.vfb;
@@ -250,6 +251,7 @@ function ResistorCalculator({ onBackToHome }) {
     const clearCalculatedResults = () => {
         setCalculationError('');
         setResults([]);
+        setHasCalculated(false);
     };
 
     const handleCalculate = () => {
@@ -274,6 +276,7 @@ function ResistorCalculator({ onBackToHome }) {
             maxWattage,
             resistorValues
         });
+        setHasCalculated(true);
         setResults(computed);
     };
 
@@ -326,6 +329,7 @@ function ResistorCalculator({ onBackToHome }) {
         setResistorListError('');
         setCalculationError('');
         setResults([]);
+        setHasCalculated(false);
         setIsListModalOpen(false);
     };
 
@@ -488,7 +492,7 @@ function ResistorCalculator({ onBackToHome }) {
                 </div>
 
                 <div className="resistor-calculator__section">
-                    {!results.length && <p>{t.noPairsFound}</p>}
+                    {hasCalculated && !results.length && <p className="resistor-calculator__list-error">{t.noPairsFound}</p>}
 
                     {!!results.length && (
                         <>
