@@ -1,4 +1,4 @@
-import { FaCalendarAlt, FaCog, FaBolt, FaCloud, FaMicrochip } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaBolt, FaCloud, FaMicrochip, FaThermometerHalf } from 'react-icons/fa';
 import { BiSolidDollarCircle } from 'react-icons/bi';
 import { SiCreality } from 'react-icons/si';
 import { GiHexagonalNut, GiOctopus } from 'react-icons/gi';
@@ -40,6 +40,12 @@ export const FUNCTION_CARDS = [
     icon: <FaMicrochip />,
     titleKey: 'resistorCalculatorTitle',
     descriptionKey: 'resistorCalculatorDescription',
+  },
+  {
+    id: 'steinhart-hart-calculator',
+    icon: <FaThermometerHalf />,
+    titleKey: 'ntcCalculatorTitle',
+    descriptionKey: 'ntcCalculatorDescription',
   },
   {
     id: 'sure',

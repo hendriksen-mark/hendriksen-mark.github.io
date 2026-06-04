@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { FaHome, FaMicrochip } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import StyledSelect from '../components/StyledSelect/StyledSelect';
+import StyledInput from '../components/StyledInput/StyledInput';
 import { useLanguage } from '../contexts/LanguageContext';
 import translations from '../Translation/Translations';
 import './ResistorCalculator.scss';
@@ -431,7 +433,7 @@ function ResistorCalculator({ onBackToHome }) {
                         </div>
 
                         <div className="resistor-calculator__language-selector">
-                            <LanguageSelector variant="thread-calculator" />
+                            <LanguageSelector variant="calculator-resistor" />
                         </div>
                     </div>
                 </div>
@@ -440,111 +442,107 @@ function ResistorCalculator({ onBackToHome }) {
                     <h2 className="resistor-calculator__section-title">{t.inputParameters}</h2>
 
                     <div className="resistor-calculator__inputs">
-                        <div className="input-group">
-                            <label>{t.regulator}</label>
-                            <select
-                                value={regulator}
-                                onChange={(e) => {
-                                    setRegulator(e.target.value);
-                                    clearCalculatedResults();
-                                }}
-                            >
-                                {Object.keys(REGULATOR_SPECS).map((key) => (
-                                    <option key={key} value={key}>
-                                        {REGULATOR_SPECS[key].name} (Vfb: {REGULATOR_SPECS[key].vfb} V)
-                                    </option>
-                                ))}
-                                <option value="CUSTOM">{t.customIc}</option>
-                            </select>
-                        </div>
+                        <StyledSelect
+                            label={t.regulator}
+                            value={{
+                                value: regulator,
+                                label: regulator === 'CUSTOM'
+                                    ? t.customIc
+                                    : `${REGULATOR_SPECS[regulator].name} (Vfb: ${REGULATOR_SPECS[regulator].vfb} V)`
+                            }}
+                            onChange={(opt) => { setRegulator(opt.value); clearCalculatedResults(); }}
+                            options={[
+                                ...Object.keys(REGULATOR_SPECS).map((key) => ({
+                                    value: key,
+                                    label: `${REGULATOR_SPECS[key].name} (Vfb: ${REGULATOR_SPECS[key].vfb} V)`
+                                })),
+                                { value: 'CUSTOM', label: t.customIc }
+                            ]}
+                            icon={FaMicrochip}
+                            variant="calculator-resistor"
+                        />
 
                         {regulator === 'CUSTOM' && (
-                            <div className="input-group">
-                                <label>{t.customFeedbackVoltage}</label>
-                                <input
-                                    type="number"
-                                    step="0.001"
-                                    min="0"
-                                    value={customVfb}
-                                    onChange={(e) => {
-                                        setCustomVfb(Number(e.target.value));
-                                        clearCalculatedResults();
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        <div className="input-group">
-                            <label>{t.targetVoltage}</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                value={targetVout}
-                                onChange={(e) => {
-                                    setTargetVout(Number(e.target.value));
-                                    clearCalculatedResults();
-                                }}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <label>{t.voltageTolerance}</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                value={voltageTolerance}
-                                onChange={(e) => {
-                                    setVoltageTolerance(Number(e.target.value));
-                                    clearCalculatedResults();
-                                }}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <label>{t.resistorTolerance}</label>
-                            <input
-                                type="number"
-                                step="0.1"
-                                min="0"
-                                max="100"
-                                value={resistorTolerancePercent}
-                                onChange={(e) => {
-                                    setResistorTolerancePercent(Number(e.target.value));
-                                    clearCalculatedResults();
-                                }}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <label>{t.maxWattage}</label>
-                            <input
+                            <StyledInput
+                                label={t.customFeedbackVoltage}
                                 type="number"
                                 step="0.001"
                                 min="0"
-                                value={maxWattage}
+                                value={customVfb}
                                 onChange={(e) => {
-                                    setMaxWattage(Number(e.target.value));
+                                    setCustomVfb(Number(e.target.value));
                                     clearCalculatedResults();
                                 }}
+                                variant="calculator-resistor"
                             />
-                        </div>
+                        )}
 
-                        <div className="input-group">
-                            <label>{t.maxResults}</label>
-                            <input
-                                type="number"
-                                step="1"
-                                min="1"
-                                max="100"
-                                value={maxResults}
-                                onChange={(e) => {
-                                    setMaxResults(Number(e.target.value));
-                                    clearCalculatedResults();
-                                }}
-                            />
-                        </div>
+                        <StyledInput
+                            label={t.targetVoltage}
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={targetVout}
+                            onChange={(e) => {
+                                setTargetVout(Number(e.target.value));
+                                clearCalculatedResults();
+                            }}
+                            variant="calculator-resistor"
+                        />
+
+                        <StyledInput
+                            label={t.voltageTolerance}
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={voltageTolerance}
+                            onChange={(e) => {
+                                setVoltageTolerance(Number(e.target.value));
+                                clearCalculatedResults();
+                            }}
+                            variant="calculator-resistor"
+                        />
+
+                        <StyledInput
+                            label={t.resistorTolerance}
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            value={resistorTolerancePercent}
+                            onChange={(e) => {
+                                setResistorTolerancePercent(Number(e.target.value));
+                                clearCalculatedResults();
+                            }}
+                            variant="calculator-resistor"
+                        />
+
+                        <StyledInput
+                            label={t.maxWattage}
+                            type="number"
+                            step="0.001"
+                            min="0"
+                            value={maxWattage}
+                            onChange={(e) => {
+                                setMaxWattage(Number(e.target.value));
+                                clearCalculatedResults();
+                            }}
+                            variant="calculator-resistor"
+                        />
+
+                        <StyledInput
+                            label={t.maxResults}
+                            type="number"
+                            step="1"
+                            min="1"
+                            max="100"
+                            value={maxResults}
+                            onChange={(e) => {
+                                setMaxResults(Number(e.target.value));
+                                clearCalculatedResults();
+                            }}
+                            variant="calculator-resistor"
+                        />
                     </div>
 
                     <div className="resistor-calculator__meta">

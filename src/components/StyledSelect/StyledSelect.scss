@@ -149,6 +149,59 @@
   }
 }
 
+// Shared mixin for calculator-style variants (light background, themed accent)
+@mixin calculator-variant($primary, $menu-bg) {
+  @include select-base-styles;
+
+  .styled-select__icon {
+    color: $primary;
+  }
+
+  .styled-select__control {
+    background: white !important;
+    border: 2px solid #e9ecef !important;
+
+    &:hover {
+      background: #f8f9fa !important;
+      border-color: $primary !important;
+      box-shadow: 0 4px 15px rgba($primary, 0.1) !important;
+    }
+  }
+
+  .styled-select__single-value {
+    color: #2c3e50 !important;
+  }
+
+  .styled-select__placeholder {
+    color: #6c757d !important;
+  }
+
+  .styled-select__dropdown-indicator {
+    color: $primary !important;
+  }
+
+  .styled-select__menu {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid #e9ecef !important;
+  }
+
+  .styled-select__option {
+    color: #2c3e50 !important;
+
+    &:hover,
+    &--is-focused {
+      background: rgba($primary, 0.1) !important;
+    }
+
+    &--is-selected {
+      background: $primary !important;
+      color: white !important;
+    }
+  }
+
+  @include select-dark-mode($primary, $menu-bg);
+}
+
 .styled-select {
   display: flex;
   align-items: center;
@@ -228,57 +281,19 @@
     }
   }
 
-  // Thread calculator variant
-  &--thread-calculator {
-    @include select-base-styles;
+  // Calculator variant (Thread – orange)
+  &--calculator {
+    @include calculator-variant(#e67e22, rgba(230, 126, 34, 0.95));
+  }
 
-    .styled-select__icon {
-      color: var(--select-thread-primary);
-    }
+  // Calculator variant (Steinhart-Hart – indigo)
+  &--calculator-steinhart {
+    @include calculator-variant(#667eea, rgba(102, 126, 234, 0.95));
+  }
 
-    .styled-select__control {
-      background: var(--select-thread-bg) !important;
-      border: 2px solid var(--select-thread-border) !important;
-
-      &:hover {
-        background: var(--select-thread-bg-hover) !important;
-        border-color: var(--select-thread-border-hover) !important;
-        box-shadow: 0 4px 15px var(--select-thread-shadow) !important;
-      }
-    }
-
-    .styled-select__single-value {
-      color: var(--select-thread-text) !important;
-    }
-
-    .styled-select__placeholder {
-      color: var(--select-thread-placeholder) !important;
-    }
-
-    .styled-select__dropdown-indicator {
-      color: var(--select-thread-primary) !important;
-    }
-
-    .styled-select__menu {
-      background: var(--select-thread-menu-bg) !important;
-      border: 1px solid var(--select-thread-border) !important;
-    }
-
-    .styled-select__option {
-      color: var(--select-thread-text) !important;
-
-      &:hover,
-      &--is-focused {
-        background: var(--select-thread-option-hover) !important;
-      }
-
-      &--is-selected {
-        background: var(--select-thread-primary) !important;
-        color: white !important;
-      }
-    }
-
-    @include select-dark-mode(#e67e22, rgba(230, 126, 34, 0.95));
+  // Calculator variant (Resistor – blue)
+  &--calculator-resistor {
+    @include calculator-variant(#3182ce, rgba(49, 130, 206, 0.95));
   }
 
   // GameSchedule variant

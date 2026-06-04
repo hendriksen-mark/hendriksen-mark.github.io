@@ -4,6 +4,7 @@ import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
+import StyledInput from '../components/StyledInput/StyledInput';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
 import { FaGamepad, FaListOl, FaHome, FaDownload, FaUpload } from 'react-icons/fa';
@@ -383,11 +384,14 @@ function GameSchedule({ onBackToHome }) {
             </div>
             {playerNames.map((name, index) => (
               <div key={index} className="player-column">
-                <input
+                <StyledInput
+                  bare
+                  variant="game-schedule"
                   type="text"
                   value={name}
                   onChange={(e) => handlePlayerNameChange(index, e.target.value)}
                   placeholder={`Player ${index + 1}`}
+                  style={{ textAlign: 'center' }}
                 />
                 <button onClick={() => handleRemovePlayer(index)}>
                   {translations[language].remove}
@@ -405,10 +409,12 @@ function GameSchedule({ onBackToHome }) {
                 >
                   {translations[language].remove}
                 </button>
-                <input
+                <StyledInput
+                  bare
+                  variant="game-schedule"
                   id={`location-${rowIndex}`}
-                  type="text"
                   className="location-input"
+                  type="text"
                   placeholder={translations[language].location.slice(0, -2)}
                   value={row.location}
                   onChange={(e) => handleLocationChange(rowIndex, e.target.value)}

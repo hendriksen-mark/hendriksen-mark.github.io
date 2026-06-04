@@ -1,0 +1,99 @@
+// Per-variant focus colour mixin
+@mixin input-variant($light-focus, $light-shadow, $dark-focus, $dark-shadow) {
+  &:focus {
+    border-color: $light-focus;
+    box-shadow: 0 0 0 3px $light-shadow;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:focus {
+      border-color: $dark-focus;
+      box-shadow: 0 0 0 3px $dark-shadow;
+    }
+  }
+}
+
+.styled-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: #a0aec0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #a0aec0;
+    box-shadow: 0 0 0 3px rgba(160, 174, 192, 0.1);
+  }
+
+  // Dark mode base — defined first so variants below can override
+  @media (prefers-color-scheme: dark) {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+
+    &:hover {
+      border-color: #6b7280;
+    }
+
+    &:focus {
+      border-color: #6b7280;
+      box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+    }
+  }
+
+  // Thread / generic calculator – orange
+  &--calculator {
+    @include input-variant(
+      #e67e22, rgba(230, 126, 34, 0.1),
+      #e67e22, rgba(230, 126, 34, 0.2)
+    );
+  }
+
+  // Steinhart-Hart – indigo
+  &--calculator-steinhart {
+    @include input-variant(
+      #667eea, rgba(102, 126, 234, 0.1),
+      #818cf8, rgba(129, 140, 248, 0.2)
+    );
+  }
+
+  // Resistor – blue
+  &--calculator-resistor {
+    @include input-variant(
+      #3182ce, rgba(49, 130, 206, 0.1),
+      #60a5fa, rgba(96, 165, 250, 0.2)
+    );
+  }
+
+  // GameSchedule – green, smaller font, no label
+  &--game-schedule {
+    font-size: 0.9rem;
+
+    @include input-variant(
+      #28a745, rgba(40, 167, 69, 0.1),
+      #28a745, rgba(40, 167, 69, 0.2)
+    );
+
+    @media (prefers-color-scheme: dark) {
+      background: #4b5563;
+      border-color: #6b7280;
+      color: white;
+
+      &:hover {
+        border-color: #9ca3af;
+      }
+
+      &::placeholder {
+        color: #9ca3af;
+      }
+    }
+  }
+}

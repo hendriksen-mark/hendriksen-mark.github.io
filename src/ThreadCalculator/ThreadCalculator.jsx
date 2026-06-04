@@ -4,6 +4,7 @@ import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
+import StyledInput from '../components/StyledInput/StyledInput';
 import translations from '../Translation/Translations';
 import { downloadThreadDXF } from '../utils/dwgGenerator';
 import './ThreadCalculator.scss';
@@ -64,7 +65,7 @@ function ThreadCalculator({ onBackToHome }) {
             </div>
 
             <div className="thread-calculator__language-selector">
-              <LanguageSelector variant="thread-calculator" />
+              <LanguageSelector variant="calculator" />
             </div>
           </div>
         </div>
@@ -78,7 +79,7 @@ function ThreadCalculator({ onBackToHome }) {
                 value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
                 onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
                 icon={FaCog}
-                variant="thread-calculator"
+                variant="calculator"
                 options={[
                   { value: 'metric', label: 'Metric (mm)' },
                   { value: 'imperial', label: 'Imperial (inches)' }
@@ -91,7 +92,7 @@ function ThreadCalculator({ onBackToHome }) {
                 value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
                 onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
                 icon={TbAngle}
-                variant="thread-calculator"
+                variant="calculator"
                 options={[
                   { value: 60, label: '60° (ISO/UTS Standard)' },
                   { value: 55, label: '55° (British Standard)' }
@@ -101,61 +102,49 @@ function ThreadCalculator({ onBackToHome }) {
 
             {unitSystem === 'metric' ? (
               <>
-                <div className="input-group">
-                  <label>
-                    {translations[language].nominalDiameter} (mm)
-                  </label>
-                  <input
-                    type="number"
-                    value={nominalDiameter}
-                    onChange={(e) => { setNominalDiameter(parseFloat(e.target.value)); setResults(null); }}
-                    step="0.1"
-                    min="1"
-                    max="100"
-                  />
-                </div>
-                <div className="input-group">
-                  <label>
-                    {translations[language].threadPitch} (mm)
-                  </label>
-                  <input
-                    type="number"
-                    value={pitch}
-                    onChange={(e) => { setPitch(parseFloat(e.target.value)); setResults(null); }}
-                    step="0.1"
-                    min="0.1"
-                    max="10"
-                  />
-                </div>
+                <StyledInput
+                  label={`${translations[language].nominalDiameter} (mm)`}
+                  type="number"
+                  value={nominalDiameter}
+                  onChange={(e) => { setNominalDiameter(parseFloat(e.target.value)); setResults(null); }}
+                  step="0.1"
+                  min="1"
+                  max="100"
+                  variant="calculator"
+                />
+                <StyledInput
+                  label={`${translations[language].threadPitch} (mm)`}
+                  type="number"
+                  value={pitch}
+                  onChange={(e) => { setPitch(parseFloat(e.target.value)); setResults(null); }}
+                  step="0.1"
+                  min="0.1"
+                  max="10"
+                  variant="calculator"
+                />
               </>
             ) : (
               <>
-                <div className="input-group">
-                  <label>
-                    {translations[language].nominalDiameter} (inches)
-                  </label>
-                  <input
-                    type="number"
-                    value={imperialDiameter}
-                    onChange={(e) => { setImperialDiameter(parseFloat(e.target.value)); setResults(null); }}
-                    step="0.0625"
-                    min="0.0625"
-                    max="4"
-                  />
-                </div>
-                <div className="input-group">
-                  <label>
-                    {translations[language].threadsPerInch} (TPI)
-                  </label>
-                  <input
-                    type="number"
-                    value={tpi}
-                    onChange={(e) => { setTpi(parseFloat(e.target.value)); setResults(null); }}
-                    step="1"
-                    min="1"
-                    max="80"
-                  />
-                </div>
+                <StyledInput
+                  label={`${translations[language].nominalDiameter} (inches)`}
+                  type="number"
+                  value={imperialDiameter}
+                  onChange={(e) => { setImperialDiameter(parseFloat(e.target.value)); setResults(null); }}
+                  step="0.0625"
+                  min="0.0625"
+                  max="4"
+                  variant="calculator"
+                />
+                <StyledInput
+                  label={`${translations[language].threadsPerInch} (TPI)`}
+                  type="number"
+                  value={tpi}
+                  onChange={(e) => { setTpi(parseFloat(e.target.value)); setResults(null); }}
+                  step="1"
+                  min="1"
+                  max="80"
+                  variant="calculator"
+                />
               </>
             )}
           </div>

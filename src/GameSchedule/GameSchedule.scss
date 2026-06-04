@@ -208,25 +208,7 @@
       align-items: center;
 
       input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #dee2e6;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        text-align: center;
-        background: white;
-        transition: all 0.3s ease;
-        box-sizing: border-box;
-
-        &:focus {
-          outline: none;
-          border-color: #28a745;
-          box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-        }
-
-        &:hover {
-          border-color: #adb5bd;
-        }
+        // Styled via .styled-input--game-schedule in StyledInput.scss
       }
 
       button {
@@ -318,24 +300,7 @@
     }
 
     .location-input {
-      padding: 0.75rem;
-      border: 2px solid #dee2e6;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      background: white;
-      transition: all 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-
-      &:focus {
-        outline: none;
-        border-color: #28a745;
-        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-      }
-
-      &:hover {
-        border-color: #adb5bd;
-      }
+      // Styled via .styled-input--game-schedule in StyledInput.scss
     }
 
     .availability-btn {
@@ -796,18 +761,7 @@
     }
 
     .player-column input {
-      background: #4b5563;
-      border-color: #6b7280;
-      color: white;
-
-      &:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
-      }
-
-      &::placeholder {
-        color: #9ca3af;
-      }
+      // Styled via .styled-input--game-schedule in StyledInput.scss
     }
 
     .location-label-wrapper .location-label {
@@ -834,22 +788,7 @@
       }
 
       .location-input {
-        background: #4b5563;
-        border-color: #6b7280;
-        color: white;
-
-        &:focus {
-          border-color: #28a745;
-          box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
-        }
-
-        &:hover {
-          border-color: #9ca3af;
-        }
-
-        &::placeholder {
-          color: #9ca3af;
-        }
+        // Styled via .styled-input--game-schedule in StyledInput.scss
       }
     }
 

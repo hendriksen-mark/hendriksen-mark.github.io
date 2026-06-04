@@ -3,6 +3,7 @@ import Home from './Home/Home';
 import GameSchedule from './GameSchedule/GameSchedule';
 import ThreadCalculator from './ThreadCalculator/ThreadCalculator';
 import ResistorCalculator from './ResistorCalculator/ResistorCalculator';
+import SteinhartHartCalculator from './SteinhartHartCalculator/SteinhartHartCalculator';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Toaster } from 'react-hot-toast';
 import { TOTAL_FUNCTIONS, VIEW_TO_INDEX } from './config/functionCards.jsx';
@@ -15,7 +16,8 @@ function AppContent() {
   const functions = [
     { id: 'game-schedule', view: 'game-schedule' },
     { id: 'thread-calculator', view: 'thread-calculator' },
-    { id: 'resistor-calculator', view: 'resistor-calculator' }
+    { id: 'resistor-calculator', view: 'resistor-calculator' },
+    { id: 'steinhart-hart-calculator', view: 'steinhart-hart-calculator' }
   ];
 
   // Generate color using HSL - matches Home component logic exactly
@@ -82,6 +84,8 @@ function AppContent() {
         return <ThreadCalculator onBackToHome={handleBackToHome} />;
       case 'resistor-calculator':
         return <ResistorCalculator onBackToHome={handleBackToHome} />;
+      case 'steinhart-hart-calculator':
+        return <SteinhartHartCalculator onBackToHome={handleBackToHome} />;
       default:
         return <Home onNavigate={handleNavigate} />;
     }
