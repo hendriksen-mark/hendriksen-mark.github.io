@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
+import PageHeader from '../components/PageHeader/PageHeader';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
@@ -10,7 +10,7 @@ import { downloadThreadDXF } from '../utils/dwgGenerator';
 import './ThreadCalculator.scss';
 import { formatMM, formatValueWithConversion } from '../utils/converters';
 import calculateThreadDimensions from '../utils/calculators';
-import { FaCog, FaHome } from 'react-icons/fa';
+import { FaCog } from 'react-icons/fa';
 import { TbAngle } from "react-icons/tb";
 
 function ThreadCalculator({ onBackToHome }) {
@@ -48,27 +48,13 @@ function ThreadCalculator({ onBackToHome }) {
   return (
     <div className="thread-calculator">
       <div className="thread-calculator__container">
-        <div className="thread-calculator__header">
-          <div className="thread-calculator__header-content">
-            <div className="thread-calculator__back-button">
-              <AnimatedButton
-                color="gray"
-                onClick={onBackToHome}
-              >
-                <FaHome />
-                {" " + translations[language].backToHome}
-              </AnimatedButton>
-            </div>
-            <div className="thread-calculator__title-section">
-              <h1>{translations[language].threadCalculatorTitle}</h1>
-              <p>{translations[language].threadCalculatorDescription}</p>
-            </div>
-
-            <div className="thread-calculator__language-selector">
-              <LanguageSelector variant="calculator" />
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          onBackToHome={onBackToHome}
+          backToHomeText={translations[language].backToHome}
+          title={translations[language].threadCalculatorTitle}
+          description={translations[language].threadCalculatorDescription}
+          languageSelectorVariant="calculator"
+        />
 
         <div className="thread-calculator__section">
           <h2 className="thread-calculator__section-title">{translations[language].inputParameters}</h2>

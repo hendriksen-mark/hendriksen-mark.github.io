@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
-import { FaHome, FaThermometerHalf, FaCog, FaListAlt } from 'react-icons/fa';
+import { FaThermometerHalf, FaCog, FaListAlt } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
-import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import PageHeader from '../components/PageHeader/PageHeader';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -334,23 +334,13 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
             <div className="steinhart-calculator__container">
 
                 {/* Header */}
-                <div className="steinhart-calculator__header">
-                    <div className="steinhart-calculator__header-content">
-                        <div className="steinhart-calculator__back-button">
-                            <AnimatedButton color="gray" onClick={onBackToHome}>
-                                <FaHome />
-                                {' ' + t.backToHome}
-                            </AnimatedButton>
-                        </div>
-                        <div className="steinhart-calculator__title-section">
-                            <h1><FaThermometerHalf /> {t.ntcTitle}</h1>
-                            <p>{t.ntcSubtitle}</p>
-                        </div>
-                        <div className="steinhart-calculator__language-selector">
-                            <LanguageSelector variant="calculator-steinhart" />
-                        </div>
-                    </div>
-                </div>
+                <PageHeader
+                    onBackToHome={onBackToHome}
+                    backToHomeText={t.backToHome}
+                    title={<><FaThermometerHalf /> {t.ntcTitle}</>}
+                    description={t.ntcSubtitle}
+                    languageSelectorVariant="calculator-steinhart"
+                />
 
                 {/* NTC Configuration */}
                 <div className="steinhart-calculator__section">

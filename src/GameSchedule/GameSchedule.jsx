@@ -2,12 +2,12 @@ import { useState, useRef } from 'react';
 import './GameSchedule.scss';
 import translations from '../Translation/Translations';
 import { useLanguage } from '../contexts/LanguageContext';
-import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
+import PageHeader from '../components/PageHeader/PageHeader';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
-import { FaGamepad, FaListOl, FaHome, FaDownload, FaUpload } from 'react-icons/fa';
+import { FaGamepad, FaListOl, FaDownload, FaUpload } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
 import html2canvas from 'html2canvas';
 
@@ -274,27 +274,13 @@ function GameSchedule({ onBackToHome }) {
   return (
     <div className="game-schedule">
       <div className="game-schedule__container">
-        <div className="game-schedule__header">
-          <div className="game-schedule__header-content">
-            <div className="game-schedule__back-button">
-              <AnimatedButton
-                color="gray"
-                onClick={onBackToHome}
-              >
-                <FaHome />
-                {" " + translations[language].backToHome}
-              </AnimatedButton>
-            </div>
-            <div className="game-schedule__title-section">
-              <h1>{translations[language].gameScheduleGenerator}</h1>
-              <p>{translations[language].gameScheduleDescription}</p>
-            </div>
-
-            <div className="game-schedule__language-selector">
-              <LanguageSelector variant="GameSchedule" />
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          onBackToHome={onBackToHome}
+          backToHomeText={translations[language].backToHome}
+          title={translations[language].gameScheduleGenerator}
+          description={translations[language].gameScheduleDescription}
+          languageSelectorVariant="GameSchedule"
+        />
 
         <div className="game-schedule__section">
           <h2 className="game-schedule__section-title">{translations[language].configuration}</h2>

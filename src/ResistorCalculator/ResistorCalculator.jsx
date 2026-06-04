@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { FaHome, FaMicrochip } from 'react-icons/fa';
+import { FaMicrochip } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
-import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import PageHeader from '../components/PageHeader/PageHeader';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -416,27 +416,13 @@ function ResistorCalculator({ onBackToHome }) {
     return (
         <div className="resistor-calculator">
             <div className="resistor-calculator__container">
-                <div className="resistor-calculator__header">
-                    <div className="resistor-calculator__header-content">
-                        <div className="resistor-calculator__back-button">
-                            <AnimatedButton color="gray" onClick={onBackToHome}>
-                                <FaHome />
-                                {' ' + t.backToHome}
-                            </AnimatedButton>
-                        </div>
-
-                        <div className="resistor-calculator__title-section">
-                            <h1>
-                                <FaMicrochip /> {t.resistorCalculatorTitle}
-                            </h1>
-                            <p>{t.resistorCalculatorDescription}</p>
-                        </div>
-
-                        <div className="resistor-calculator__language-selector">
-                            <LanguageSelector variant="calculator-resistor" />
-                        </div>
-                    </div>
-                </div>
+                <PageHeader
+                    onBackToHome={onBackToHome}
+                    backToHomeText={t.backToHome}
+                    title={<><FaMicrochip /> {t.resistorCalculatorTitle}</>}
+                    description={t.resistorCalculatorDescription}
+                    languageSelectorVariant="calculator-resistor"
+                />
 
                 <div className="resistor-calculator__section">
                     <h2 className="resistor-calculator__section-title">{t.inputParameters}</h2>
