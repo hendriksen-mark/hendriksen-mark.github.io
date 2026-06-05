@@ -6,31 +6,12 @@ import ResistorCalculator from './ResistorCalculator/ResistorCalculator';
 import SteinhartHartCalculator from './SteinhartHartCalculator/SteinhartHartCalculator';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Toaster } from 'react-hot-toast';
-import { TOTAL_FUNCTIONS, VIEW_TO_INDEX } from './config/functionCards.jsx';
+import { getViewColor, getViewGradientColors } from './utils/colorCalculator';
+import { VIEW_TO_INDEX, TOTAL_FUNCTIONS } from './config/functionCards';
 import './App.scss';
 
 function AppContent() {
   const [currentView, setCurrentView] = useState('home');
-
-  // Shared function definitions with colors (only for pages with cards)
-  const functions = [
-    { id: 'game-schedule', view: 'game-schedule' },
-    { id: 'thread-calculator', view: 'thread-calculator' },
-    { id: 'resistor-calculator', view: 'resistor-calculator' },
-    { id: 'steinhart-hart-calculator', view: 'steinhart-hart-calculator' }
-  ];
-
-  // Generate color using HSL - matches Home component logic exactly
-  const getViewColor = (viewId, isDark = false) => {
-    const funcIndex = VIEW_TO_INDEX[viewId];
-    if (funcIndex === undefined) return null;
-
-    const hue = (360 / TOTAL_FUNCTIONS) * funcIndex;
-    const saturation = isDark ? 60 : 79;
-    const lightness = isDark ? 25 : 43;
-
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  };
 
   // Set html/body background based on currentView and color scheme
   useEffect(() => {
@@ -40,6 +21,7 @@ function AppContent() {
         // Reset to default for home page (let Home.scss handle it)
         document.documentElement.style.background = '';
         document.body.style.background = '';
+        document.documentElement.style.setProperty('--select-primary-color', 'white');
         return;
       }
 
@@ -47,15 +29,21 @@ function AppContent() {
       const color1 = getViewColor(currentView, dark);
 
       if (color1) {
-        const funcIndex = VIEW_TO_INDEX[currentView];
-        const hue2 = ((360 / TOTAL_FUNCTIONS) * funcIndex + 30) % 360;
-        const saturation = dark ? 60 : 79;
-        const lightness = dark ? 20 : 38; // Slightly darker for gradient
-        const color2Modified = `hsl(${hue2}, ${saturation}%, ${lightness}%)`;
+        const gradientColors = getViewGradientColors(currentView, dark);
+        const color2Modified = gradientColors.color2;
 
         const bg = `linear-gradient(135deg, ${color1} 0%, ${color2Modified} 100%)`;
         document.documentElement.style.background = bg;
         document.body.style.background = bg;
+        
+        const funcIndex = VIEW_TO_INDEX[currentView];
+        if (funcIndex !== undefined) {
+          const hue = (360 / TOTAL_FUNCTIONS) * funcIndex;
+          const saturation = dark ? 60 : 79; // Vibrant saturation for selects
+          const lightness = dark ? 50 : 80;
+          const vibrantColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+          document.documentElement.style.setProperty('--select-primary-color', vibrantColor);
+        }
       }
     };
 

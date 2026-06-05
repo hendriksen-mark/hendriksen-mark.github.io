@@ -20,19 +20,7 @@
 
   // Add padding to main content when nav is present
   &__nav+&__main {
-    .game-schedule {
-      padding-top: calc(80px + 2rem);
-    }
-
-    .home {
-      padding-top: calc(80px + 2rem);
-    }
-
-    .thread-calculator {
-      padding-top: calc(80px + 2rem);
-    }
-
-    .resistor-calculator {
+    > * {
       padding-top: calc(80px + 2rem);
     }
   }
@@ -58,19 +46,7 @@ body {
     }
 
     &__nav+&__main {
-      .game-schedule {
-        padding-top: calc(70px + 1rem);
-      }
-
-      .home {
-        padding-top: calc(70px + 1rem);
-      }
-
-      .thread-calculator {
-        padding-top: calc(70px + 1rem);
-      }
-
-      .resistor-calculator {
+      > * {
         padding-top: calc(70px + 1rem);
       }
     }

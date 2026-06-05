@@ -9,35 +9,14 @@
   --select-default-option-hover: rgba(255, 255, 255, 0.3);
   --select-default-option-selected: rgba(255, 255, 255, 0.7);
   --select-default-option-selected-text: #333;
-
-  --select-thread-primary: #e67e22;
-  --select-thread-bg: white;
-  --select-thread-bg-hover: #f8f9fa;
-  --select-thread-border: #e9ecef;
-  --select-thread-border-hover: #e67e22;
-  --select-thread-text: #2c3e50;
-  --select-thread-placeholder: #6c757d;
-  --select-thread-menu-bg: rgba(255, 255, 255, 0.95);
-  --select-thread-option-hover: rgba(230, 126, 34, 0.1);
-  --select-thread-shadow: rgba(230, 126, 34, 0.1);
-
-  --select-GameSchedule-primary: #27ae60;
-  --select-GameSchedule-bg: white;
-  --select-GameSchedule-bg-hover: #f8f9fa;
-  --select-GameSchedule-border: #e9ecef;
-  --select-GameSchedule-border-hover: #27ae60;
-  --select-GameSchedule-text: #2c3e50;
-  --select-GameSchedule-placeholder: #6c757d;
-  --select-GameSchedule-menu-bg: rgba(255, 255, 255, 0.95);
-  --select-GameSchedule-option-hover: rgba(39, 174, 96, 0.1);
-  --select-GameSchedule-shadow: rgba(39, 174, 96, 0.1);
+  --select-primary-color: white;
 }
 
 // Common styles mixin
 @mixin select-base-styles {
   .styled-select__control {
     border-radius: 12px !important;
-    min-height: 48px !important;
+    min-height: 40.5px !important;
     padding-left: 2.5rem !important;
     transition: all 0.3s ease !important;
     box-shadow: none !important;
@@ -88,7 +67,7 @@
       background: rgba(255, 255, 255, 0.1) !important;
       border: 1px solid rgba(255, 255, 255, 0.2) !important;
       backdrop-filter: blur(20px);
-      min-height: 48px !important;
+      min-height: 40.5px !important;
       padding-left: 2.5rem !important;
       border-radius: 12px !important;
 
@@ -116,6 +95,79 @@
 
     .styled-select__menu {
       background: $menu-bg-color !important;
+      backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 15px !important;
+      box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3) !important;
+      max-height: 300px !important;
+      overflow-y: auto !important;
+      padding: 4px 0 !important;
+    }
+
+    .styled-select__menu-list {
+      padding: 0 !important;
+    }
+
+    .styled-select__option {
+      color: white !important;
+      padding: 8px 12px !important;
+      cursor: pointer !important;
+      align-items: center !important;
+      display: flex !important;
+
+      &:hover,
+      &--is-focused {
+        background: rgba(255, 255, 255, 0.15) !important;
+      }
+
+      &--is-selected {
+        background: rgba(255, 255, 255, 0.25) !important;
+        font-weight: 600 !important;
+      }
+    }
+  }
+}
+
+// Dark mode mixin using CSS variable (for dynamic colors)
+@mixin select-dark-mode-dynamic {
+  @media (prefers-color-scheme: dark) {
+    .styled-select__icon {
+      color: var(--select-primary-color);
+    }
+
+    .styled-select__control {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(20px);
+      min-height: 40.5px !important;
+      padding-left: 2.5rem !important;
+      border-radius: 12px !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-color: var(--select-primary-color) !important;
+        opacity: 0.8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+
+    .styled-select__single-value {
+      color: white !important;
+      font-weight: 500 !important;
+      text-align: left !important;
+    }
+
+    .styled-select__placeholder {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .styled-select__dropdown-indicator {
+      color: var(--select-primary-color) !important;
+    }
+
+    .styled-select__menu {
+      background: rgba(26, 32, 44, 0.95) !important;
       backdrop-filter: blur(20px) !important;
       border: 1px solid rgba(255, 255, 255, 0.2) !important;
       border-radius: 15px !important;
@@ -202,6 +254,60 @@
   @include select-dark-mode($primary, $menu-bg);
 }
 
+// Mixin for dynamic calculator variants (uses CSS variable from App.jsx)
+@mixin calculator-variant-dynamic {
+  @include select-base-styles;
+
+  .styled-select__icon {
+    color: var(--select-primary-color);
+  }
+
+  .styled-select__control {
+    background: color-mix(in srgb, var(--select-primary-color) 8%, white) !important;
+    border: 2px solid var(--select-primary-color) !important;
+
+    &:hover {
+      background: color-mix(in srgb, var(--select-primary-color) 12%, white) !important;
+      border-color: var(--select-primary-color) !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
+  .styled-select__single-value {
+    color: #2c3e50 !important;
+  }
+
+  .styled-select__placeholder {
+    color: #6c757d !important;
+  }
+
+  .styled-select__dropdown-indicator {
+    color: var(--select-primary-color) !important;
+  }
+
+  .styled-select__menu {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid #e9ecef !important;
+    border-top: 3px solid var(--select-primary-color) !important;
+  }
+
+  .styled-select__option {
+    color: #2c3e50 !important;
+
+    &:hover,
+    &--is-focused {
+      background: rgba(0, 0, 0, 0.05) !important;
+    }
+
+    &--is-selected {
+      background: var(--select-primary-color) !important;
+      color: white !important;
+    }
+  }
+
+  @include select-dark-mode-dynamic;
+}
+
 .styled-select {
   display: flex;
   align-items: center;
@@ -281,72 +387,12 @@
     }
   }
 
-  // Calculator variant (Thread – orange)
-  &--calculator {
-    @include calculator-variant(#e67e22, rgba(230, 126, 34, 0.95));
-  }
-
-  // Calculator variant (Steinhart-Hart – indigo)
-  &--calculator-steinhart {
-    @include calculator-variant(#667eea, rgba(102, 126, 234, 0.95));
-  }
-
-  // Calculator variant (Resistor – blue)
-  &--calculator-resistor {
-    @include calculator-variant(#3182ce, rgba(49, 130, 206, 0.95));
-  }
-
-  // GameSchedule variant
-  &--GameSchedule {
-    @include select-base-styles;
-
-    .styled-select__icon {
-      color: var(--select-GameSchedule-primary);
-    }
-
-    .styled-select__control {
-      background: var(--select-GameSchedule-bg) !important;
-      border: 2px solid var(--select-GameSchedule-border) !important;
-
-      &:hover {
-        background: var(--select-GameSchedule-bg-hover) !important;
-        border-color: var(--select-GameSchedule-border-hover) !important;
-        box-shadow: 0 4px 15px var(--select-GameSchedule-shadow) !important;
-      }
-    }
-
-    .styled-select__single-value {
-      color: var(--select-GameSchedule-text) !important;
-    }
-
-    .styled-select__placeholder {
-      color: var(--select-GameSchedule-placeholder) !important;
-    }
-
-    .styled-select__dropdown-indicator {
-      color: var(--select-GameSchedule-primary) !important;
-    }
-
-    .styled-select__menu {
-      background: var(--select-GameSchedule-menu-bg) !important;
-      border: 1px solid var(--select-GameSchedule-border) !important;
-    }
-
-    .styled-select__option {
-      color: var(--select-GameSchedule-text) !important;
-
-      &:hover,
-      &--is-focused {
-        background: var(--select-GameSchedule-option-hover) !important;
-      }
-
-      &--is-selected {
-        background: var(--select-GameSchedule-primary) !important;
-        color: white !important;
-      }
-    }
-
-    @include select-dark-mode(#27ae60, rgba(39, 174, 96, 0.95));
+  // Dynamic calculator variants (all use the same auto-colored styles)
+  &--calculator-thread,
+  &--calculator-steinhart,
+  &--calculator-resistor,
+  &--game-schedule {
+    @include calculator-variant-dynamic;
   }
 
   @media (max-width: 768px) {

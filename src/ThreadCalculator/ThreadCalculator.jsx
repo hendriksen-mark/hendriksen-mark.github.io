@@ -18,7 +18,7 @@ import { GiHexagonalNut } from 'react-icons/gi';
 
 function ThreadCalculator({ onBackToHome }) {
   const { language } = useLanguage();
-    const t = translations[language] || translations.en;
+  const t = translations[language] || translations.en;
   const [unitSystem, setUnitSystem] = useState('metric'); // 'metric' or 'imperial'
   const [threadAngle, setThreadAngle] = useState(60); // 60° or 55°
 
@@ -55,7 +55,7 @@ function ThreadCalculator({ onBackToHome }) {
           onBackToHome={onBackToHome}
           title={<><GiHexagonalNut /> {t.threadCalculatorTitle}</>}
           description={t.threadCalculatorDescription}
-          languageSelectorVariant="calculator"
+          languageSelectorVariant="calculator-thread"
         />
 
         <PageSection title={t.inputParameters} variant="calculator">
@@ -66,7 +66,7 @@ function ThreadCalculator({ onBackToHome }) {
                 value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
                 onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
                 icon={FaCog}
-                variant="calculator"
+                variant="calculator-thread"
                 options={[
                   { value: 'metric', label: 'Metric (mm)' },
                   { value: 'imperial', label: 'Imperial (inches)' }
@@ -79,7 +79,7 @@ function ThreadCalculator({ onBackToHome }) {
                 value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
                 onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
                 icon={TbAngle}
-                variant="calculator"
+                variant="calculator-thread"
                 options={[
                   { value: 60, label: '60° (ISO/UTS Standard)' },
                   { value: 55, label: '55° (British Standard)' }

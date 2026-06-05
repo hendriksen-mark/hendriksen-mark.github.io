@@ -280,7 +280,7 @@ function GameSchedule({ onBackToHome }) {
           onBackToHome={onBackToHome}
           title={<><FaCalendarAlt /> {t.gameScheduleGenerator}</>}
           description={t.gameScheduleDescription}
-          languageSelectorVariant="GameSchedule"
+          languageSelectorVariant="game-schedule"
         />
 
         <PageSection title={t.configuration} variant="game-schedule">
@@ -290,7 +290,7 @@ function GameSchedule({ onBackToHome }) {
                 value={{ value: gameType, label: t[`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
                 onChange={(selectedOption) => handleGameTypeChange(selectedOption.value)}
                 icon={FaGamepad}
-                variant="GameSchedule"
+                variant="game-schedule"
                 options={[
                   { value: 'duo', label: t.gameTypeDuo },
                   { value: 'trio', label: t.gameTypeTrio },
@@ -303,7 +303,7 @@ function GameSchedule({ onBackToHome }) {
                 value={{ value: maxConsecutiveGames, label: maxConsecutiveGames.toString() }}
                 onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
                 icon={FaListOl}
-                variant="GameSchedule"
+                variant="game-schedule"
                 options={Array.from({ length: 10 }, (_, i) => ({
                   value: i + 1,
                   label: (i + 1).toString()
@@ -314,7 +314,7 @@ function GameSchedule({ onBackToHome }) {
                 value={{ value: maxGames, label: maxGames.toString() }}
                 onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
                 icon={FaListOl}
-                variant="GameSchedule"
+                variant="game-schedule"
                 options={Array.from({ length: 10 }, (_, i) => ({
                   value: i + 1,
                   label: (i + 1).toString()
