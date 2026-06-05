@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { FaMicrochip } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
+import PageContainer from '../components/PageContainer/PageContainer';
+import PageSection from '../components/PageSection/PageSection';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -274,7 +276,7 @@ function buildTypeMap(useSmd, useTh, customValues) {
 
 function ResistorCalculator({ onBackToHome }) {
     const { language } = useLanguage();
-    const t = translations[language];
+    const t = translations[language] || translations.en;
 
     const [regulator, setRegulator] = useState('MP1482');
     const [customVfb, setCustomVfb] = useState(0.8);
@@ -414,18 +416,15 @@ function ResistorCalculator({ onBackToHome }) {
     };
 
     return (
-        <div className="resistor-calculator">
-            <div className="resistor-calculator__container">
+        <PageContainer className="resistor-calculator">
                 <PageHeader
                     onBackToHome={onBackToHome}
-                    backToHomeText={t.backToHome}
                     title={<><FaMicrochip /> {t.resistorCalculatorTitle}</>}
                     description={t.resistorCalculatorDescription}
                     languageSelectorVariant="calculator-resistor"
                 />
 
-                <div className="resistor-calculator__section">
-                    <h2 className="resistor-calculator__section-title">{t.inputParameters}</h2>
+                <PageSection title={t.inputParameters}>
 
                     <div className="resistor-calculator__inputs">
                         <StyledSelect
@@ -548,10 +547,10 @@ function ResistorCalculator({ onBackToHome }) {
                         </AnimatedButton>
                     </div>
                     {calculationError && <p className="resistor-calculator__list-error">{calculationError}</p>}
-                </div>
+                </PageSection>
 
                 {hasCalculated && (
-                <div className="resistor-calculator__section">
+                <PageSection>
                     {!results.length && <p className="resistor-calculator__list-error">{t.noPairsFound}</p>}
 
                     {!!results.length && (
@@ -640,7 +639,7 @@ function ResistorCalculator({ onBackToHome }) {
                             </div>
                         </>
                     )}
-                </div>
+                </PageSection>
                 )}
 
                 {isListModalOpen && (
@@ -700,8 +699,7 @@ function ResistorCalculator({ onBackToHome }) {
                         </div>
                     </div>
                 )}
-            </div>
-        </div>
+        </PageContainer>
     );
 }
 

@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react';
 import { FaThermometerHalf, FaCog, FaListAlt } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
+import PageContainer from '../components/PageContainer/PageContainer';
+import PageSection from '../components/PageSection/PageSection';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -330,21 +332,18 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
 
     // ── Render ─────────────────────────────────────────────────────────────────
     return (
-        <div className="steinhart-calculator">
-            <div className="steinhart-calculator__container">
+        <PageContainer className="steinhart-calculator">
 
                 {/* Header */}
                 <PageHeader
                     onBackToHome={onBackToHome}
-                    backToHomeText={t.backToHome}
                     title={<><FaThermometerHalf /> {t.ntcTitle}</>}
                     description={t.ntcSubtitle}
                     languageSelectorVariant="calculator-steinhart"
                 />
 
                 {/* NTC Configuration */}
-                <div className="steinhart-calculator__section">
-                    <h2 className="steinhart-calculator__section-title">{t.ntcConfiguration}</h2>
+                <PageSection title={t.ntcConfiguration}>
                     <div className="steinhart-calculator__inputs">
                         <StyledSelect
                             label={t.ntcPreset}
@@ -366,11 +365,10 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                             variant="calculator-steinhart"
                         />
                     </div>
-                </div>
+                </PageSection>
 
                 {/* Model Parameters */}
-                <div className="steinhart-calculator__section">
-                    <h2 className="steinhart-calculator__section-title">{t.ntcParameters}</h2>
+                <PageSection title={t.ntcParameters}>
                     {model === 'beta' ? (
                         <div className="steinhart-calculator__inputs">
                             <StyledInput
@@ -448,12 +446,12 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                             1/T = A + B·ln(R) + C·(ln(R))³
                         </p>
                     )}
-                </div>
+                </PageSection>
 
                 {/* Coefficient Fitting — only for Steinhart-Hart model */}
-                {model === 'steinhart-hart' && <div className="steinhart-calculator__section">
+                {model === 'steinhart-hart' && <PageSection>
                     <div className="steinhart-calculator__table-header">
-                        <h2 className="steinhart-calculator__section-title steinhart-calculator__section-title--inline">
+                        <h2 className="page-section__title page-section__title--inline">
                             {t.ntcFitTitle}
                         </h2>
                         <button
@@ -556,11 +554,10 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                             )}
                         </>
                     )}
-                </div>}
+                </PageSection>}
 
                 {/* Calculator */}
-                <div className="steinhart-calculator__section">
-                    <h2 className="steinhart-calculator__section-title">{t.ntcCalculate}</h2>
+                <PageSection title={t.ntcCalculate}>
 
                     <div className="steinhart-calculator__direction-tabs">
                         <button
@@ -623,12 +620,11 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                             {t.calculate}
                         </AnimatedButton>
                     </div>
-                </div>
+                </PageSection>
 
                 {/* Results */}
                 {result && (
-                    <div className="steinhart-calculator__section steinhart-calculator__section--result">
-                        <h2 className="steinhart-calculator__section-title">{t.results}</h2>
+                    <PageSection variant="result" title={t.results}>
                         {result.type === 'temperature' ? (
                             <div className="steinhart-calculator__result-grid">
                                 <div className="steinhart-calculator__result-item">
@@ -668,12 +664,11 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                                 </div>
                             </div>
                         )}
-                    </div>
+                    </PageSection>
                 )}
 
                 {/* Characteristic Table */}
-                <div className="steinhart-calculator__section">
-                    <h2 className="steinhart-calculator__section-title">{t.ntcCharacteristicTable}</h2>
+                <PageSection title={t.ntcCharacteristicTable}>
 
                     <div className="steinhart-calculator__inputs steinhart-calculator__inputs--narrow">
                         <StyledInput
@@ -726,9 +721,7 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                     ) : (
                         <p className="steinhart-calculator__error">{t.ntcTableInvalidRange}</p>
                     )}
-                </div>
-
-            </div>
-        </div>
+                </PageSection>
+        </PageContainer>
     );
 }

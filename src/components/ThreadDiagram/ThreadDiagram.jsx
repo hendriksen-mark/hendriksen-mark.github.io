@@ -5,6 +5,7 @@ import { formatValue, inchesToMm, mmToInches } from '../../utils/converters';
 
 function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metric' }) {
     const { language } = useLanguage();
+    const t = translations[language] || translations.en;
 
     // Helper function to convert values if needed
     const getDisplayValue = (value) => {
@@ -28,7 +29,7 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
         return (
             <div className="thread-diagram">
                 <div className="thread-diagram__placeholder">
-                    <p>{translations[language].enterValuesToShowDiagram}</p>
+                    <p>{t.enterValuesToShowDiagram}</p>
                 </div>
             </div>
         );
@@ -37,7 +38,7 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
     return (
         <div className="thread-diagram">
             <h3 className="thread-diagram__title">
-                {translations[language].threadProfile} - {results.threadDesignation} ({results.threadAngle}°)
+                {t.threadProfile} - {results.threadDesignation} ({results.threadAngle}°)
             </h3>
 
             <div className="thread-diagram__container">
@@ -334,8 +335,8 @@ function ThreadDiagram({ results, isImperial = false, originalUnitSystem = 'metr
                         />
 
                         {/* Static labels that don't change */}
-                        <text x="359.73" y="405.64" textAnchor="middle" fontSize="16" fontFamily="Arial">External thread</text>
-                        <text x="359.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">Axis of screw thread</text>
+                        <text x="359.73" y="405.64" textAnchor="middle" fontSize="16" fontFamily="Arial">{t.externalThread}</text>
+                        <text x="359.73" y="475.64" textAnchor="middle" fontSize="16" fontFamily="Arial">{t.axisOfScrewThread}</text>
                         <text x="235.32" y="297.66" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle / 2}°</text>
                         <text x="353.89" y="225.59" textAnchor="middle" fontSize="16" fontFamily="Arial">{results.threadAngle}°</text>
                         <text x="234.67" y="470.13" textAnchor="middle" fontSize="16" fontFamily="Arial">90°</text>

@@ -1,29 +1,4 @@
 .resistor-calculator {
-    min-height: 100vh;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-
-    &__container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    &__section {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    &__section-title {
-        margin: 0 0 1rem 0;
-        font-size: 1.4rem;
-        color: #333;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 0.5rem;
-    }
-
     &__inputs {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -318,17 +293,6 @@
     }
 
     @media (prefers-color-scheme: dark) {
-        &__section {
-            background: #1f2937;
-            color: #f9fafb;
-            border: 1px solid #374151;
-        }
-
-        &__section-title {
-            color: #f9fafb;
-            border-bottom-color: #4b5563;
-        }
-
         &__inputs .input-group {
             label {
                 color: #d1d5db;

@@ -1,12 +1,13 @@
 import { FaHome } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
-import LanguageSelector from '../components/LanguageSelector/LanguageSelector';
+import PageHeader from '../components/PageHeader/PageHeader';
 import translations from '../Translation/Translations';
 import { FUNCTION_CARDS, TOTAL_FUNCTIONS, VIEW_TO_INDEX } from '../config/functionCards';
 import './Home.scss';
 
 function Home({ onNavigate }) {
   const { language } = useLanguage();
+  const t = translations[language] || translations.en;
 
   // Generate color for function card if not explicitly set
   const getCardColor = (func) => {
@@ -22,8 +23,8 @@ function Home({ onNavigate }) {
 
   const functions = FUNCTION_CARDS.map((card) => ({
     ...card,
-    title: translations[language][card.titleKey],
-    description: translations[language][card.descriptionKey],
+    title: t[card.titleKey],
+    description: t[card.descriptionKey],
   }));
 
   const handleFunctionClick = (func) => {
@@ -38,22 +39,11 @@ function Home({ onNavigate }) {
 
   return (
     <div className="home">
-      <div className="home__header">
-        <div className="home__header-content">
-          <div className="home__title-section">
-            <FaHome className="home__header-icon" />
-            <div>
-              <h1 className="home__title">{translations[language].homeTitle}</h1>
-              <p className="home__subtitle">{translations[language].homeSubtitle}</p>
-            </div>
-          </div>
-
-          <div className="home__language-selector">
-            <LanguageSelector variant="default" />
-          </div>
-        </div>
-      </div>
-
+      <PageHeader
+        title={<><FaHome /> {t.homeTitle}</>}
+        description={t.homeSubtitle}
+        languageSelectorVariant="default"
+      />
       <div className="home__functions">
         {functions.map((func) => (
           <div
@@ -66,7 +56,7 @@ function Home({ onNavigate }) {
             <h3 className="home__function-title">{func.title}</h3>
             <p className="home__function-description">{func.description}</p>
             {!func.disabled && (
-              <div className="home__function-cta">{translations[language].clickToOpen} →</div>
+              <div className="home__function-cta">{t.clickToOpen} →</div>
             )}
           </div>
         ))}

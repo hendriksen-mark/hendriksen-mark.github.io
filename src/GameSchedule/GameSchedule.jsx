@@ -6,13 +6,16 @@ import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
+import PageContainer from '../components/PageContainer/PageContainer';
+import PageSection from '../components/PageSection/PageSection';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
-import { FaGamepad, FaListOl, FaDownload, FaUpload } from 'react-icons/fa';
+import { FaCalendarAlt, FaGamepad, FaListOl, FaDownload, FaUpload } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
 import html2canvas from 'html2canvas';
 
 function GameSchedule({ onBackToHome }) {
   const { language } = useLanguage();
+  const t = translations[language] || translations.en;
   const [gameType, setGameType] = useState('duo');
   const [maxConsecutiveGames, setMaxConsecutiveGames] = useState(3);
   const [maxGames, setMaxGames] = useState(5);
@@ -173,7 +176,7 @@ function GameSchedule({ onBackToHome }) {
       });
 
       const formattedSchedule = printSchedule(schedule, players, homeAwayCount, language, availability);
-      const codeRunsText = `${translations[language].recalculations}: ${codeRuns}`;
+      const codeRunsText = `${t.recalculations}: ${codeRuns}`;
 
       if (formattedSchedule.startsWith('<div class="ttapp-schedule">')) {
         setGeneratedSchedule(`${formattedSchedule}<!--SEPARATOR-->${codeRunsText}`);
@@ -241,7 +244,7 @@ function GameSchedule({ onBackToHome }) {
 
         // Validate required fields
         if (!config.gameType || !config.playerNames || !config.rows) {
-          toast.error(translations[language].invalidConfigurationFile);
+          toast.error(t.invalidConfigurationFile);
           return;
         }
 
@@ -257,11 +260,11 @@ function GameSchedule({ onBackToHome }) {
         event.target.value = '';
 
         setTimeout(() => {
-          toast.success(translations[language].configurationImported);
+          toast.success(t.configurationImported);
         }, 100);
 
       } catch (error) {
-        toast.error(translations[language].invalidConfigurationFile);
+        toast.error(t.invalidConfigurationFile);
       }
     };
     reader.readAsText(file);
@@ -272,37 +275,31 @@ function GameSchedule({ onBackToHome }) {
   };
 
   return (
-    <div className="game-schedule">
-      <div className="game-schedule__container">
+    <PageContainer className="game-schedule">
         <PageHeader
           onBackToHome={onBackToHome}
-          backToHomeText={translations[language].backToHome}
-          title={translations[language].gameScheduleGenerator}
-          description={translations[language].gameScheduleDescription}
+          title={<><FaCalendarAlt /> {t.gameScheduleGenerator}</>}
+          description={t.gameScheduleDescription}
           languageSelectorVariant="GameSchedule"
         />
 
-        <div className="game-schedule__section">
-          <h2 className="game-schedule__section-title">{translations[language].configuration}</h2>
-          <div className="options">
-            <div className="options__group">
+        <PageSection title={t.configuration} variant="game-schedule">
+          <div className="game-schedule__inputs">
               <StyledSelect
-                label={translations[language].selectGameType}
-                value={{ value: gameType, label: translations[language][`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
+                label={t.selectGameType}
+                value={{ value: gameType, label: t[`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
                 onChange={(selectedOption) => handleGameTypeChange(selectedOption.value)}
                 icon={FaGamepad}
                 variant="GameSchedule"
                 options={[
-                  { value: 'duo', label: translations[language].gameTypeDuo },
-                  { value: 'trio', label: translations[language].gameTypeTrio },
-                  { value: 'squad', label: translations[language].gameTypeSquad },
-                  { value: 'beker', label: translations[language].gameTypeBeker }
+                  { value: 'duo', label: t.gameTypeDuo },
+                  { value: 'trio', label: t.gameTypeTrio },
+                  { value: 'squad', label: t.gameTypeSquad },
+                  { value: 'beker', label: t.gameTypeBeker }
                 ]}
               />
-            </div>
-            <div className="options__group">
               <StyledSelect
-                label={translations[language].maxConsecutiveGames}
+                label={t.maxConsecutiveGames}
                 value={{ value: maxConsecutiveGames, label: maxConsecutiveGames.toString() }}
                 onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
                 icon={FaListOl}
@@ -312,10 +309,8 @@ function GameSchedule({ onBackToHome }) {
                   label: (i + 1).toString()
                 }))}
               />
-            </div>
-            <div className="options__group">
               <StyledSelect
-                label={translations[language].maxGames}
+                label={t.maxGames}
                 value={{ value: maxGames, label: maxGames.toString() }}
                 onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
                 icon={FaListOl}
@@ -325,17 +320,16 @@ function GameSchedule({ onBackToHome }) {
                   label: (i + 1).toString()
                 }))}
               />
-            </div>
           </div>
 
           <div className="import-export-actions">
             <AnimatedButton
               onClick={exportConfiguration}
               color="blue"
-              title={translations[language].exportTooltip}
+              title={t.exportTooltip}
             >
               <FaDownload />
-              {" " + translations[language].exportConfiguration}
+              {" " + t.exportConfiguration}
             </AnimatedButton>
 
             <input
@@ -348,25 +342,24 @@ function GameSchedule({ onBackToHome }) {
             <AnimatedButton
               onClick={triggerFileInput}
               color="green"
-              title={translations[language].importTooltip}
+              title={t.importTooltip}
             >
               <FaUpload />
-              {" " + translations[language].importConfiguration}
+              {" " + t.importConfiguration}
             </AnimatedButton>
           </div>
-        </div>
+        </PageSection>
 
-        <div className="game-schedule__section grid-header">
-          <h2 className="game-schedule__section-title">{translations[language].playersAndLocations}</h2>
+        <PageSection title={t.playersAndLocations} variant="game-schedule" className="grid-header">
           <div className="grid-header__labels">
             <span></span>
             <span></span>
-            <span>{translations[language].players}</span>
+            <span>{t.players}</span>
           </div>
           <div className="grid-header__players">
             <div></div>
             <div className="location-label-wrapper">
-              <span className="location-label">{translations[language].location}</span>
+              <span className="location-label">{t.location}</span>
             </div>
             {playerNames.map((name, index) => (
               <div key={index} className="player-column">
@@ -380,7 +373,7 @@ function GameSchedule({ onBackToHome }) {
                   style={{ textAlign: 'center' }}
                 />
                 <button onClick={() => handleRemovePlayer(index)}>
-                  {translations[language].remove}
+                  {t.remove}
                 </button>
               </div>
             ))}
@@ -393,7 +386,7 @@ function GameSchedule({ onBackToHome }) {
                   onClick={() => handleRemoveRow(rowIndex)}
                   className="remove-btn"
                 >
-                  {translations[language].remove}
+                  {t.remove}
                 </button>
                 <StyledInput
                   bare
@@ -401,7 +394,7 @@ function GameSchedule({ onBackToHome }) {
                   id={`location-${rowIndex}`}
                   className="location-input"
                   type="text"
-                  placeholder={translations[language].location.slice(0, -2)}
+                  placeholder={t.location.slice(0, -2)}
                   value={row.location}
                   onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
                 />
@@ -412,8 +405,8 @@ function GameSchedule({ onBackToHome }) {
                     onClick={() => handlePlayerAvailability(rowIndex, playerIndex)}
                   >
                     {available
-                      ? translations[language].available
-                      : translations[language].unavailable}
+                      ? t.available
+                      : t.unavailable}
                   </button>
                 ))}
               </div>
@@ -422,22 +415,22 @@ function GameSchedule({ onBackToHome }) {
 
           <div className="grid-actions">
             <AnimatedButton onClick={handleAddLocation} color="blue">
-              {translations[language].addLocation}
+              {t.addLocation}
             </AnimatedButton>
             <AnimatedButton onClick={handleAddPlayer} color="blue">
-              {translations[language].addPlayer}
+              {t.addPlayer}
             </AnimatedButton>
             <AnimatedButton onClick={handleResetAvailability} color="orange">
-              {translations[language].resetAvailability}
+              {t.resetAvailability}
             </AnimatedButton>
             <AnimatedButton onClick={handleGenerateSchedule} color="green" disabled={isGenerating}>
               {isGenerating ? (
                 <span className="loading-content">
                   <span className="spinner"></span>
-                  {translations[language].generating}
+                  {t.generating}
                 </span>
               ) : (
-                translations[language].generateSchedule
+                t.generateSchedule
               )}
             </AnimatedButton>
           </div>
@@ -446,26 +439,26 @@ function GameSchedule({ onBackToHome }) {
             <div className="loading-progress">
               <div className="progress-info">
                 <span className="spinner"></span>
-                <span>{translations[language].calculatingSchedule}</span>
+                <span>{t.calculatingSchedule}</span>
                 <span className="calculation-count">
-                  {translations[language].calculations}: {currentCalculations}
+                  {t.calculations}: {currentCalculations}
                 </span>
               </div>
             </div>
           )}
-        </div>
+        </PageSection>
 
         {generatedSchedule && (
-          <div className="game-schedule__section generated-schedule">
+          <PageSection className="generated-schedule">
             <h3 className={
               generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">')
                 ? 'success'
                 : 'error'
             }>
               {generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">') ? (
-                translations[language].scheduleGenerated
+                t.scheduleGenerated
               ) : (
-                translations[language].scheduleError
+                t.scheduleError
               )}
             </h3>
             {generatedSchedule.includes('<!--SEPARATOR-->') ? (
@@ -482,13 +475,12 @@ function GameSchedule({ onBackToHome }) {
             )}
             <div className="generated-actions">
               <AnimatedButton onClick={handleDownloadImage} color="blue">
-                <FaDownload /> {translations[language].downloadAsImage}
+                <FaDownload /> {t.downloadAsImage}
               </AnimatedButton>
             </div>
-          </div>
+          </PageSection>
         )}
-      </div>
-    </div>
+    </PageContainer>
   );
 }
 

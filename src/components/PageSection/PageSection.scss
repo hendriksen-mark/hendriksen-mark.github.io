@@ -1,0 +1,59 @@
+.page-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    &--result {
+        border: 2px solid #e2f0cb;
+        background: #f6fff0;
+    }
+
+    &__title {
+        margin: 0 0 1rem 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 0.5rem;
+
+        &--inline {
+            border-bottom: none;
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        background: #1f2937;
+        color: #f9fafb;
+        border: 1px solid #374151;
+
+        &--result {
+            background: #14291f;
+            border-color: #2d5a3d;
+        }
+
+        .page-section__title {
+            color: #f9fafb;
+            border-bottom-color: #4b5563;
+        }
+    }
+
+    &--calculator {
+        @media (prefers-color-scheme: dark) {
+            .page-section__title {
+                border-bottom-color: #e67e22;
+            }
+        }
+    }
+
+    &--game-schedule {
+        @media (prefers-color-scheme: dark) {
+            .page-section__title {
+                border-bottom-color: #28a745;
+            }
+        }
+    }
+}

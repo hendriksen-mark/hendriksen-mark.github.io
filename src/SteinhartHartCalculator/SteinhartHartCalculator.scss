@@ -1,40 +1,4 @@
 .steinhart-calculator {
-    min-height: 100vh;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-
-    &__container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    &__section {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-
-        &--result {
-            border: 2px solid #e2f0cb;
-            background: #f6fff0;
-        }
-    }
-
-    &__section-title {
-        margin: 0 0 1rem 0;
-        font-size: 1.4rem;
-        color: #333;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 0.5rem;
-
-        &--inline {
-            border-bottom: none;
-            margin: 0;
-            padding: 0;
-        }
-    }
-
     &__table-header {
         display: flex;
         align-items: center;
@@ -56,7 +20,7 @@
         }
     }
 
-    .input-group {
+    .page-section .input-group {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
@@ -299,27 +263,11 @@
     }
 
     @media (prefers-color-scheme: dark) {
-        &__section {
-            background: #1f2937;
-            color: #f9fafb;
-            border: 1px solid #374151;
-
-            &--result {
-                background: #14291f;
-                border-color: #2d5a3d;
-            }
-        }
-
-        &__section-title {
-            color: #f9fafb;
-            border-bottom-color: #4b5563;
-        }
-
         &__table-header {
             border-bottom-color: #4b5563;
         }
 
-        .input-group {
+        .page-section .input-group {
             label {
                 color: #d1d5db;
             }

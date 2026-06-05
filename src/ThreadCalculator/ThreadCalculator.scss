@@ -1,41 +1,15 @@
 .thread-calculator {
-  min-height: 100vh;
-  padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
 
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__section {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-
-    &-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #333;
-      margin: 0 0 1.5rem 0;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #e9ecef;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-
-      @media (max-width: 600px) {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-      }
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
     }
   }
 
@@ -58,20 +32,6 @@
       }
 
       // Styled via .styled-input in StyledInput.scss
-    }
-
-    .button-group {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-
-      @media (max-width: 600px) {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-      }
     }
 
     .select-group {
@@ -149,8 +109,6 @@
 
   // Responsive design
   @media (max-width: 768px) {
-    padding: 1rem;
-
     &__inputs {
       flex-direction: column;
       align-items: stretch;
@@ -173,17 +131,6 @@
   // Dark mode support
   @media (prefers-color-scheme: dark) {
     // Keep orange theme but much darker
-
-    &__section {
-      background: #1f2937;
-      color: white;
-      border: 1px solid #374151;
-
-      &-title {
-        color: white;
-        border-bottom-color: #e67e22;
-      }
-    }
 
     .input-group {
       label {

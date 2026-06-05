@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
+import PageContainer from '../components/PageContainer/PageContainer';
+import PageSection from '../components/PageSection/PageSection';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
@@ -12,9 +14,11 @@ import { formatMM, formatValueWithConversion } from '../utils/converters';
 import calculateThreadDimensions from '../utils/calculators';
 import { FaCog } from 'react-icons/fa';
 import { TbAngle } from "react-icons/tb";
+import { GiHexagonalNut } from 'react-icons/gi';
 
 function ThreadCalculator({ onBackToHome }) {
   const { language } = useLanguage();
+    const t = translations[language] || translations.en;
   const [unitSystem, setUnitSystem] = useState('metric'); // 'metric' or 'imperial'
   const [threadAngle, setThreadAngle] = useState(60); // 60° or 55°
 
@@ -46,22 +50,19 @@ function ThreadCalculator({ onBackToHome }) {
   };
 
   return (
-    <div className="thread-calculator">
-      <div className="thread-calculator__container">
+    <PageContainer className="thread-calculator">
         <PageHeader
           onBackToHome={onBackToHome}
-          backToHomeText={translations[language].backToHome}
-          title={translations[language].threadCalculatorTitle}
-          description={translations[language].threadCalculatorDescription}
+          title={<><GiHexagonalNut /> {t.threadCalculatorTitle}</>}
+          description={t.threadCalculatorDescription}
           languageSelectorVariant="calculator"
         />
 
-        <div className="thread-calculator__section">
-          <h2 className="thread-calculator__section-title">{translations[language].inputParameters}</h2>
+        <PageSection title={t.inputParameters} variant="calculator">
           <div className="thread-calculator__inputs">
             <div className="select-group">
               <StyledSelect
-                label={translations[language].unitSystem || 'Unit System'}
+                label={t.unitSystem || 'Unit System'}
                 value={{ value: unitSystem, label: unitSystem === 'metric' ? 'Metric (mm)' : 'Imperial (inches)' }}
                 onChange={(selectedOption) => { setUnitSystem(selectedOption.value); setResults(null); }}
                 icon={FaCog}
@@ -74,7 +75,7 @@ function ThreadCalculator({ onBackToHome }) {
             </div>
             <div className="select-group">
               <StyledSelect
-                label={translations[language].threadAngle}
+                label={t.threadAngle}
                 value={{ value: threadAngle, label: threadAngle === 60 ? '60° (ISO/UTS Standard)' : '55° (British Standard)' }}
                 onChange={(selectedOption) => { setThreadAngle(parseInt(selectedOption.value)); setResults(null); }}
                 icon={TbAngle}
@@ -89,7 +90,7 @@ function ThreadCalculator({ onBackToHome }) {
             {unitSystem === 'metric' ? (
               <>
                 <StyledInput
-                  label={`${translations[language].nominalDiameter} (mm)`}
+                  label={`${t.nominalDiameter} (mm)`}
                   type="number"
                   value={nominalDiameter}
                   onChange={(e) => { setNominalDiameter(parseFloat(e.target.value)); setResults(null); }}
@@ -99,7 +100,7 @@ function ThreadCalculator({ onBackToHome }) {
                   variant="calculator"
                 />
                 <StyledInput
-                  label={`${translations[language].threadPitch} (mm)`}
+                  label={`${t.threadPitch} (mm)`}
                   type="number"
                   value={pitch}
                   onChange={(e) => { setPitch(parseFloat(e.target.value)); setResults(null); }}
@@ -112,7 +113,7 @@ function ThreadCalculator({ onBackToHome }) {
             ) : (
               <>
                 <StyledInput
-                  label={`${translations[language].nominalDiameter} (inches)`}
+                  label={`${t.nominalDiameter} (inches)`}
                   type="number"
                   value={imperialDiameter}
                   onChange={(e) => { setImperialDiameter(parseFloat(e.target.value)); setResults(null); }}
@@ -122,7 +123,7 @@ function ThreadCalculator({ onBackToHome }) {
                   variant="calculator"
                 />
                 <StyledInput
-                  label={`${translations[language].threadsPerInch} (TPI)`}
+                  label={`${t.threadsPerInch} (TPI)`}
                   type="number"
                   value={tpi}
                   onChange={(e) => { setTpi(parseFloat(e.target.value)); setResults(null); }}
@@ -138,25 +139,25 @@ function ThreadCalculator({ onBackToHome }) {
           <div className="thread-calculator-actions">
             <div className="button-group">
               <AnimatedButton onClick={handleCalculate} color="green">
-                {translations[language].calculate}
+                {t.calculate}
               </AnimatedButton>
               {unitSystem === 'imperial' && (
                 <AnimatedButton
                   onClick={() => setShowMetricConversion(!showMetricConversion)}
                   color="orange"
-                  title="Toggle inch/mm conversion"
+                  title={t.toggleInchMmConversion}
                 >
-                  {showMetricConversion ? translations[language].showInch : translations[language].showMm}
+                  {showMetricConversion ? t.showInch : t.showMm}
                 </AnimatedButton>
               )}
               {results && (
                 <AnimatedButton onClick={handleDownloadDXF} color="purple">
-                  📐 {translations[language].downloadDxf}
+                  📐 {t.downloadDxf}
                 </AnimatedButton>
               )}
             </div>
           </div>
-        </div>
+        </PageSection>
 
         {results && (
           <div className="thread-calculator__results">
@@ -165,42 +166,41 @@ function ThreadCalculator({ onBackToHome }) {
               isImperial={unitSystem === 'imperial' && !showMetricConversion}
               originalUnitSystem={unitSystem}
             />
-            <div className="thread-calculator__section">
-              <h2 className="thread-calculator__section-title">
-                {translations[language].results}: {results.threadDesignation}
-              </h2>
-
+            <PageSection
+              title={`${t.results}: ${results.threadDesignation}`}
+              variant="calculator"
+            >
               <div className="results-grid">
                 <div className="result-card">
-                  <h3>{translations[language].fundamentalTriangle}</h3>
+                  <h3>{t.fundamentalTriangle}</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].basicTriangleHeight} (H):</span>
+                      <span className="label">{t.basicTriangleHeight} (H):</span>
                       <span className="value">{formatValueWithConversion(results.basicTriangleHeight, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].threadHeight} (5H/8)(h):</span>
+                      <span className="label">{t.threadHeight} (5H/8)(h):</span>
                       <span className="value">{formatValueWithConversion(results.threadHeight, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">H/4:</span>
+                      <span className="label">{t.halfHeight} (H/4):</span>
                       <span className="value">{formatValueWithConversion(results.basicTriangleHeight / 4, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">H/8:</span>
+                      <span className="label">{t.eighthHeight} (H/8):</span>
                       <span className="value">{formatValueWithConversion(results.threadHeight3, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">3H/8:</span>
+                      <span className="label">{t.threeEighthsHeight} (3H/8):</span>
                       <span className="value">{formatValueWithConversion(3 * results.basicTriangleHeight / 8, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].threadEngagement}:</span>
+                      <span className="label">{t.threadEngagement}:</span>
                       <span className="value">{formatValueWithConversion(results.threadEngagement, unitSystem, showMetricConversion)}</span>
                     </div>
                     {unitSystem === 'metric' && (
                       <div className="result-item">
-                        <span className="label">{translations[language].pitch}:</span>
+                        <span className="label">{t.pitch}:</span>
                         <span className="value">{formatValueWithConversion(results.pitch, unitSystem, showMetricConversion)}</span>
                       </div>
                     )}
@@ -208,104 +208,103 @@ function ThreadCalculator({ onBackToHome }) {
                 </div>
 
                 <div className="result-card">
-                  <h3>{translations[language].externalThread} ({translations[language].bolt})</h3>
+                  <h3>{t.externalThread} ({t.bolt})</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].majorDiameter} (d):</span>
+                      <span className="label">{t.majorDiameter} (d):</span>
                       <span className="value">{formatValueWithConversion(results.externalMajorDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].effectiveDiameter} (d₁+2h):</span>
+                      <span className="label">{t.effectiveDiameter} (d₁+2h):</span>
                       <span className="value">{formatValueWithConversion(results.externalEffectiveDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].pitchDiameter} (d₂):</span>
+                      <span className="label">{t.pitchDiameter} (d₂):</span>
                       <span className="value">{formatValueWithConversion(results.externalPitchDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].minorDiameter} (d₁):</span>
+                      <span className="label">{t.minorDiameter} (d₁):</span>
                       <span className="value">{formatValueWithConversion(results.externalMinorDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].coreDiameter} (d₃):</span>
+                      <span className="label">{t.coreDiameter} (d₃):</span>
                       <span className="value">{formatValueWithConversion(results.externalCoreDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="result-card">
-                  <h3>{translations[language].internalThread} ({translations[language].nut})</h3>
+                  <h3>{t.internalThread} ({t.nut})</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].majorDiameter} (D):</span>
+                      <span className="label">{t.majorDiameter} (D):</span>
                       <span className="value">{formatValueWithConversion(results.internalMajorDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].pitchDiameter} (D₂):</span>
+                      <span className="label">{t.pitchDiameter} (D₂):</span>
                       <span className="value">{formatValueWithConversion(results.internalPitchDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].minorDiameter} (D₁):</span>
+                      <span className="label">{t.minorDiameter} (D₁):</span>
                       <span className="value">{formatValueWithConversion(results.internalMinorDiameter, unitSystem, showMetricConversion)}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="result-card">
-                  <h3>{translations[language].boltHead}</h3>
+                  <h3>{t.boltHead}</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].headDiameter}:</span>
+                      <span className="label">{t.headDiameter}:</span>
                       <span className="value">{formatMM(results.boltHeadDiameter)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].headHeight}:</span>
+                      <span className="label">{t.headHeight}:</span>
                       <span className="value">{formatMM(results.boltHeadHeight)}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="result-card">
-                  <h3>{translations[language].nutDimensions}</h3>
+                  <h3>{t.nutDimensions}</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].widthAcrossFlats}:</span>
+                      <span className="label">{t.widthAcrossFlats}:</span>
                       <span className="value">{formatMM(results.nutWidthAcrossFlats)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].widthAcrossCorners}:</span>
+                      <span className="label">{t.widthAcrossCorners}:</span>
                       <span className="value">{formatMM(results.nutWidthAcrossCorners)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].nutHeight}:</span>
+                      <span className="label">{t.nutHeight}:</span>
                       <span className="value">{formatMM(results.nutHeight)}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="result-card">
-                  <h3>{translations[language].washerDimensions}</h3>
+                  <h3>{t.washerDimensions}</h3>
                   <div className="result-items">
                     <div className="result-item">
-                      <span className="label">{translations[language].innerDiameter}:</span>
+                      <span className="label">{t.innerDiameter}:</span>
                       <span className="value">{formatMM(results.washerInnerDiameter)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].outerDiameter}:</span>
+                      <span className="label">{t.outerDiameter}:</span>
                       <span className="value">{formatMM(results.washerOuterDiameter)}</span>
                     </div>
                     <div className="result-item">
-                      <span className="label">{translations[language].thickness}:</span>
+                      <span className="label">{t.thickness}:</span>
                       <span className="value">{formatMM(results.washerThickness)}</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </PageSection>
           </div>
         )}
-      </div>
-    </div>
+    </PageContainer>
   );
 }
 

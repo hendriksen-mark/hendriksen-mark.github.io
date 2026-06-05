@@ -3,6 +3,7 @@ import translations from '../Translation/Translations'; // Import translations
 export const MAX_CODE_RUNS = 2000;
 
 export function createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language) {
+  const t = translations[language] || translations.en;
   const schedule = {};
   let codeRuns = 0;
 
@@ -32,7 +33,7 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
         );
 
         if (availablePlayers.length < requiredPlayers) {
-          throw new Error(translations[language].errorNotEnoughPlayers.replace("{location}", loc));
+          throw new Error(t.errorNotEnoughPlayers.replace("{location}", loc));
         }
 
         // Simple random selection without home/away balancing constraints
@@ -57,15 +58,16 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
       return { schedule, codeRuns };
     } catch (error) {
       if (codeRuns >= MAX_CODE_RUNS) {
-        throw new Error(translations[language].errorMaxRetriesReached);
+        throw new Error(t.errorMaxRetriesReached);
       }
     }
   }
 
-  throw new Error(translations[language].errorMaxRetriesReached);
+  throw new Error(t.errorMaxRetriesReached);
 }
 
 export async function createScheduleAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, onProgress) {
+  const t = translations[language] || translations.en;
   const schedule = {};
   let codeRuns = 0;
 
@@ -102,7 +104,7 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
         );
 
         if (availablePlayers.length < requiredPlayers) {
-          throw new Error(translations[language].errorNotEnoughPlayers.replace("{location}", loc));
+          throw new Error(t.errorNotEnoughPlayers.replace("{location}", loc));
         }
 
         // Simple random selection without home/away balancing constraints
@@ -132,12 +134,12 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
       return { schedule, codeRuns };
     } catch (error) {
       if (codeRuns >= MAX_CODE_RUNS) {
-        throw new Error(translations[language].errorMaxRetriesReached);
+        throw new Error(t.errorMaxRetriesReached);
       }
     }
   }
 
-  throw new Error(translations[language].errorMaxRetriesReached);
+  throw new Error(t.errorMaxRetriesReached);
 }
 
 function getAvailablePlayers(loc, availability, playerMatches, consecutiveGames, maxGames, maxConsecutiveGames, locations) {
@@ -172,15 +174,16 @@ function resetConsecutiveGames(availability, selectedPlayers, consecutiveGames) 
 }
 
 export function validateLocations(locations, language, gameType) {
+  const t = translations[language] || translations.en;
   const uniqueLocations = new Set(locations);
   if (uniqueLocations.size !== locations.length) {
-    return translations[language].errorLocationsUnique;
+    return t.errorLocationsUnique;
   }
 
   if (gameType !== "beker") { // Skip validation for "beker"
     const homeCount = locations.filter((loc) => loc.startsWith("THUIS")).length;
     if (homeCount < locations.length / 2) {
-      return translations[language].errorLocationsThuis;
+      return t.errorLocationsThuis;
     }
   }
 
@@ -188,27 +191,30 @@ export function validateLocations(locations, language, gameType) {
 }
 
 export function validateAvailability(locations, availability, language) {
+  const t = translations[language] || translations.en;
   for (const [player, avail] of Object.entries(availability)) {
     if (avail.length !== locations.length) {
-      return translations[language].errorAvailabilityLength.replace("{player}", player);
+      return t.errorAvailabilityLength.replace("{player}", player);
     }
   }
   return null;
 }
 
 function checkAvailablePlayersForLocation(locations, availability, requiredPlayers, language) {
+  const t = translations[language] || translations.en;
   for (const loc of locations) {
     const availablePlayers = Object.keys(availability).filter(
       (player) => availability[player][locations.indexOf(loc)]
     );
     if (availablePlayers.length < requiredPlayers) {
-      return translations[language].errorNotEnoughPlayers.replace("{location}", loc);
+      return t.errorNotEnoughPlayers.replace("{location}", loc);
     }
   }
   return null;
 }
 
 export function createScheduleWithValidation(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, gameType) {
+  const t = translations[language] || translations.en;
   const validationError =
     validateLocations(locations, language, gameType) ||
     validateAvailability(locations, availability, language) ||
@@ -222,11 +228,12 @@ export function createScheduleWithValidation(locations, availability, requiredPl
     const { schedule, codeRuns } = createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language);
     return { schedule, codeRuns };
   } catch (error) {
-    return { error: translations[language].errorUnableToGenerateSchedule.replace("{reason}", error.message) };
+    return { error: t.errorUnableToGenerateSchedule.replace("{reason}", error.message) };
   }
 }
 
 export async function createScheduleWithValidationAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, gameType, onProgress) {
+  const t = translations[language] || translations.en;
   const validationError =
     validateLocations(locations, language, gameType) ||
     validateAvailability(locations, availability, language) ||
@@ -240,15 +247,16 @@ export async function createScheduleWithValidationAsync(locations, availability,
     const { schedule, codeRuns } = await createScheduleAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, onProgress);
     return { schedule, codeRuns };
   } catch (error) {
-    return { error: translations[language].errorUnableToGenerateSchedule.replace("{reason}", error.message) };
+    return { error: t.errorUnableToGenerateSchedule.replace("{reason}", error.message) };
   }
 }
 
 export function printSchedule(schedule, players, homeAwayCount, language, availability = null) {
-  const locationHeader = translations[language].location;
-  const homeHeader = translations[language].home;
-  const awayHeader = translations[language].away;
-  const totalHeader = translations[language].total;
+  const t = translations[language] || translations.en;
+  const locationHeader = t.location;
+  const homeHeader = t.home;
+  const awayHeader = t.away;
+  const totalHeader = t.total;
 
   // Create HTML table
   let html = '<div class="ttapp-schedule">';
