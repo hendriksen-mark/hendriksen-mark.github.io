@@ -12,19 +12,16 @@
   background-position: 0% 0%;
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
     background-position: 100% 0%;
   }
 
   &:active {
-    transform: translateY(0);
     background-position: 100% 0%;
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
     background-position: 0% 0% !important;
   }
 

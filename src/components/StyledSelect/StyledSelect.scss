@@ -20,10 +20,6 @@
     padding-left: 2.5rem !important;
     transition: all 0.3s ease !important;
     box-shadow: none !important;
-
-    &:hover {
-      transform: translateY(-1px);
-    }
   }
 
   .styled-select__single-value {
@@ -74,7 +70,6 @@
       &:hover {
         background: rgba(255, 255, 255, 0.15) !important;
         border-color: rgba($primary-color, 0.5) !important;
-        transform: translateY(-1px);
         box-shadow: 0 4px 15px rgba($primary-color, 0.1) !important;
       }
     }
@@ -136,18 +131,13 @@
     }
 
     .styled-select__control {
-      background: rgba(255, 255, 255, 0.1) !important;
+      background: color-mix(in srgb, var(--select-primary-color) 8%, rgba(255, 255, 255, 0.1)) !important;
       border: 1px solid rgba(255, 255, 255, 0.2) !important;
       backdrop-filter: blur(20px);
-      min-height: 40.5px !important;
-      padding-left: 2.5rem !important;
-      border-radius: 12px !important;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.15) !important;
+        background: color-mix(in srgb, var(--select-primary-color) 12%, rgba(255, 255, 255, 0.15)) !important;
         border-color: var(--select-primary-color) !important;
-        opacity: 0.8;
-        transform: translateY(-1px);
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
       }
     }
@@ -263,13 +253,14 @@
   }
 
   .styled-select__control {
-    background: color-mix(in srgb, var(--select-primary-color) 8%, white) !important;
-    border: 2px solid var(--select-primary-color) !important;
+    background: color-mix(in srgb, var(--select-primary-color) 15%, rgba(255, 255, 255, 0.1)) !important;
+    border: 1px solid rgba(127, 127, 127, 0.2) !important;
+    backdrop-filter: blur(20px);
 
     &:hover {
-      background: color-mix(in srgb, var(--select-primary-color) 12%, white) !important;
+      background: color-mix(in srgb, var(--select-primary-color) 25%, rgba(255, 255, 255, 0.15)) !important;
       border-color: var(--select-primary-color) !important;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: 0 4px 15px rgba(var(--select-primary-rgb, 0, 0, 0), 0.1) !important;
     }
   }
 
@@ -346,6 +337,9 @@
       background: var(--select-default-bg) !important;
       border: 1px solid var(--select-default-border) !important;
       backdrop-filter: blur(10px);
+      min-height: 40.5px !important;
+      padding-left: 2.5rem !important;
+      border-radius: 12px !important;
 
       &:hover {
         background: var(--select-default-bg-hover) !important;
