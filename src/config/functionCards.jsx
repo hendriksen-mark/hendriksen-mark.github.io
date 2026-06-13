@@ -59,7 +59,7 @@ export const FUNCTION_CARDS = [
     icon: <SiPihole />,
     titleKey: 'piholeTitle',
     descriptionKey: 'piholeDescription',
-    url: 'https://hendriksen-mark.webredirect.org:82',
+    url: 'https://hendriksen-mark.webredirect.org:82/admin/',
   },
   {
     id: 'octoprint-crx',
