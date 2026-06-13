@@ -1,4 +1,4 @@
-import { FaCalendarAlt, FaCog, FaBolt, FaCloud, FaMicrochip, FaThermometerHalf } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaBolt, FaCloud, FaMicrochip, FaThermometerHalf, FaWifi } from 'react-icons/fa';
 import { BiSolidDollarCircle } from 'react-icons/bi';
 import { SiCreality } from 'react-icons/si';
 import { GiHexagonalNut, GiOctopus } from 'react-icons/gi';
@@ -109,6 +109,13 @@ export const FUNCTION_CARDS = [
     titleKey: 'speedtestTitle',
     descriptionKey: 'speedtestDescription',
     url: 'https://hendriksen-mark.webredirect.org:89',
+  },
+  {
+    id: 'nebula',
+    icon: <FaWifi />,
+    titleKey: 'nebulaTitle',
+    descriptionKey: 'nebulaDescription',
+    url: 'https://nebula.zyxel.com/cc/ui/index.html',
   },
   // ── Placeholder ──────────────────────────────────────────────────────────────
   {

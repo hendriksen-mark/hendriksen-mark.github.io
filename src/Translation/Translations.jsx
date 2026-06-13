@@ -29,6 +29,8 @@ const translations = {
     speedtestDescription: "Test de internetsnelheid van je netwerk",
     speedtestlocalTitle: "Lokale Speedtest",
     speedtestlocalDescription: "Test de internetsnelheid naar je lokale netwerk",
+    nebulaTitle: "Nebula",
+    nebulaDescription: "Beheer en configureer je Zyxel Nebula netwerkapparaten",
     clickToOpen: "Klik om te openen",
     backToHome: "Terug naar home",
     // schedule translations
@@ -252,6 +254,8 @@ const translations = {
     speedtestDescription: "Test the internet speed of your network",
     speedtestlocalTitle: "Local Speed Test",
     speedtestlocalDescription: "Test the internet speed to your local network",
+    nebulaTitle: "Nebula",
+    nebulaDescription: "Manage and configure your Zyxel Nebula network devices",
     clickToOpen: "Click to open",
     backToHome: "Back to home",
     // schedule translations
