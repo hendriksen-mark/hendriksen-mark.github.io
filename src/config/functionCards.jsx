@@ -1,6 +1,6 @@
-import { FaCalendarAlt, FaCog, FaBolt, FaCloud, FaMicrochip, FaThermometerHalf, FaWifi } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaMicrochip, FaThermometerHalf, FaWifi } from 'react-icons/fa';
 import { BiSolidDollarCircle } from 'react-icons/bi';
-import { SiCreality } from 'react-icons/si';
+import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud } from 'react-icons/si';
 import { GiHexagonalNut, GiOctopus } from 'react-icons/gi';
 import { PiMonitorDuotone, PiSpeedometerFill } from 'react-icons/pi';
 import { IoIosSpeedometer } from 'react-icons/io';
@@ -56,7 +56,7 @@ export const FUNCTION_CARDS = [
   },
   {
     id: 'pihole',
-    icon: <FaCog />,
+    icon: <SiPihole />,
     titleKey: 'piholeTitle',
     descriptionKey: 'piholeDescription',
     url: 'https://hendriksen-mark.webredirect.org:82',
@@ -84,14 +84,14 @@ export const FUNCTION_CARDS = [
   },
   {
     id: 'uptimekuma',
-    icon: <FaBolt />,
+    icon: <SiUptimekuma />,
     titleKey: 'uptimekumaTitle',
     descriptionKey: 'uptimekumaDescription',
     url: 'https://hendriksen-mark.webredirect.org:86',
   },
   {
     id: 'nextcloud',
-    icon: <FaCloud />,
+    icon: <SiNextcloud />,
     titleKey: 'nextcloudTitle',
     descriptionKey: 'nextcloudDescription',
     url: 'https://hendriksen-mark.webredirect.org:443',
