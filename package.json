@@ -4,15 +4,15 @@
   "homepage": "https://hendriksen-mark.github.io/",
   "dependencies": {
     "@markhhh/dxf-writer": "^4.2.5",
-    "@vitejs/plugin-react-swc": "4.0.0",
+    "@vitejs/plugin-react-swc": "4.3.1",
     "html2canvas": "^1.4.1",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-hot-toast": "2.6.0",
-    "react-icons": "5.5.0",
+    "react-icons": "https://github.com/hendriksen-mark/react-icons/releases/download/v5.6.0/react-icons-5.6.0.tgz",
     "react-select": "5.10.2",
-    "sass-embedded": "1.90.0",
-    "vite": "7.1.2"
+    "sass-embedded": "1.100.0",
+    "vite": "8.1.0"
   },
   "scripts": {
     "start": "vite",

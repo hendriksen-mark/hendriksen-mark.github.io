@@ -1,9 +1,10 @@
-import { FaCalendarAlt, FaCog, FaMicrochip, FaThermometerHalf, FaWifi } from 'react-icons/fa';
+import { FaCalendarAlt, FaCog, FaMicrochip, FaThermometerHalf, FaWifi, FaReact } from 'react-icons/fa';
 import { BiSolidDollarCircle } from 'react-icons/bi';
-import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud } from 'react-icons/si';
-import { GiHexagonalNut, GiOctopus } from 'react-icons/gi';
+import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud, SiHomebridge, SiPhilipshue, SiHomeassistant, SiRaspberrypi, SiOctoprint } from 'react-icons/si';
+import { GiHexagonalNut } from 'react-icons/gi';
 import { PiMonitorDuotone, PiSpeedometerFill } from 'react-icons/pi';
 import { IoIosSpeedometer } from 'react-icons/io';
+import { ShDiyhueDark } from 'react-icons/sh';
 
 /**
  * Single source of truth for all home-page function cards.
@@ -70,7 +71,7 @@ export const FUNCTION_CARDS = [
   },
   {
     id: 'octoprint-aliexpress',
-    icon: <GiOctopus />,
+    icon: <SiOctoprint />,
     titleKey: 'octoprintAliexpressTitle',
     descriptionKey: 'octoprintAliexpressDescription',
     url: 'https://hendriksen-mark.webredirect.org:84',
@@ -116,6 +117,48 @@ export const FUNCTION_CARDS = [
     titleKey: 'nebulaTitle',
     descriptionKey: 'nebulaDescription',
     url: 'https://nebula.zyxel.com/cc/ui/index.html',
+  },
+  {
+    id: 'react_icons',
+    icon: <FaReact />,
+    titleKey: 'reactIconsTitle',
+    descriptionKey: 'reactIconsDescription',
+    url: 'https://hendriksen-mark.github.io/react-icons/',
+  },
+  {
+    id: 'homebridge',
+    icon: <SiHomebridge />,
+    titleKey: 'homebridgeTitle',
+    descriptionKey: 'homebridgeDescription',
+    url: 'http://192.168.1.2:8581',
+  },
+  {
+    id: 'diy-hue',
+    icon: <ShDiyhueDark />,
+    titleKey: 'diyHueTitle',
+    descriptionKey: 'diyHueDescription',
+    url: 'http://192.168.1.2:80',
+  },
+  {
+    id: 'homeassistant',
+    icon: <SiHomeassistant />,
+    titleKey: 'homeassistantTitle',
+    descriptionKey: 'homeassistantDescription',
+    url: 'http://192.168.1.2:8123',
+  },
+  {
+    id: 'pi-server-woonkamer',
+    icon: <SiRaspberrypi />,
+    titleKey: 'piServerWoonkamerTitle',
+    descriptionKey: 'piServerWoonkamerDescription',
+    url: 'http://192.168.1.17:5002',
+  },
+  {
+    id: 'pi-server-slaapkamer',
+    icon: <SiRaspberrypi />,
+    titleKey: 'piServerSlaapkamerTitle',
+    descriptionKey: 'piServerSlaapkamerDescription',
+    url: 'http://192.168.1.16:5002',
   },
   // ── Placeholder ──────────────────────────────────────────────────────────────
   {
