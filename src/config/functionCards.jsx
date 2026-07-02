@@ -4,7 +4,7 @@ import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud, SiHomebridge, SiPhilip
 import { GiHexagonalNut } from 'react-icons/gi';
 import { PiMonitorDuotone, PiSpeedometerFill } from 'react-icons/pi';
 import { IoIosSpeedometer } from 'react-icons/io';
-import { ShDiyhueDark } from 'react-icons/sh';
+import { ShDiyhueDark, ShSureFinanceDark } from 'react-icons/sh';
 
 /**
  * Single source of truth for all home-page function cards.
@@ -50,7 +50,7 @@ export const FUNCTION_CARDS = [
   },
   {
     id: 'sure',
-    icon: <BiSolidDollarCircle />,
+    icon: <ShSureFinanceDark />,
     titleKey: 'sureTitle',
     descriptionKey: 'sureDescription',
     url: 'https://hendriksen-mark.webredirect.org:81',
