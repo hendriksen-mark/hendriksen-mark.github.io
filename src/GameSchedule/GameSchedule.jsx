@@ -240,7 +240,7 @@ function GameSchedule({ onBackToHome }) {
 
       schedule[row.location] = selectedPlayers;
       selectedPlayers.forEach((player) => {
-        homeAwayCount[player][row.location.startsWith('THUIS') ? 'home' : 'away']++;
+        homeAwayCount[player][row.location.includes('THUIS') ? 'home' : 'away']++;
       });
     }
 

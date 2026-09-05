@@ -17,8 +17,8 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
       consecutiveGames[player] = 0;
     });
 
-    const homeLocations = locations.filter((loc) => loc.startsWith("THUIS"));
-    const awayLocations = locations.filter((loc) => loc.startsWith("UIT"));
+    const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
+    const awayLocations = locations.filter((loc) => loc.includes("UIT"));
 
     try {
       locations.forEach((loc) => {
@@ -88,8 +88,8 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
       consecutiveGames[player] = 0;
     });
 
-    const homeLocations = locations.filter((loc) => loc.startsWith("THUIS"));
-    const awayLocations = locations.filter((loc) => loc.startsWith("UIT"));
+    const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
+    const awayLocations = locations.filter((loc) => loc.includes("UIT"));
 
     try {
       locations.forEach((loc) => {
@@ -181,7 +181,7 @@ export function validateLocations(locations, language, gameType) {
   }
 
   if (gameType !== "beker") { // Skip validation for "beker"
-    const homeCount = locations.filter((loc) => loc.startsWith("THUIS")).length;
+    const homeCount = locations.filter((loc) => loc.includes("THUIS")).length;
     if (homeCount < locations.length / 2) {
       return t.errorLocationsThuis;
     }
@@ -399,7 +399,7 @@ export function generateSchedule(gameType, locations, availability, language) {
     return acc;
   }, {});
 
-  const homeLocations = locations.filter((loc) => loc.startsWith("THUIS"));
+  const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
   locations.forEach((loc) => {
     schedule[loc].forEach((player) => {
       homeAwayCount[player][homeLocations.includes(loc) ? "home" : "away"]++;
