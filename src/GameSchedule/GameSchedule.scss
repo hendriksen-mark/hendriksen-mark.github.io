@@ -190,6 +190,19 @@
           background: #c82333;
         }
       }
+
+      &.assignment-btn {
+        &.scheduled {
+          background: #28a745;
+          color: white;
+        }
+
+        &.not-scheduled {
+          background: #f0f8f0;
+          color: #5a8a5a;
+          border: 1px solid #d6e9c6;
+        }
+      }
     }
   }
 }
