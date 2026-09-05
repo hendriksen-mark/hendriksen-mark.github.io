@@ -16,15 +16,15 @@ const formatMM = (num, precision = 4) => {
 const formatWithConverter = (num, showMm = false, precision = 3) => {
     if (typeof num !== 'number') return num;
     if (showMm) {
-        return formatMM(inchesToMm(num), 4); // Use 4 decimals for metric conversion
+        return formatMM(num, 4);
     }
-    return formatInches(num, precision);
+    return formatInches(mmToInches(num), precision);
 };
 
 // Basic formatValue for ThreadDiagram (imperial vs metric)
 const formatValue = (value, isImperial, precision) => {
     if (isImperial) {
-        return formatInches(value, precision || 3);
+        return formatInches(mmToInches(value), precision || 3);
     }
     return formatMM(value, precision || 4);
 };
