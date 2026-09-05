@@ -244,8 +244,8 @@ function GameSchedule({ onBackToHome }) {
       });
     }
 
-    const availability = playerNames.reduce((acc, player) => {
-      acc[player] = rows.map(() => true);
+    const availability = playerNames.reduce((acc, player, playerIndex) => {
+      acc[player] = rows.map((row) => row.manualPlayers?.[playerIndex] === true);
       return acc;
     }, {});
     setGeneratedSchedule(printSchedule(schedule, playerNames, homeAwayCount, language, availability));
