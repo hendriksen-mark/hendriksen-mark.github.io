@@ -9,13 +9,14 @@ import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
 import PageSection from '../components/PageSection/PageSection';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
-import { FaCalendarAlt, FaGamepad, FaListOl, FaDownload, FaUpload } from 'react-icons/fa';
+import { FaCalendarAlt, FaGamepad, FaListOl, FaDownload, FaUpload, FaEdit } from 'react-icons/fa';
 import { toast } from "react-hot-toast";
 import html2canvas from 'html2canvas';
 
 function GameSchedule({ onBackToHome }) {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
+  const [scheduleMode, setScheduleMode] = useState('automatic');
   const [gameType, setGameType] = useState('duo');
   const [maxConsecutiveGames, setMaxConsecutiveGames] = useState(3);
   const [maxGames, setMaxGames] = useState(5);
@@ -25,6 +26,7 @@ function GameSchedule({ onBackToHome }) {
     Array.from({ length: 10 }, (_, i) => ({
       location: i % 2 === 0 ? `UIT${Math.floor(i / 2) + 1}` : `THUIS${Math.floor(i / 2) + 1}`,
       players: Array(playerNames.length).fill(true),
+      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 2),
     }))
   );
   const [generatedSchedule, setGeneratedSchedule] = useState("");
@@ -34,12 +36,20 @@ function GameSchedule({ onBackToHome }) {
   const scheduleRef = useRef(null);
 
   const handleAddLocation = () => {
-    setRows([...rows, { location: '', players: Array(playerNames.length).fill(true) }]);
+    setRows([...rows, {
+      location: '',
+      players: Array(playerNames.length).fill(true),
+      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < requiredPlayers),
+    }]);
   };
 
   const handleAddPlayer = () => {
     setPlayerNames([...playerNames, `Player ${playerNames.length + 1}`]);
-    setRows(rows.map(row => ({ ...row, players: [...row.players, true] })));
+    setRows(rows.map(row => ({
+      ...row,
+      players: [...row.players, true],
+      manualPlayers: [...(row.manualPlayers || []), row.manualPlayers?.filter(Boolean).length < requiredPlayers],
+    })));
   };
 
   const handleRemovePlayer = (index) => {
@@ -47,6 +57,7 @@ function GameSchedule({ onBackToHome }) {
     setRows(rows.map(row => ({
       ...row,
       players: row.players.filter((_, i) => i !== index),
+      manualPlayers: (row.manualPlayers || []).filter((_, i) => i !== index),
     })));
   };
 
@@ -72,6 +83,18 @@ function GameSchedule({ onBackToHome }) {
     setPlayerNames(updatedNames);
   };
 
+  const handleManualAssignment = (rowIndex, playerIndex) => {
+    setRows(rows.map((row, index) => index === rowIndex
+      ? {
+          ...row,
+          manualPlayers: (row.manualPlayers || Array(playerNames.length).fill(false)).map((selected, currentIndex) =>
+            currentIndex === playerIndex ? !selected : selected
+          ),
+        }
+      : row
+    ));
+  };
+
   const handleGameTypeChange = (value) => {
     setGameType(value);
     if (value === "duo") {
@@ -84,6 +107,7 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
+            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 2),
           })),
         ]);
       }
@@ -97,6 +121,7 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
+            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 3),
           })),
         ]);
       }
@@ -110,6 +135,7 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
+            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 4),
           })),
         ]);
       }
@@ -127,6 +153,12 @@ function GameSchedule({ onBackToHome }) {
         }))
       );
     }
+
+    const selectedRequiredPlayers = value === 'duo' ? 2 : value === 'trio' ? 3 : 4;
+    setRows((prevRows) => prevRows.map((row) => ({
+      ...row,
+      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < selectedRequiredPlayers),
+    })));
   };
 
   const handleGenerateSchedule = async () => {
@@ -190,6 +222,35 @@ function GameSchedule({ onBackToHome }) {
     }
   };
 
+  const handleCreateManualSchedule = () => {
+    const schedule = {};
+    const homeAwayCount = playerNames.reduce((acc, player) => {
+      acc[player] = { home: 0, away: 0 };
+      return acc;
+    }, {});
+
+    for (const row of rows) {
+      const selectedPlayers = playerNames.filter((_, playerIndex) => row.manualPlayers?.[playerIndex]);
+      if (selectedPlayers.length < requiredPlayers) {
+        setGeneratedSchedule(t.errorManualNotEnoughPlayers
+          .replace('{required}', requiredPlayers)
+          .replace('{location}', row.location));
+        return;
+      }
+
+      schedule[row.location] = selectedPlayers;
+      selectedPlayers.forEach((player) => {
+        homeAwayCount[player][row.location.startsWith('THUIS') ? 'home' : 'away']++;
+      });
+    }
+
+    const availability = playerNames.reduce((acc, player) => {
+      acc[player] = rows.map(() => true);
+      return acc;
+    }, {});
+    setGeneratedSchedule(printSchedule(schedule, playerNames, homeAwayCount, language, availability));
+  };
+
   const handleResetAvailability = () => {
     setRows(prevRows =>
       prevRows.map(row => ({
@@ -219,7 +280,8 @@ function GameSchedule({ onBackToHome }) {
       maxGames,
       requiredPlayers,
       playerNames,
-      rows
+      rows,
+      scheduleMode
     };
 
     const dataStr = JSON.stringify(config, null, 2);
@@ -254,7 +316,14 @@ function GameSchedule({ onBackToHome }) {
         setMaxGames(config.maxGames || 5);
         setRequiredPlayers(config.requiredPlayers || 2);
         setPlayerNames(config.playerNames);
-        setRows(config.rows);
+        setRows(config.rows.map((row) => ({
+          ...row,
+          manualPlayers: row.manualPlayers || Array.from(
+            { length: config.playerNames.length },
+            (_, index) => index < (config.requiredPlayers || 2)
+          ),
+        })));
+        setScheduleMode(config.scheduleMode || 'automatic');
 
         // Reset the file input
         event.target.value = '';
@@ -285,6 +354,17 @@ function GameSchedule({ onBackToHome }) {
 
         <PageSection title={t.configuration} variant="game-schedule">
           <div className="game-schedule__inputs">
+              <StyledSelect
+                label={t.scheduleMode}
+                value={{ value: scheduleMode, label: scheduleMode === 'manual' ? t.manualMode : t.automaticMode }}
+                onChange={(selectedOption) => setScheduleMode(selectedOption.value)}
+                icon={FaEdit}
+                variant="game-schedule"
+                options={[
+                  { value: 'automatic', label: t.automaticMode },
+                  { value: 'manual', label: t.manualMode },
+                ]}
+              />
               <StyledSelect
                 label={t.selectGameType}
                 value={{ value: gameType, label: t[`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
@@ -398,17 +478,24 @@ function GameSchedule({ onBackToHome }) {
                   value={row.location}
                   onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
                 />
-                {row.players.map((available, playerIndex) => (
-                  <button
-                    key={playerIndex}
-                    className={`availability-btn ${available ? 'available' : 'unavailable'}`}
-                    onClick={() => handlePlayerAvailability(rowIndex, playerIndex)}
-                  >
-                    {available
-                      ? t.available
-                      : t.unavailable}
-                  </button>
-                ))}
+                {row.players.map((available, playerIndex) => {
+                  const isScheduled = row.manualPlayers?.[playerIndex];
+                  return (
+                    <button
+                      key={playerIndex}
+                      className={scheduleMode === 'manual'
+                        ? `availability-btn assignment-btn ${isScheduled ? 'scheduled' : 'not-scheduled'}`
+                        : `availability-btn ${available ? 'available' : 'unavailable'}`}
+                      onClick={() => scheduleMode === 'manual'
+                        ? handleManualAssignment(rowIndex, playerIndex)
+                        : handlePlayerAvailability(rowIndex, playerIndex)}
+                    >
+                      {scheduleMode === 'manual'
+                        ? (isScheduled ? t.manualAssignment : t.manualAssignmentOff)
+                        : (available ? t.available : t.unavailable)}
+                    </button>
+                  );
+                })}
               </div>
             ))}
           </div>
@@ -423,14 +510,18 @@ function GameSchedule({ onBackToHome }) {
             <AnimatedButton onClick={handleResetAvailability} color="orange">
               {t.resetAvailability}
             </AnimatedButton>
-            <AnimatedButton onClick={handleGenerateSchedule} color="green" disabled={isGenerating}>
+            <AnimatedButton
+              onClick={scheduleMode === 'manual' ? handleCreateManualSchedule : handleGenerateSchedule}
+              color="green"
+              disabled={isGenerating}
+            >
               {isGenerating ? (
                 <span className="loading-content">
                   <span className="spinner"></span>
                   {t.generating}
                 </span>
               ) : (
-                t.generateSchedule
+                scheduleMode === 'manual' ? t.createManualSchedule : t.generateSchedule
               )}
             </AnimatedButton>
           </div>
