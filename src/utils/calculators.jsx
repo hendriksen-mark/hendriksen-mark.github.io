@@ -6,6 +6,7 @@ const calculateThreadDimensions = (nominalDiameter, pitch = NaN, tpi = NaN, angl
     } else if (!isNaN(tpi)) {
         designation = `${nominalDiameter}"-${tpi} UNC`;
         convertRate = 25.4; // Convert inches to mm
+        nominalDiameter *= convertRate;
         // Convert TPI to pitch in mm
         pitch = convertRate / tpi;
     } else {
@@ -48,14 +49,14 @@ const calculateThreadDimensions = (nominalDiameter, pitch = NaN, tpi = NaN, angl
     const headHeight = 0.7 * d; // Approximate head height
 
     // Nut dimensions
-    const nutWidthAcrossFlats = 1.5 * d * convertRate; // Width across flats (standard)
+    const nutWidthAcrossFlats = 1.5 * d; // Width across flats (standard)
     const nutWidthAcrossCorners = nutWidthAcrossFlats / Math.cos(Math.PI / 6); // 30 degrees
-    const nutHeight = 0.8 * d * convertRate; // Standard nut height
+    const nutHeight = 0.8 * d; // Standard nut height
 
     // Washer dimensions
-    const washerInnerDiameter = (d + 0.3) * convertRate; // Slight clearance
-    const washerOuterDiameter = 2.2 * d * convertRate; // Standard washer outer diameter
-    const washerThickness = 0.15 * d * convertRate; // Standard washer thickness
+    const washerInnerDiameter = d + 0.3; // Slight clearance
+    const washerOuterDiameter = 2.2 * d; // Standard washer outer diameter
+    const washerThickness = 0.15 * d; // Standard washer thickness
 
     return {
         // Basic thread parameters
