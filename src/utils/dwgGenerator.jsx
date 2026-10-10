@@ -1,7 +1,6 @@
-import DxfWriterPackage from "@markhhh/dxf-writer";
+import BrowserFriendlyDrawing from "@markhhh/dxf-writer/src/BrowserFriendlyDrawing";
+import StringWritableStream from "@markhhh/dxf-writer/src/StringWritableStream";
 import { formatValue } from './converters';
-
-const { BrowserFriendlyDrawing, StringWritableStream } = DxfWriterPackage;
 
 const DEG_90 = Math.PI / 2;
 const PROFILE_BOND_DEPTH_MM = 1;

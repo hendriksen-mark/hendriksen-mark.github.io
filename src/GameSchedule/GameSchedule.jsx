@@ -262,7 +262,8 @@ function GameSchedule({ onBackToHome }) {
 
   const handleDownloadImage = () => {
     if (scheduleRef.current) {
-      html2canvas(scheduleRef.current).then(canvas => {
+      const target = scheduleRef.current.querySelector('.ttapp-schedule') || scheduleRef.current;
+      html2canvas(target).then(canvas => {
         const link = document.createElement('a');
         link.download = 'game-schedule.jpg';
         link.href = canvas.toDataURL("image/jpeg");

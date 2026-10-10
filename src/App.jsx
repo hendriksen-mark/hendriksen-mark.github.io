@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import Home from './Home/Home';
-import GameSchedule from './GameSchedule/GameSchedule';
-import ThreadCalculator from './ThreadCalculator/ThreadCalculator';
-import ResistorCalculator from './ResistorCalculator/ResistorCalculator';
-import SteinhartHartCalculator from './SteinhartHartCalculator/SteinhartHartCalculator';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Toaster } from 'react-hot-toast';
 import { getViewColor, getViewGradientColors } from './utils/colorCalculator';
 import { VIEW_TO_INDEX, TOTAL_FUNCTIONS } from './config/functionCards';
 import './App.scss';
+
+const Home = lazy(() => import('./Home/Home'));
+const GameSchedule = lazy(() => import('./GameSchedule/GameSchedule'));
+const ThreadCalculator = lazy(() => import('./ThreadCalculator/ThreadCalculator'));
+const ResistorCalculator = lazy(() => import('./ResistorCalculator/ResistorCalculator'));
+const SteinhartHartCalculator = lazy(() => import('./SteinhartHartCalculator/SteinhartHartCalculator'));
 
 function AppContent() {
   const [currentView, setCurrentView] = useState('home');
@@ -83,7 +84,9 @@ function AppContent() {
     <div className="app">
       <Toaster position="top-right" />
       <main className="app__main">
-        {renderView()}
+        <Suspense fallback={null}>
+          {renderView()}
+        </Suspense>
       </main>
     </div>
   );
