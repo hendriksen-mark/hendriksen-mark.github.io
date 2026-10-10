@@ -8,6 +8,14 @@
         margin: 0 auto;
     }
 
+    &__version {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.8rem;
+        color: white;
+        opacity: 0.6;
+    }
+
     @media (max-width: 768px) {
         padding: 1rem;
     }

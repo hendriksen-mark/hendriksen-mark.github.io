@@ -7,6 +7,7 @@ import StyledInput from '../components/StyledInput/StyledInput';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
+import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
 import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
 import { FaCalendarAlt, FaGamepad, FaListOl, FaDownload, FaUpload, FaEdit } from 'react-icons/fa';
@@ -345,7 +346,7 @@ function GameSchedule({ onBackToHome }) {
   };
 
   return (
-    <PageContainer className="game-schedule">
+    <PageContainer className="game-schedule" version={versions.gameSchedule}>
         <PageHeader
           onBackToHome={onBackToHome}
           title={<><FaCalendarAlt /> {t.gameScheduleGenerator}</>}

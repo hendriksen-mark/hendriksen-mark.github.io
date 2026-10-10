@@ -3,6 +3,7 @@ import { FaThermometerHalf, FaCog, FaListAlt } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
+import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
@@ -332,7 +333,7 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
 
     // ── Render ─────────────────────────────────────────────────────────────────
     return (
-        <PageContainer className="steinhart-calculator">
+        <PageContainer className="steinhart-calculator" version={versions.steinhartHartCalculator}>
 
                 {/* Header */}
                 <PageHeader

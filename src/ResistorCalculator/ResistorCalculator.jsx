@@ -3,6 +3,7 @@ import { FaMicrochip } from 'react-icons/fa';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
+import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
 import StyledInput from '../components/StyledInput/StyledInput';
@@ -417,7 +418,7 @@ function ResistorCalculator({ onBackToHome }) {
     };
 
     return (
-        <PageContainer className="resistor-calculator">
+        <PageContainer className="resistor-calculator" version={versions.resistorCalculator}>
                 <PageHeader
                     onBackToHome={onBackToHome}
                     title={<><FaMicrochip /> {t.resistorCalculatorTitle}</>}

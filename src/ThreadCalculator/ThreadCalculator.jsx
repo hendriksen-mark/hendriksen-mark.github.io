@@ -3,6 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import AnimatedButton from '../components/AnimatedButton/AnimatedButton';
 import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
+import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
 import ThreadDiagram from '../components/ThreadDiagram/ThreadDiagram';
 import StyledSelect from '../components/StyledSelect/StyledSelect';
@@ -50,7 +51,7 @@ function ThreadCalculator({ onBackToHome }) {
   };
 
   return (
-    <PageContainer className="thread-calculator">
+    <PageContainer className="thread-calculator" version={versions.threadCalculator}>
         <PageHeader
           onBackToHome={onBackToHome}
           title={<><GiHexagonalNut /> {t.threadCalculatorTitle}</>}
