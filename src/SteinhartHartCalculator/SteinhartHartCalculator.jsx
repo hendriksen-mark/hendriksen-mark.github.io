@@ -335,73 +335,143 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
     return (
         <PageContainer className="steinhart-calculator" version={versions.steinhartHartCalculator}>
 
-                {/* Header */}
-                <PageHeader
-                    onBackToHome={onBackToHome}
-                    title={<><FaThermometerHalf /> {t.ntcTitle}</>}
-                    description={t.ntcSubtitle}
-                    languageSelectorVariant="calculator-steinhart"
-                />
+            {/* Header */}
+            <PageHeader
+                onBackToHome={onBackToHome}
+                title={<><FaThermometerHalf /> {t.ntcTitle}</>}
+                description={t.ntcSubtitle}
+                languageSelectorVariant="calculator-steinhart"
+            />
 
-                {/* NTC Configuration */}
-                <PageSection title={t.ntcConfiguration}>
+            {/* NTC Configuration */}
+            <PageSection title={t.ntcConfiguration}>
+                <div className="steinhart-calculator__inputs">
+                    <StyledSelect
+                        label={t.ntcPreset}
+                        value={{ value: preset, label: t[PRESETS[preset]?.labelKey] ?? preset }}
+                        onChange={(opt) => applyPreset(opt.value)}
+                        options={Object.entries(PRESETS).map(([id, p]) => ({ value: id, label: t[p.labelKey] ?? p.labelKey }))}
+                        icon={FaListAlt}
+                        variant="calculator-steinhart"
+                    />
+                    <StyledSelect
+                        label={t.ntcModel}
+                        value={{ value: model, label: model === 'beta' ? t.ntcModelBeta : t.ntcModelSH }}
+                        onChange={(opt) => { setModel(opt.value); setPreset('custom'); setResult(null); setError(''); }}
+                        options={[
+                            { value: 'beta', label: t.ntcModelBeta },
+                            { value: 'steinhart-hart', label: t.ntcModelSH },
+                        ]}
+                        icon={FaCog}
+                        variant="calculator-steinhart"
+                    />
+                </div>
+            </PageSection>
+
+            {/* Model Parameters */}
+            <PageSection title={t.ntcParameters}>
+                {model === 'beta' ? (
                     <div className="steinhart-calculator__inputs">
-                        <StyledSelect
-                            label={t.ntcPreset}
-                            value={{ value: preset, label: t[PRESETS[preset]?.labelKey] ?? preset }}
-                            onChange={(opt) => applyPreset(opt.value)}
-                            options={Object.entries(PRESETS).map(([id, p]) => ({ value: id, label: t[p.labelKey] ?? p.labelKey }))}
-                            icon={FaListAlt}
+                        <StyledInput
+                            label={t.ntcBetaValue}
+                            type="number"
+                            value={beta}
+                            onChange={(e) => { setBeta(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder="3950"
+                            min="0"
+                            variant="calculator-steinhart"
+                        />
+                        <StyledInput
+                            label={`${t.ntcR0} (Ω)`}
+                            type="number"
+                            value={r0}
+                            onChange={(e) => { setR0(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder="10000"
+                            min="0"
+                            variant="calculator-steinhart"
+                        />
+                        <StyledInput
+                            label={`${t.ntcT0} (${paramTempUnit === 'C' ? '°C' : paramTempUnit === 'F' ? '°F' : 'K'})`}
+                            type="number"
+                            value={t0}
+                            onChange={(e) => { setT0(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder={paramTempUnit === 'C' ? '25' : paramTempUnit === 'F' ? '77' : '298.15'}
                             variant="calculator-steinhart"
                         />
                         <StyledSelect
-                            label={t.ntcModel}
-                            value={{ value: model, label: model === 'beta' ? t.ntcModelBeta : t.ntcModelSH }}
-                            onChange={(opt) => { setModel(opt.value); setPreset('custom'); setResult(null); setError(''); }}
+                            label={t.ntcTempUnit}
+                            value={{ value: paramTempUnit, label: paramTempUnit === 'C' ? '°C' : paramTempUnit === 'F' ? '°F' : 'K' }}
+                            onChange={(opt) => handleParamTempUnitChange(opt.value)}
                             options={[
-                                { value: 'beta', label: t.ntcModelBeta },
-                                { value: 'steinhart-hart', label: t.ntcModelSH },
+                                { value: 'C', label: '°C' },
+                                { value: 'F', label: '°F' },
+                                { value: 'K', label: 'K' },
                             ]}
-                            icon={FaCog}
+                            icon={FaThermometerHalf}
                             variant="calculator-steinhart"
                         />
                     </div>
-                </PageSection>
+                ) : (
+                    <div className="steinhart-calculator__inputs">
+                        <StyledInput
+                            label={t.ntcCoeffA}
+                            value={shA}
+                            onChange={(e) => { setShA(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder="1.129148e-3"
+                            variant="calculator-steinhart"
+                        />
+                        <StyledInput
+                            label={t.ntcCoeffB}
+                            value={shB}
+                            onChange={(e) => { setShB(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder="2.34125e-4"
+                            variant="calculator-steinhart"
+                        />
+                        <StyledInput
+                            label={t.ntcCoeffC}
+                            value={shC}
+                            onChange={(e) => { setShC(e.target.value); setPreset('custom'); setResult(null); }}
+                            placeholder="8.76741e-8"
+                            variant="calculator-steinhart"
+                        />
+                    </div>
+                )}
 
-                {/* Model Parameters */}
-                <PageSection title={t.ntcParameters}>
-                    {model === 'beta' ? (
-                        <div className="steinhart-calculator__inputs">
-                            <StyledInput
-                                label={t.ntcBetaValue}
-                                type="number"
-                                value={beta}
-                                onChange={(e) => { setBeta(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder="3950"
-                                min="0"
-                                variant="calculator-steinhart"
-                            />
-                            <StyledInput
-                                label={`${t.ntcR0} (Ω)`}
-                                type="number"
-                                value={r0}
-                                onChange={(e) => { setR0(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder="10000"
-                                min="0"
-                                variant="calculator-steinhart"
-                            />
-                            <StyledInput
-                                label={`${t.ntcT0} (${paramTempUnit === 'C' ? '°C' : paramTempUnit === 'F' ? '°F' : 'K'})`}
-                                type="number"
-                                value={t0}
-                                onChange={(e) => { setT0(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder={paramTempUnit === 'C' ? '25' : paramTempUnit === 'F' ? '77' : '298.15'}
-                                variant="calculator-steinhart"
-                            />
+                {model === 'beta' && (
+                    <p className="steinhart-calculator__formula">
+                        1/T = 1/T₀ + (1/B) · ln(R/R₀)
+                    </p>
+                )}
+                {model === 'steinhart-hart' && (
+                    <p className="steinhart-calculator__formula">
+                        1/T = A + B·ln(R) + C·(ln(R))³
+                    </p>
+                )}
+            </PageSection>
+
+            {/* Coefficient Fitting — only for Steinhart-Hart model */}
+            {model === 'steinhart-hart' && <PageSection>
+                <div className="steinhart-calculator__table-header">
+                    <h2 className="page-section__title page-section__title--inline">
+                        {t.ntcFitTitle}
+                    </h2>
+                    <button
+                        className="steinhart-calculator__toggle-btn"
+                        onClick={() => { setShowFitting((v) => !v); setFitResult(null); setFitError(''); }}
+                    >
+                        {showFitting ? t.ntcFitHide : t.ntcFitShow}
+                    </button>
+                </div>
+
+                {showFitting && (
+                    <>
+                        <p className="steinhart-calculator__fit-desc">{t.ntcFitDescription}</p>
+
+                        <div className="steinhart-calculator__fit-options">
                             <StyledSelect
                                 label={t.ntcTempUnit}
-                                value={{ value: paramTempUnit, label: paramTempUnit === 'C' ? '°C' : paramTempUnit === 'F' ? '°F' : 'K' }}
-                                onChange={(opt) => handleParamTempUnitChange(opt.value)}
+                                value={{ value: fitTempUnit, label: fitTempUnit === 'C' ? '°C' : fitTempUnit === 'F' ? '°F' : 'K' }}
+                                onChange={(opt) => { setFitTempUnit(opt.value); setFitResult(null); setFitError(''); }}
                                 options={[
                                     { value: 'C', label: '°C' },
                                     { value: 'F', label: '°F' },
@@ -411,318 +481,248 @@ export default function SteinhartHartCalculator({ onBackToHome }) {
                                 variant="calculator-steinhart"
                             />
                         </div>
-                    ) : (
-                        <div className="steinhart-calculator__inputs">
-                            <StyledInput
-                                label={t.ntcCoeffA}
-                                value={shA}
-                                onChange={(e) => { setShA(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder="1.129148e-3"
-                                variant="calculator-steinhart"
-                            />
-                            <StyledInput
-                                label={t.ntcCoeffB}
-                                value={shB}
-                                onChange={(e) => { setShB(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder="2.34125e-4"
-                                variant="calculator-steinhart"
-                            />
-                            <StyledInput
-                                label={t.ntcCoeffC}
-                                value={shC}
-                                onChange={(e) => { setShC(e.target.value); setPreset('custom'); setResult(null); }}
-                                placeholder="8.76741e-8"
-                                variant="calculator-steinhart"
-                            />
+
+                        <div className="steinhart-calculator__fit-measurements">
+                            {fitMeasurements.map((m, i) => (
+                                <div key={i} className="steinhart-calculator__fit-row">
+                                    <span className="steinhart-calculator__fit-row-label">
+                                        {t.ntcFitMeasurement} {i + 1}
+                                    </span>
+                                    <StyledInput
+                                        label={`${t.ntcInputTemperature} (${fitTempUnit === 'C' ? '°C' : fitTempUnit === 'F' ? '°F' : 'K'})`}
+                                        type="number"
+                                        value={m.temp}
+                                        onChange={(e) => {
+                                            setFitMeasurements(fitMeasurements.map((item, j) =>
+                                                j === i ? { ...item, temp: e.target.value } : item
+                                            ));
+                                            setFitResult(null);
+                                            setFitError('');
+                                        }}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleFitCoefficients()}
+                                        variant="calculator-steinhart"
+                                    />
+                                    <StyledInput
+                                        label={`${t.ntcInputResistance} (Ω)`}
+                                        type="number"
+                                        value={m.r}
+                                        min="0"
+                                        onChange={(e) => {
+                                            setFitMeasurements(fitMeasurements.map((item, j) =>
+                                                j === i ? { ...item, r: e.target.value } : item
+                                            ));
+                                            setFitResult(null);
+                                            setFitError('');
+                                        }}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleFitCoefficients()}
+                                        variant="calculator-steinhart"
+                                    />
+                                </div>
+                            ))}
                         </div>
-                    )}
 
-                    {model === 'beta' && (
-                        <p className="steinhart-calculator__formula">
-                            1/T = 1/T₀ + (1/B) · ln(R/R₀)
-                        </p>
-                    )}
-                    {model === 'steinhart-hart' && (
-                        <p className="steinhart-calculator__formula">
-                            1/T = A + B·ln(R) + C·(ln(R))³
-                        </p>
-                    )}
-                </PageSection>
+                        {fitError && <p className="steinhart-calculator__error">{fitError}</p>}
 
-                {/* Coefficient Fitting — only for Steinhart-Hart model */}
-                {model === 'steinhart-hart' && <PageSection>
-                    <div className="steinhart-calculator__table-header">
-                        <h2 className="page-section__title page-section__title--inline">
-                            {t.ntcFitTitle}
-                        </h2>
-                        <button
-                            className="steinhart-calculator__toggle-btn"
-                            onClick={() => { setShowFitting((v) => !v); setFitResult(null); setFitError(''); }}
-                        >
-                            {showFitting ? t.ntcFitHide : t.ntcFitShow}
-                        </button>
-                    </div>
+                        <div className="steinhart-calculator__actions">
+                            <AnimatedButton color="blue" onClick={handleFitCoefficients}>
+                                {t.ntcFitCalculate}
+                            </AnimatedButton>
+                        </div>
 
-                    {showFitting && (
-                        <>
-                            <p className="steinhart-calculator__fit-desc">{t.ntcFitDescription}</p>
-
-                            <div className="steinhart-calculator__fit-options">
-                                <StyledSelect
-                                    label={t.ntcTempUnit}
-                                    value={{ value: fitTempUnit, label: fitTempUnit === 'C' ? '°C' : fitTempUnit === 'F' ? '°F' : 'K' }}
-                                    onChange={(opt) => { setFitTempUnit(opt.value); setFitResult(null); setFitError(''); }}
-                                    options={[
-                                        { value: 'C', label: '°C' },
-                                        { value: 'F', label: '°F' },
-                                        { value: 'K', label: 'K' },
-                                    ]}
-                                    icon={FaThermometerHalf}
-                                    variant="calculator-steinhart"
-                                />
-                            </div>
-
-                            <div className="steinhart-calculator__fit-measurements">
-                                {fitMeasurements.map((m, i) => (
-                                    <div key={i} className="steinhart-calculator__fit-row">
-                                        <span className="steinhart-calculator__fit-row-label">
-                                            {t.ntcFitMeasurement} {i + 1}
-                                        </span>
-                                        <StyledInput
-                                            label={`${t.ntcInputTemperature} (${fitTempUnit === 'C' ? '°C' : fitTempUnit === 'F' ? '°F' : 'K'})`}
-                                            type="number"
-                                            value={m.temp}
-                                            onChange={(e) => {
-                                                setFitMeasurements(fitMeasurements.map((item, j) =>
-                                                    j === i ? { ...item, temp: e.target.value } : item
-                                                ));
-                                                setFitResult(null);
-                                                setFitError('');
-                                            }}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleFitCoefficients()}
-                                            variant="calculator-steinhart"
-                                        />
-                                        <StyledInput
-                                            label={`${t.ntcInputResistance} (Ω)`}
-                                            type="number"
-                                            value={m.r}
-                                            min="0"
-                                            onChange={(e) => {
-                                                setFitMeasurements(fitMeasurements.map((item, j) =>
-                                                    j === i ? { ...item, r: e.target.value } : item
-                                                ));
-                                                setFitResult(null);
-                                                setFitError('');
-                                            }}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleFitCoefficients()}
-                                            variant="calculator-steinhart"
-                                        />
+                        {fitResult && (
+                            <div className="steinhart-calculator__fit-result">
+                                <h3 className="steinhart-calculator__fit-result-title">{t.ntcFitResult}</h3>
+                                <div className="steinhart-calculator__result-grid">
+                                    <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                        <span className="steinhart-calculator__result-label">{t.ntcCoeffA}</span>
+                                        <span className="steinhart-calculator__result-value">{fitResult.A.toExponential(6)}</span>
                                     </div>
-                                ))}
-                            </div>
-
-                            {fitError && <p className="steinhart-calculator__error">{fitError}</p>}
-
-                            <div className="steinhart-calculator__actions">
-                                <AnimatedButton color="blue" onClick={handleFitCoefficients}>
-                                    {t.ntcFitCalculate}
-                                </AnimatedButton>
-                            </div>
-
-                            {fitResult && (
-                                <div className="steinhart-calculator__fit-result">
-                                    <h3 className="steinhart-calculator__fit-result-title">{t.ntcFitResult}</h3>
-                                    <div className="steinhart-calculator__result-grid">
-                                        <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                            <span className="steinhart-calculator__result-label">{t.ntcCoeffA}</span>
-                                            <span className="steinhart-calculator__result-value">{fitResult.A.toExponential(6)}</span>
-                                        </div>
-                                        <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                            <span className="steinhart-calculator__result-label">{t.ntcCoeffB}</span>
-                                            <span className="steinhart-calculator__result-value">{fitResult.B.toExponential(6)}</span>
-                                        </div>
-                                        <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                            <span className="steinhart-calculator__result-label">{t.ntcCoeffC}</span>
-                                            <span className="steinhart-calculator__result-value">{fitResult.C.toExponential(6)}</span>
-                                        </div>
+                                    <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                        <span className="steinhart-calculator__result-label">{t.ntcCoeffB}</span>
+                                        <span className="steinhart-calculator__result-value">{fitResult.B.toExponential(6)}</span>
                                     </div>
-                                    <div className="steinhart-calculator__actions steinhart-calculator__actions--top-gap">
-                                        <AnimatedButton color="green" onClick={handleUseCoefficients}>
-                                            {t.ntcFitUseCoefficients}
-                                        </AnimatedButton>
+                                    <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                        <span className="steinhart-calculator__result-label">{t.ntcCoeffC}</span>
+                                        <span className="steinhart-calculator__result-value">{fitResult.C.toExponential(6)}</span>
                                     </div>
                                 </div>
-                            )}
-                        </>
-                    )}
-                </PageSection>}
+                                <div className="steinhart-calculator__actions steinhart-calculator__actions--top-gap">
+                                    <AnimatedButton color="green" onClick={handleUseCoefficients}>
+                                        {t.ntcFitUseCoefficients}
+                                    </AnimatedButton>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                )}
+            </PageSection>}
 
-                {/* Calculator */}
-                <PageSection title={t.ntcCalculate}>
+            {/* Calculator */}
+            <PageSection title={t.ntcCalculate}>
 
-                    <div className="steinhart-calculator__direction-tabs">
-                        <button
-                            className={`steinhart-calculator__tab${direction === 'r-to-t' ? ' steinhart-calculator__tab--active' : ''}`}
-                            onClick={() => { setDirection('r-to-t'); setResult(null); setError(''); }}
-                        >
-                            {t.ntcDirectionRtoT}
-                        </button>
-                        <button
-                            className={`steinhart-calculator__tab${direction === 't-to-r' ? ' steinhart-calculator__tab--active' : ''}`}
-                            onClick={() => { setDirection('t-to-r'); setResult(null); setError(''); }}
-                        >
-                            {t.ntcDirectionTtoR}
-                        </button>
-                    </div>
+                <div className="steinhart-calculator__direction-tabs">
+                    <button
+                        className={`steinhart-calculator__tab${direction === 'r-to-t' ? ' steinhart-calculator__tab--active' : ''}`}
+                        onClick={() => { setDirection('r-to-t'); setResult(null); setError(''); }}
+                    >
+                        {t.ntcDirectionRtoT}
+                    </button>
+                    <button
+                        className={`steinhart-calculator__tab${direction === 't-to-r' ? ' steinhart-calculator__tab--active' : ''}`}
+                        onClick={() => { setDirection('t-to-r'); setResult(null); setError(''); }}
+                    >
+                        {t.ntcDirectionTtoR}
+                    </button>
+                </div>
 
-                    <div className="steinhart-calculator__inputs steinhart-calculator__inputs--narrow">
-                        {direction === 'r-to-t' ? (
+                <div className="steinhart-calculator__inputs steinhart-calculator__inputs--narrow">
+                    {direction === 'r-to-t' ? (
+                        <StyledInput
+                            label={`${t.ntcInputResistance} (Ω)`}
+                            type="number"
+                            value={resistanceInput}
+                            onChange={(e) => { setResistanceInput(e.target.value); setResult(null); setError(''); }}
+                            placeholder="10000"
+                            min="0"
+                            onKeyDown={(e) => e.key === 'Enter' && handleCalculate()}
+                            variant="calculator-steinhart"
+                        />
+                    ) : (
+                        <>
                             <StyledInput
-                                label={`${t.ntcInputResistance} (Ω)`}
+                                label={t.ntcInputTemperature}
                                 type="number"
-                                value={resistanceInput}
-                                onChange={(e) => { setResistanceInput(e.target.value); setResult(null); setError(''); }}
-                                placeholder="10000"
-                                min="0"
+                                value={tempInput}
+                                onChange={(e) => { setTempInput(e.target.value); setResult(null); setError(''); }}
+                                placeholder={tempUnit === 'C' ? '25' : tempUnit === 'F' ? '77' : '298.15'}
                                 onKeyDown={(e) => e.key === 'Enter' && handleCalculate()}
                                 variant="calculator-steinhart"
                             />
-                        ) : (
-                            <>
-                                <StyledInput
-                                    label={t.ntcInputTemperature}
-                                    type="number"
-                                    value={tempInput}
-                                    onChange={(e) => { setTempInput(e.target.value); setResult(null); setError(''); }}
-                                    placeholder={tempUnit === 'C' ? '25' : tempUnit === 'F' ? '77' : '298.15'}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleCalculate()}
-                                    variant="calculator-steinhart"
-                                />
-                                <StyledSelect
-                                    label={t.ntcTempUnit}
-                                    value={{ value: tempUnit, label: tempUnit === 'C' ? '°C' : tempUnit === 'F' ? '°F' : 'K' }}
-                                    onChange={(opt) => { setTempUnit(opt.value); setResult(null); setError(''); }}
-                                    options={[
-                                        { value: 'C', label: '°C' },
-                                        { value: 'F', label: '°F' },
-                                        { value: 'K', label: 'K' },
-                                    ]}
-                                    icon={FaThermometerHalf}
-                                    variant="calculator-steinhart"
-                                />
-                            </>
-                        )}
-                    </div>
+                            <StyledSelect
+                                label={t.ntcTempUnit}
+                                value={{ value: tempUnit, label: tempUnit === 'C' ? '°C' : tempUnit === 'F' ? '°F' : 'K' }}
+                                onChange={(opt) => { setTempUnit(opt.value); setResult(null); setError(''); }}
+                                options={[
+                                    { value: 'C', label: '°C' },
+                                    { value: 'F', label: '°F' },
+                                    { value: 'K', label: 'K' },
+                                ]}
+                                icon={FaThermometerHalf}
+                                variant="calculator-steinhart"
+                            />
+                        </>
+                    )}
+                </div>
 
-                    {error && <p className="steinhart-calculator__error">{error}</p>}
+                {error && <p className="steinhart-calculator__error">{error}</p>}
 
-                    <div className="steinhart-calculator__actions">
-                        <AnimatedButton color="blue" onClick={handleCalculate}>
-                            {t.calculate}
-                        </AnimatedButton>
-                    </div>
-                </PageSection>
+                <div className="steinhart-calculator__actions">
+                    <AnimatedButton color="blue" onClick={handleCalculate}>
+                        {t.calculate}
+                    </AnimatedButton>
+                </div>
+            </PageSection>
 
-                {/* Results */}
-                {result && (
-                    <PageSection variant="result" title={t.results}>
-                        {result.type === 'temperature' ? (
-                            <div className="steinhart-calculator__result-grid">
-                                <div className="steinhart-calculator__result-item">
-                                    <span className="steinhart-calculator__result-label">{t.ntcInputResistance}</span>
-                                    <span className="steinhart-calculator__result-value">{formatResistance(result.inputR)}</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultTempC}</span>
-                                    <span className="steinhart-calculator__result-value">{result.tempC.toFixed(3)} °C</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultTempF}</span>
-                                    <span className="steinhart-calculator__result-value">{result.tempF.toFixed(3)} °F</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultTempK}</span>
-                                    <span className="steinhart-calculator__result-value">{(result.tempC + 273.15).toFixed(3)} K</span>
-                                </div>
+            {/* Results */}
+            {result && (
+                <PageSection variant="result" title={t.results}>
+                    {result.type === 'temperature' ? (
+                        <div className="steinhart-calculator__result-grid">
+                            <div className="steinhart-calculator__result-item">
+                                <span className="steinhart-calculator__result-label">{t.ntcInputResistance}</span>
+                                <span className="steinhart-calculator__result-value">{formatResistance(result.inputR)}</span>
                             </div>
-                        ) : (
-                            <div className="steinhart-calculator__result-grid">
-                                <div className="steinhart-calculator__result-item">
-                                    <span className="steinhart-calculator__result-label">{t.ntcInputTemperature}</span>
-                                    <span className="steinhart-calculator__result-value">{result.inputTempC.toFixed(3)} °C / {result.inputTempF.toFixed(3)} °F / {result.inputTempK.toFixed(3)} K</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (Ω)</span>
-                                    <span className="steinhart-calculator__result-value">{result.r.toFixed(2)} Ω</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (kΩ)</span>
-                                    <span className="steinhart-calculator__result-value">{(result.r / 1000).toPrecision(5).replace(/\.?0+$/, '')} kΩ</span>
-                                </div>
-                                <div className="steinhart-calculator__result-item">
-                                    <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (formatted)</span>
-                                    <span className="steinhart-calculator__result-value">{formatResistance(result.r)}</span>
-                                </div>
+                            <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultTempC}</span>
+                                <span className="steinhart-calculator__result-value">{result.tempC.toFixed(3)} °C</span>
                             </div>
-                        )}
-                    </PageSection>
-                )}
-
-                {/* Characteristic Table */}
-                <PageSection title={t.ntcCharacteristicTable}>
-
-                    <div className="steinhart-calculator__inputs steinhart-calculator__inputs--narrow">
-                        <StyledInput
-                            label={`${t.ntcTableMin} (°C)`}
-                            type="number"
-                            value={tableMin}
-                            onChange={(e) => setTableMin(e.target.value)}
-                            variant="calculator-steinhart"
-                        />
-                        <StyledInput
-                            label={`${t.ntcTableMax} (°C)`}
-                            type="number"
-                            value={tableMax}
-                            onChange={(e) => setTableMax(e.target.value)}
-                            variant="calculator-steinhart"
-                        />
-                        <StyledInput
-                            label={`${t.ntcTableStep} (°C)`}
-                            type="number"
-                            value={tableStep}
-                            onChange={(e) => setTableStep(e.target.value)}
-                            min="0.1"
-                            variant="calculator-steinhart"
-                        />
-                    </div>
-
-                    {tableData.length > 0 ? (
-                        <div className="steinhart-calculator__table-wrapper">
-                            <table className="steinhart-calculator__table">
-                                <thead>
-                                    <tr>
-                                        <th>{t.ntcTableTempC}</th>
-                                        <th>{t.ntcTableTempF}</th>
-                                        <th>{t.ntcTableTempK}</th>
-                                        <th>{t.ntcTableResistance}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tableData.map((row, i) => (
-                                        <tr key={i}>
-                                            <td>{row.tempC.toFixed(1)} °C</td>
-                                            <td>{row.tempF.toFixed(1)} °F</td>
-                                            <td>{(row.tempC + 273.15).toFixed(1)} K</td>
-                                            <td>{formatResistance(row.r)}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultTempF}</span>
+                                <span className="steinhart-calculator__result-value">{result.tempF.toFixed(3)} °F</span>
+                            </div>
+                            <div className="steinhart-calculator__result-item">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultTempK}</span>
+                                <span className="steinhart-calculator__result-value">{(result.tempC + 273.15).toFixed(3)} K</span>
+                            </div>
                         </div>
                     ) : (
-                        <p className="steinhart-calculator__error">{t.ntcTableInvalidRange}</p>
+                        <div className="steinhart-calculator__result-grid">
+                            <div className="steinhart-calculator__result-item">
+                                <span className="steinhart-calculator__result-label">{t.ntcInputTemperature}</span>
+                                <span className="steinhart-calculator__result-value">{result.inputTempC.toFixed(3)} °C / {result.inputTempF.toFixed(3)} °F / {result.inputTempK.toFixed(3)} K</span>
+                            </div>
+                            <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (Ω)</span>
+                                <span className="steinhart-calculator__result-value">{result.r.toFixed(2)} Ω</span>
+                            </div>
+                            <div className="steinhart-calculator__result-item steinhart-calculator__result-item--highlight">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (kΩ)</span>
+                                <span className="steinhart-calculator__result-value">{(result.r / 1000).toPrecision(5).replace(/\.?0+$/, '')} kΩ</span>
+                            </div>
+                            <div className="steinhart-calculator__result-item">
+                                <span className="steinhart-calculator__result-label">{t.ntcResultResistance} (formatted)</span>
+                                <span className="steinhart-calculator__result-value">{formatResistance(result.r)}</span>
+                            </div>
+                        </div>
                     )}
                 </PageSection>
+            )}
+
+            {/* Characteristic Table */}
+            <PageSection title={t.ntcCharacteristicTable}>
+
+                <div className="steinhart-calculator__inputs steinhart-calculator__inputs--narrow">
+                    <StyledInput
+                        label={`${t.ntcTableMin} (°C)`}
+                        type="number"
+                        value={tableMin}
+                        onChange={(e) => setTableMin(e.target.value)}
+                        variant="calculator-steinhart"
+                    />
+                    <StyledInput
+                        label={`${t.ntcTableMax} (°C)`}
+                        type="number"
+                        value={tableMax}
+                        onChange={(e) => setTableMax(e.target.value)}
+                        variant="calculator-steinhart"
+                    />
+                    <StyledInput
+                        label={`${t.ntcTableStep} (°C)`}
+                        type="number"
+                        value={tableStep}
+                        onChange={(e) => setTableStep(e.target.value)}
+                        min="0.1"
+                        variant="calculator-steinhart"
+                    />
+                </div>
+
+                {tableData.length > 0 ? (
+                    <div className="steinhart-calculator__table-wrapper">
+                        <table className="steinhart-calculator__table">
+                            <thead>
+                                <tr>
+                                    <th>{t.ntcTableTempC}</th>
+                                    <th>{t.ntcTableTempF}</th>
+                                    <th>{t.ntcTableTempK}</th>
+                                    <th>{t.ntcTableResistance}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tableData.map((row, i) => (
+                                    <tr key={i}>
+                                        <td>{row.tempC.toFixed(1)} °C</td>
+                                        <td>{row.tempF.toFixed(1)} °F</td>
+                                        <td>{(row.tempC + 273.15).toFixed(1)} K</td>
+                                        <td>{formatResistance(row.r)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <p className="steinhart-calculator__error">{t.ntcTableInvalidRange}</p>
+                )}
+            </PageSection>
         </PageContainer>
     );
 }

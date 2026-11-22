@@ -36,7 +36,7 @@ function AppContent() {
         const bg = `linear-gradient(135deg, ${color1} 0%, ${color2Modified} 100%)`;
         document.documentElement.style.background = bg;
         document.body.style.background = bg;
-        
+
         const funcIndex = VIEW_TO_INDEX[currentView];
         if (funcIndex !== undefined) {
           const hue = (360 / TOTAL_FUNCTIONS) * funcIndex;

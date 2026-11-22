@@ -20,7 +20,7 @@
 
   // Add padding to main content when nav is present
   &__nav+&__main {
-    > * {
+    >* {
       padding-top: calc(80px + 2rem);
     }
   }
@@ -46,7 +46,7 @@ body {
     }
 
     &__nav+&__main {
-      > * {
+      >* {
         padding-top: calc(70px + 1rem);
       }
     }
