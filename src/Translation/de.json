@@ -235,5 +235,7 @@
     "homeassistantTitle": "Home Assistant",
     "ntcModelSH": "Steinhart-Hart (A, B, C)",
     "gameTypeDuo": "Zweier",
-    "automaticMode": "Automatisch"
+    "automaticMode": "Automatisch",
+    "weblateTitle": "Weblate",
+    "weblateDescription": "Eine Plattform für die Übersetzung von Software"
 }
