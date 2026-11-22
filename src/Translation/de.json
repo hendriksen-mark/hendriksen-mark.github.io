@@ -1,6 +1,6 @@
 {
     "presetSmd0805": "SMD 0805",
-    "gameTypeSquad": "Mannschaft",
+    "gameTypeSquad": "Vierer",
     "nutHeight": "Höhe der Mutter",
     "invalidFeedbackVoltage": "Geben Sie einen gültigen Vfb-Wert größer als 0 ein.",
     "voutRange": "Falscher Bereich",
@@ -35,7 +35,7 @@
     "generateSchedule": "Schema erstellen",
     "maxResults": "Maximale Ergebnisse",
     "internalThread": "Innengewinde",
-    "sureTitle": "Klar",
+    "sureTitle": "Sure",
     "piServerWoonkamerTitle": "Pi-Server im Wohnzimmer",
     "invalidResistorList": "Ungültige Widerstandswert(e)",
     "uptimekumaDescription": "Ein selbst gehostetes Tool zur Überwachung der Verfügbarkeit mit einer ansprechenden Benutzeroberfläche",
@@ -136,7 +136,7 @@
     "ntcFitDescription": "Geben Sie 3 Messpunkte (Temperatur + Widerstand) ein, um die Steinhart-Hart-Koeffizienten A, B und C zu berechnen.",
     "speedtestlocalTitle": "Lokaler Speedtest",
     "inputParameters": "Eingabeparameter",
-    "gameTypeTrio": "Trio",
+    "gameTypeTrio": "Dreier",
     "errorManualNotEnoughPlayers": "Wähle mindestens {required} Spieler für den Standort {location} aus.",
     "octoprintCrxDescription": "Verwalten und steuern Sie Ihren 3D-Drucker aus der Ferne mit OctoPrint",
     "voltageTolerance": "Spannungstoleranz (+/- V)",
@@ -233,5 +233,6 @@
     "homebridgeTitle": "Homebridge",
     "diyHueTitle": "diyHue",
     "homeassistantTitle": "Home Assistant",
-    "ntcModelSH": "Steinhart-Hart (A, B, C)"
+    "ntcModelSH": "Steinhart-Hart (A, B, C)",
+    "gameTypeDuo": "Zweier"
 }
