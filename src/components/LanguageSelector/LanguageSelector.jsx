@@ -1,16 +1,20 @@
 import { FaGlobe } from 'react-icons/fa';
 import { useLanguage } from '../../contexts/LanguageContext';
 import StyledSelect from '../StyledSelect/StyledSelect';
+import translations from '../../Translation/Translations';
 
 function LanguageSelector({ variant = 'default' }) {
   const { language, setLanguage } = useLanguage();
 
-  const options = [
-    { value: 'nl', label: 'Nederlands' },
-    { value: 'en', label: 'English' }
-  ];
+  const options = Object.keys(translations).map((code) => {
+    const displayName = new Intl.DisplayNames([code], { type: 'language' }).of(code) || code;
+    return {
+      value: code,
+      label: displayName.charAt(0).toUpperCase() + displayName.slice(1),
+    };
+  });
 
-  const currentValue = options.find(option => option.value === language);
+  const currentValue = options.find(option => option.value === language) || options[0];
 
   return (
     <StyledSelect

@@ -1,7 +1,9 @@
 import { FaHome } from 'react-icons/fa';
 import { useLanguage } from '../contexts/LanguageContext';
 import PageHeader from '../components/PageHeader/PageHeader';
+import PageContainer from '../components/PageContainer/PageContainer';
 import translations from '../Translation/Translations';
+import { versions } from '../config/versions';
 import { FUNCTION_CARDS, TOTAL_FUNCTIONS, VIEW_TO_INDEX } from '../config/functionCards';
 import './Home.scss';
 
@@ -38,7 +40,7 @@ function Home({ onNavigate }) {
   };
 
   return (
-    <div className="home">
+    <PageContainer className="home" version={versions.home}>
       <PageHeader
         title={<><FaHome /> {t.homeTitle}</>}
         description={t.homeSubtitle}
@@ -65,7 +67,7 @@ function Home({ onNavigate }) {
       <div className="home__footer">
         <p>Built with React • Hosted on GitHub Pages</p>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

@@ -1,15 +1,10 @@
 .home {
-  min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 
   &__functions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
   }
 
   &__function-card {
@@ -96,6 +91,10 @@
     color: white;
     opacity: 0.8;
     font-size: 0.9rem;
+
+    p {
+      margin: 0;
+    }
   }
 }
 
