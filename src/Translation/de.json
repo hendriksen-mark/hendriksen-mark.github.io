@@ -234,5 +234,6 @@
     "diyHueTitle": "diyHue",
     "homeassistantTitle": "Home Assistant",
     "ntcModelSH": "Steinhart-Hart (A, B, C)",
-    "gameTypeDuo": "Zweier"
+    "gameTypeDuo": "Zweier",
+    "automaticMode": "Automatisch"
 }
