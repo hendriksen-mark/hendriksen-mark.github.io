@@ -235,5 +235,7 @@
     "ntcFitUseCoefficients": "Use these coefficients",
     "ntcFitResult": "Calculated coefficients",
     "ntcFitErrorNeedThree": "Enter all 3 temperature and resistance values (resistance > 0).",
-    "ntcFitErrorSingular": "Measurements are too similar to solve (singular matrix)."
+    "ntcFitErrorSingular": "Measurements are too similar to solve (singular matrix).",
+    "weblateTitle": "Weblate",
+    "weblateDescription": "A platform for software translation"
 }
