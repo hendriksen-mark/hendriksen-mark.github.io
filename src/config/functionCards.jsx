@@ -1,6 +1,5 @@
 import { FaCalendarAlt, FaCog, FaMicrochip, FaThermometerHalf, FaWifi, FaReact } from 'react-icons/fa';
-import { BiSolidDollarCircle } from 'react-icons/bi';
-import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud, SiHomebridge, SiPhilipshue, SiHomeassistant, SiRaspberrypi, SiOctoprint } from 'react-icons/si';
+import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud, SiHomebridge, SiHomeassistant, SiRaspberrypi, SiOctoprint, SiWeblate } from 'react-icons/si';
 import { GiHexagonalNut } from 'react-icons/gi';
 import { PiMonitorDuotone, PiSpeedometerFill } from 'react-icons/pi';
 import { IoIosSpeedometer } from 'react-icons/io';
@@ -110,6 +109,13 @@ export const FUNCTION_CARDS = [
     titleKey: 'speedtestTitle',
     descriptionKey: 'speedtestDescription',
     url: 'https://hendriksen-mark.webredirect.org:89',
+  },
+  {
+    id: 'weblate',
+    icon: <SiWeblate />,
+    titleKey: 'weblateTitle',
+    descriptionKey: 'weblateDescription',
+    url: 'https://hendriksen-mark.webredirect.org:90',
   },
   {
     id: 'nebula',

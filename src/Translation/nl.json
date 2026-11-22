@@ -27,6 +27,8 @@
     "speedtestDescription": "Test de internetsnelheid van je netwerk",
     "speedtestlocalTitle": "Lokale Speedtest",
     "speedtestlocalDescription": "Test de internetsnelheid naar je lokale netwerk",
+    "weblateTitle": "Weblate",
+    "weblateDescription": "Een platform voor het vertalen van software",
     "nebulaTitle": "Nebula",
     "nebulaDescription": "Beheer en configureer je Zyxel Nebula netwerkapparaten",
     "reactIconsTitle": "React Icons",
