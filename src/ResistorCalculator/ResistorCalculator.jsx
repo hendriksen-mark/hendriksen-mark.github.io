@@ -34,10 +34,6 @@ const THROUGH_HOLE_RESISTOR_VALUES = [
   300000, 470000, 680000, 1000000,
 ];
 
-function toListText(values) {
-  return values.join(', ');
-}
-
 function parseResistorToken(token) {
   const cleaned = token.trim().toLowerCase().replace(',', '.');
   if (!cleaned) {

@@ -10,7 +10,6 @@ import PageContainer from '../components/PageContainer/PageContainer';
 import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
 import {
-  createScheduleWithValidation,
   createScheduleWithValidationAsync,
   printSchedule,
 } from './ScheduleGenerator';
@@ -425,7 +424,7 @@ function GameSchedule({ onBackToHome }) {
         setTimeout(() => {
           toast.success(t.configurationImported);
         }, 100);
-      } catch (error) {
+      } catch {
         toast.error(t.invalidConfigurationFile);
       }
     };

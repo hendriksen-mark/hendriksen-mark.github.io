@@ -1,5 +1,7 @@
-import BrowserFriendlyDrawing from '@markhhh/dxf-writer/src/BrowserFriendlyDrawing';
-import StringWritableStream from '@markhhh/dxf-writer/src/StringWritableStream';
+import {
+  BrowserFriendlyDrawing,
+  StringWritableStream,
+} from '@markhhh/dxf-writer';
 import { formatValue } from './converters';
 
 const DEG_90 = Math.PI / 2;
@@ -76,16 +78,7 @@ export const generateThreadDXF = async (results) => {
   const triangleHeight = H;
   const triangleBase = pitch;
 
-  // Draw single triangle outline
-  const trianglePoints = [
-    [baseX, baseY],
-    [baseX + triangleBase, baseY],
-    [baseX + triangleBase / 2, baseY + triangleHeight],
-  ];
-
-  // Add basic triangle as a polyline (closed)
   dxf.setActiveLayer('0');
-  // await dxf.drawPolyline(trianglePoints, true);
 
   // Draw the actual thread profile (truncated triangle)
   // Correct ISO metric thread standard:
