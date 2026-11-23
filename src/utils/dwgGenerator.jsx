@@ -1,5 +1,5 @@
-import BrowserFriendlyDrawing from "@markhhh/dxf-writer/src/BrowserFriendlyDrawing";
-import StringWritableStream from "@markhhh/dxf-writer/src/StringWritableStream";
+import BrowserFriendlyDrawing from '@markhhh/dxf-writer/src/BrowserFriendlyDrawing';
+import StringWritableStream from '@markhhh/dxf-writer/src/StringWritableStream';
 import { formatValue } from './converters';
 
 const DEG_90 = Math.PI / 2;
@@ -23,7 +23,11 @@ const rotateProfilePoint = (point2d) => {
 };
 
 const translatePoints = (points, offset) => {
-  return points.map(([x, y, z]) => [x + offset[0], y + offset[1], z + offset[2]]);
+  return points.map(([x, y, z]) => [
+    x + offset[0],
+    y + offset[1],
+    z + offset[2],
+  ]);
 };
 
 const alignProfileStartToPoint = (profilePoints, startPoint) => {
@@ -31,7 +35,7 @@ const alignProfileStartToPoint = (profilePoints, startPoint) => {
   const delta = [
     startPoint[0] - first[0],
     startPoint[1] - first[1],
-    startPoint[2] - first[2]
+    startPoint[2] - first[2],
   ];
   return translatePoints(profilePoints, delta);
 };
@@ -46,7 +50,7 @@ export const generateThreadDXF = async (results) => {
   // Fallback for packages that expect process.nextTick in browser environments.
   if (!globalThis.process) {
     globalThis.process = {
-      nextTick: (callback) => queueMicrotask(callback)
+      nextTick: (callback) => queueMicrotask(callback),
     };
   } else if (!globalThis.process.nextTick) {
     globalThis.process.nextTick = (callback) => queueMicrotask(callback);
@@ -80,7 +84,7 @@ export const generateThreadDXF = async (results) => {
   ];
 
   // Add basic triangle as a polyline (closed)
-  dxf.setActiveLayer("0");
+  dxf.setActiveLayer('0');
   // await dxf.drawPolyline(trianglePoints, true);
 
   // Draw the actual thread profile (truncated triangle)
@@ -93,7 +97,7 @@ export const generateThreadDXF = async (results) => {
   // Bottom points at H/4 height from base
   const bottomHeight = baseY + H / 4;
   const bottomLeft = [baseX + triangleBase / 8, bottomHeight];
-  const bottomRight = [baseX + triangleBase * 7 / 8, bottomHeight];
+  const bottomRight = [baseX + (triangleBase * 7) / 8, bottomHeight];
 
   // Top points at H/8 below triangle peak
   const topHeight = baseY + triangleHeight - H / 8;
@@ -107,8 +111,9 @@ export const generateThreadDXF = async (results) => {
   const leftSideRatio = (topHeight - baseY) / triangleHeight;
   const leftIntersectX = baseX + (triangleBase / 2) * leftSideRatio;
 
-  // Right intersection: where the right triangle side meets the horizontal line at topHeight  
-  const rightIntersectX = baseX + triangleBase - (triangleBase / 2) * leftSideRatio;
+  // Right intersection: where the right triangle side meets the horizontal line at topHeight
+  const rightIntersectX =
+    baseX + triangleBase - (triangleBase / 2) * leftSideRatio;
 
   // Apply 1/8 pitch truncation from these intersection points
   const topLeft = [leftIntersectX + triangleBase / 8, topHeight];
@@ -116,10 +121,10 @@ export const generateThreadDXF = async (results) => {
 
   // Connect the points correctly: left to left, right to right
   const threadPoints = [
-    bottomLeft,   // Start at bottom left
-    topRight,     // Go to top right
-    topLeft,      // Go to top left (parallel to triangle's left side)
-    bottomRight,  // Go to bottom right (parallel to triangle's right side)
+    bottomLeft, // Start at bottom left
+    topRight, // Go to top right
+    topLeft, // Go to top left (parallel to triangle's left side)
+    bottomRight, // Go to bottom right (parallel to triangle's right side)
   ];
 
   const threadSweepProfilePoints = [
@@ -165,13 +170,19 @@ export const generateThreadDXF = async (results) => {
     1,
     0,
     29,
-    63
+    63,
   );
   await dxf.drawCircle(boltAxisBase[0], boltAxisBase[1], boltRadius);
 
   const rotatedBoltProfile = threadSweepProfilePoints.map(rotateProfilePoint);
-  const boltProfileAtHelixStart = alignProfileStartToPoint(rotatedBoltProfile, boltHelixStart);
-  await dxf.drawPolyline3d([...boltProfileAtHelixStart, boltProfileAtHelixStart[0]]);
+  const boltProfileAtHelixStart = alignProfileStartToPoint(
+    rotatedBoltProfile,
+    boltHelixStart,
+  );
+  await dxf.drawPolyline3d([
+    ...boltProfileAtHelixStart,
+    boltProfileAtHelixStart[0],
+  ]);
 
   // --------------------
   // Nut geometry
@@ -194,25 +205,36 @@ export const generateThreadDXF = async (results) => {
     1,
     0,
     29,
-    63
+    63,
   );
   await dxf.drawCircle(nutAxisBase[0], nutAxisBase[1], nutRadius);
 
   const rotatedNutProfile = threadSweepProfilePoints.map(rotateProfilePoint);
-  const nutProfileAtHelixStart = alignProfileStartToPoint(rotatedNutProfile, nutHelixStart);
-  await dxf.drawPolyline3d([...nutProfileAtHelixStart, nutProfileAtHelixStart[0]]);
+  const nutProfileAtHelixStart = alignProfileStartToPoint(
+    rotatedNutProfile,
+    nutHelixStart,
+  );
+  await dxf.drawPolyline3d([
+    ...nutProfileAtHelixStart,
+    nutProfileAtHelixStart[0],
+  ]);
 
   // Reset to default annotation layer before writing text/table.
   dxf.setActiveLayer('0');
 
   // Add thread designation as title
-  const threadType = results.threadAngle === 55 ? 'BRITISH STANDARD' : (results.threadDesignation.includes('M') ? 'METRIC ISO' : 'IMPERIAL UTS');
+  const threadType =
+    results.threadAngle === 55
+      ? 'BRITISH STANDARD'
+      : results.threadDesignation.includes('M')
+        ? 'METRIC ISO'
+        : 'IMPERIAL UTS';
   await dxf.drawText(
     baseX,
     baseY + triangleHeight + 5,
     2,
     0,
-    `${threadType} THREAD ${results.threadDesignation} - ${results.threadAngle}° PROFILE + 3D BOLT/NUT HELPERS`
+    `${threadType} THREAD ${results.threadDesignation} - ${results.threadAngle}° PROFILE + 3D BOLT/NUT HELPERS`,
   );
 
   // Add basic dimensions table
@@ -235,13 +257,7 @@ export const generateThreadDXF = async (results) => {
 
   for (let index = 0; index < dimensions.length; index += 1) {
     const dim = dimensions[index];
-    await dxf.drawText(
-      tableX,
-      currentY - (index * lineSpacing),
-      1.5,
-      0,
-      dim
-    );
+    await dxf.drawText(tableX, currentY - index * lineSpacing, 1.5, 0, dim);
   }
 
   // Generate the DXF content

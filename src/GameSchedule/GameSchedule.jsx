@@ -9,10 +9,21 @@ import PageHeader from '../components/PageHeader/PageHeader';
 import PageContainer from '../components/PageContainer/PageContainer';
 import { versions } from '../config/versions';
 import PageSection from '../components/PageSection/PageSection';
-import { createScheduleWithValidation, createScheduleWithValidationAsync, printSchedule } from './ScheduleGenerator';
-import { FaCalendarAlt, FaGamepad, FaListOl, FaDownload, FaUpload, FaEdit } from 'react-icons/fa';
-import { toast } from "react-hot-toast";
-import html2canvas from 'html2canvas';
+import {
+  createScheduleWithValidation,
+  createScheduleWithValidationAsync,
+  printSchedule,
+} from './ScheduleGenerator';
+import {
+  FaCalendarAlt,
+  FaGamepad,
+  FaListOl,
+  FaDownload,
+  FaUpload,
+  FaEdit,
+} from '@markhhh/react-icons/fa';
+import { toast } from 'react-hot-toast';
+import html2canvas from 'html2canvas-pro';
 
 function GameSchedule({ onBackToHome }) {
   const { language } = useLanguage();
@@ -22,44 +33,68 @@ function GameSchedule({ onBackToHome }) {
   const [maxConsecutiveGames, setMaxConsecutiveGames] = useState(3);
   const [maxGames, setMaxGames] = useState(5);
   const [requiredPlayers, setRequiredPlayers] = useState(2);
-  const [playerNames, setPlayerNames] = useState(['Player 1', 'Player 2', 'Player 3', 'Player 4']);
+  const [playerNames, setPlayerNames] = useState([
+    'Player 1',
+    'Player 2',
+    'Player 3',
+    'Player 4',
+  ]);
   const [rows, setRows] = useState(
     Array.from({ length: 10 }, (_, i) => ({
-      location: i % 2 === 0 ? `UIT${Math.floor(i / 2) + 1}` : `THUIS${Math.floor(i / 2) + 1}`,
+      location:
+        i % 2 === 0
+          ? `UIT${Math.floor(i / 2) + 1}`
+          : `THUIS${Math.floor(i / 2) + 1}`,
       players: Array(playerNames.length).fill(true),
-      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 2),
-    }))
+      manualPlayers: Array.from(
+        { length: playerNames.length },
+        (_, index) => index < 2,
+      ),
+    })),
   );
-  const [generatedSchedule, setGeneratedSchedule] = useState("");
+  const [generatedSchedule, setGeneratedSchedule] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentCalculations, setCurrentCalculations] = useState(0);
   const fileInputRef = useRef(null);
   const scheduleRef = useRef(null);
 
   const handleAddLocation = () => {
-    setRows([...rows, {
-      location: '',
-      players: Array(playerNames.length).fill(true),
-      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < requiredPlayers),
-    }]);
+    setRows([
+      ...rows,
+      {
+        location: '',
+        players: Array(playerNames.length).fill(true),
+        manualPlayers: Array.from(
+          { length: playerNames.length },
+          (_, index) => index < requiredPlayers,
+        ),
+      },
+    ]);
   };
 
   const handleAddPlayer = () => {
     setPlayerNames([...playerNames, `Player ${playerNames.length + 1}`]);
-    setRows(rows.map(row => ({
-      ...row,
-      players: [...row.players, true],
-      manualPlayers: [...(row.manualPlayers || []), row.manualPlayers?.filter(Boolean).length < requiredPlayers],
-    })));
+    setRows(
+      rows.map((row) => ({
+        ...row,
+        players: [...row.players, true],
+        manualPlayers: [
+          ...(row.manualPlayers || []),
+          row.manualPlayers?.filter(Boolean).length < requiredPlayers,
+        ],
+      })),
+    );
   };
 
   const handleRemovePlayer = (index) => {
     setPlayerNames(playerNames.filter((_, i) => i !== index));
-    setRows(rows.map(row => ({
-      ...row,
-      players: row.players.filter((_, i) => i !== index),
-      manualPlayers: (row.manualPlayers || []).filter((_, i) => i !== index),
-    })));
+    setRows(
+      rows.map((row) => ({
+        ...row,
+        players: row.players.filter((_, i) => i !== index),
+        manualPlayers: (row.manualPlayers || []).filter((_, i) => i !== index),
+      })),
+    );
   };
 
   const handleRemoveRow = (index) => {
@@ -74,7 +109,8 @@ function GameSchedule({ onBackToHome }) {
 
   const handlePlayerAvailability = (rowIndex, playerIndex) => {
     const updatedRows = [...rows];
-    updatedRows[rowIndex].players[playerIndex] = !updatedRows[rowIndex].players[playerIndex];
+    updatedRows[rowIndex].players[playerIndex] =
+      !updatedRows[rowIndex].players[playerIndex];
     setRows(updatedRows);
   };
 
@@ -85,20 +121,25 @@ function GameSchedule({ onBackToHome }) {
   };
 
   const handleManualAssignment = (rowIndex, playerIndex) => {
-    setRows(rows.map((row, index) => index === rowIndex
-      ? {
-          ...row,
-          manualPlayers: (row.manualPlayers || Array(playerNames.length).fill(false)).map((selected, currentIndex) =>
-            currentIndex === playerIndex ? !selected : selected
-          ),
-        }
-      : row
-    ));
+    setRows(
+      rows.map((row, index) =>
+        index === rowIndex
+          ? {
+              ...row,
+              manualPlayers: (
+                row.manualPlayers || Array(playerNames.length).fill(false)
+              ).map((selected, currentIndex) =>
+                currentIndex === playerIndex ? !selected : selected,
+              ),
+            }
+          : row,
+      ),
+    );
   };
 
   const handleGameTypeChange = (value) => {
     setGameType(value);
-    if (value === "duo") {
+    if (value === 'duo') {
       setMaxConsecutiveGames(3);
       setMaxGames(5);
       setRequiredPlayers(2);
@@ -108,11 +149,14 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
-            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 2),
+            manualPlayers: Array.from(
+              { length: playerNames.length },
+              (_, index) => index < 2,
+            ),
           })),
         ]);
       }
-    } else if (value === "trio") {
+    } else if (value === 'trio') {
       setMaxConsecutiveGames(4);
       setMaxGames(7);
       setRequiredPlayers(3);
@@ -122,11 +166,14 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
-            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 3),
+            manualPlayers: Array.from(
+              { length: playerNames.length },
+              (_, index) => index < 3,
+            ),
           })),
         ]);
       }
-    } else if (value === "squad") {
+    } else if (value === 'squad') {
       setMaxConsecutiveGames(7);
       setMaxGames(9);
       setRequiredPlayers(4);
@@ -136,36 +183,48 @@ function GameSchedule({ onBackToHome }) {
           ...Array.from({ length: 10 - rows.length }, (_, i) => ({
             location: `UIT${Math.floor((rows.length + i) / 2) + 1}`,
             players: Array(playerNames.length).fill(true),
-            manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < 4),
+            manualPlayers: Array.from(
+              { length: playerNames.length },
+              (_, index) => index < 4,
+            ),
           })),
         ]);
       }
-    } else if (value === "beker") {
+    } else if (value === 'beker') {
       setMaxConsecutiveGames(2);
       setMaxGames(5);
       setRequiredPlayers(4);
       setRows(rows.slice(0, 3));
     }
-    if (value !== "beker") {
+    if (value !== 'beker') {
       setRows((prevRows) =>
         prevRows.map((row, i) => ({
           ...row,
-          location: i % 2 === 0 ? `UIT${Math.floor(i / 2) + 1}` : `THUIS${Math.floor(i / 2) + 1}`,
-        }))
+          location:
+            i % 2 === 0
+              ? `UIT${Math.floor(i / 2) + 1}`
+              : `THUIS${Math.floor(i / 2) + 1}`,
+        })),
       );
     }
 
-    const selectedRequiredPlayers = value === 'duo' ? 2 : value === 'trio' ? 3 : 4;
-    setRows((prevRows) => prevRows.map((row) => ({
-      ...row,
-      manualPlayers: Array.from({ length: playerNames.length }, (_, index) => index < selectedRequiredPlayers),
-    })));
+    const selectedRequiredPlayers =
+      value === 'duo' ? 2 : value === 'trio' ? 3 : 4;
+    setRows((prevRows) =>
+      prevRows.map((row) => ({
+        ...row,
+        manualPlayers: Array.from(
+          { length: playerNames.length },
+          (_, index) => index < selectedRequiredPlayers,
+        ),
+      })),
+    );
   };
 
   const handleGenerateSchedule = async () => {
     setIsGenerating(true);
     setCurrentCalculations(0);
-    setGeneratedSchedule("");
+    setGeneratedSchedule('');
 
     const availability = playerNames.reduce((acc, player, index) => {
       acc[player] = rows.map((row) => row.players[index]);
@@ -185,7 +244,7 @@ function GameSchedule({ onBackToHome }) {
         maxGames,
         language,
         gameType,
-        onProgress
+        onProgress,
       );
 
       const { schedule, codeRuns, error } = result;
@@ -202,17 +261,27 @@ function GameSchedule({ onBackToHome }) {
         return acc;
       }, {});
 
-      rows.map((row) => row.location).forEach((loc) => {
-        schedule[loc].forEach((player) => {
-          homeAwayCount[player][loc.startsWith("THUIS") ? "home" : "away"]++;
+      rows
+        .map((row) => row.location)
+        .forEach((loc) => {
+          schedule[loc].forEach((player) => {
+            homeAwayCount[player][loc.startsWith('THUIS') ? 'home' : 'away']++;
+          });
         });
-      });
 
-      const formattedSchedule = printSchedule(schedule, players, homeAwayCount, language, availability);
+      const formattedSchedule = printSchedule(
+        schedule,
+        players,
+        homeAwayCount,
+        language,
+        availability,
+      );
       const codeRunsText = `${t.recalculations}: ${codeRuns}`;
 
       if (formattedSchedule.startsWith('<div class="ttapp-schedule">')) {
-        setGeneratedSchedule(`${formattedSchedule}<!--SEPARATOR-->${codeRunsText}`);
+        setGeneratedSchedule(
+          `${formattedSchedule}<!--SEPARATOR-->${codeRunsText}`,
+        );
       } else {
         setGeneratedSchedule(`${formattedSchedule}\n${codeRunsText}`);
       }
@@ -231,43 +300,61 @@ function GameSchedule({ onBackToHome }) {
     }, {});
 
     for (const row of rows) {
-      const selectedPlayers = playerNames.filter((_, playerIndex) => row.manualPlayers?.[playerIndex]);
+      const selectedPlayers = playerNames.filter(
+        (_, playerIndex) => row.manualPlayers?.[playerIndex],
+      );
       if (selectedPlayers.length < requiredPlayers) {
-        setGeneratedSchedule(t.errorManualNotEnoughPlayers
-          .replace('{required}', requiredPlayers)
-          .replace('{location}', row.location));
+        setGeneratedSchedule(
+          t.errorManualNotEnoughPlayers
+            .replace('{required}', requiredPlayers)
+            .replace('{location}', row.location),
+        );
         return;
       }
 
       schedule[row.location] = selectedPlayers;
       selectedPlayers.forEach((player) => {
-        homeAwayCount[player][row.location.includes('THUIS') ? 'home' : 'away']++;
+        homeAwayCount[player][
+          row.location.includes('THUIS') ? 'home' : 'away'
+        ]++;
       });
     }
 
     const availability = playerNames.reduce((acc, player, playerIndex) => {
-      acc[player] = rows.map((row) => row.manualPlayers?.[playerIndex] === true);
+      acc[player] = rows.map(
+        (row) => row.manualPlayers?.[playerIndex] === true,
+      );
       return acc;
     }, {});
-    setGeneratedSchedule(printSchedule(schedule, playerNames, homeAwayCount, language, availability));
+    setGeneratedSchedule(
+      printSchedule(
+        schedule,
+        playerNames,
+        homeAwayCount,
+        language,
+        availability,
+      ),
+    );
   };
 
   const handleResetAvailability = () => {
-    setRows(prevRows =>
-      prevRows.map(row => ({
+    setRows((prevRows) =>
+      prevRows.map((row) => ({
         ...row,
-        players: Array(playerNames.length).fill(true)
-      }))
+        players: Array(playerNames.length).fill(true),
+      })),
     );
   };
 
   const handleDownloadImage = () => {
     if (scheduleRef.current) {
-      const target = scheduleRef.current.querySelector('.ttapp-schedule') || scheduleRef.current;
-      html2canvas(target).then(canvas => {
+      const target =
+        scheduleRef.current.querySelector('.ttapp-schedule') ||
+        scheduleRef.current;
+      html2canvas(target).then((canvas) => {
         const link = document.createElement('a');
         link.download = 'game-schedule.jpg';
-        link.href = canvas.toDataURL("image/jpeg");
+        link.href = canvas.toDataURL('image/jpeg');
         link.click();
       });
     }
@@ -275,7 +362,7 @@ function GameSchedule({ onBackToHome }) {
 
   const exportConfiguration = () => {
     const config = {
-      version: "1.0",
+      version: '1.0',
       timestamp: new Date().toISOString(),
       gameType,
       maxConsecutiveGames,
@@ -283,11 +370,12 @@ function GameSchedule({ onBackToHome }) {
       requiredPlayers,
       playerNames,
       rows,
-      scheduleMode
+      scheduleMode,
     };
 
     const dataStr = JSON.stringify(config, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const dataUri =
+      'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
     const exportFileDefaultName = `game-schedule-config-${new Date().toISOString().split('T')[0]}.json`;
 
@@ -318,13 +406,17 @@ function GameSchedule({ onBackToHome }) {
         setMaxGames(config.maxGames || 5);
         setRequiredPlayers(config.requiredPlayers || 2);
         setPlayerNames(config.playerNames);
-        setRows(config.rows.map((row) => ({
-          ...row,
-          manualPlayers: row.manualPlayers || Array.from(
-            { length: config.playerNames.length },
-            (_, index) => index < (config.requiredPlayers || 2)
-          ),
-        })));
+        setRows(
+          config.rows.map((row) => ({
+            ...row,
+            manualPlayers:
+              row.manualPlayers ||
+              Array.from(
+                { length: config.playerNames.length },
+                (_, index) => index < (config.requiredPlayers || 2),
+              ),
+          })),
+        );
         setScheduleMode(config.scheduleMode || 'automatic');
 
         // Reset the file input
@@ -333,7 +425,6 @@ function GameSchedule({ onBackToHome }) {
         setTimeout(() => {
           toast.success(t.configurationImported);
         }, 100);
-
       } catch (error) {
         toast.error(t.invalidConfigurationFile);
       }
@@ -347,232 +438,282 @@ function GameSchedule({ onBackToHome }) {
 
   return (
     <PageContainer className="game-schedule" version={versions.gameSchedule}>
-        <PageHeader
-          onBackToHome={onBackToHome}
-          title={<><FaCalendarAlt /> {t.gameScheduleGenerator}</>}
-          description={t.gameScheduleDescription}
-          languageSelectorVariant="game-schedule"
-        />
+      <PageHeader
+        onBackToHome={onBackToHome}
+        title={
+          <>
+            <FaCalendarAlt /> {t.gameScheduleGenerator}
+          </>
+        }
+        description={t.gameScheduleDescription}
+        languageSelectorVariant="game-schedule"
+      />
 
-        <PageSection title={t.configuration} variant="game-schedule">
-          <div className="game-schedule__inputs">
-              <StyledSelect
-                label={t.scheduleMode}
-                value={{ value: scheduleMode, label: scheduleMode === 'manual' ? t.manualMode : t.automaticMode }}
-                onChange={(selectedOption) => setScheduleMode(selectedOption.value)}
-                icon={FaEdit}
-                variant="game-schedule"
-                options={[
-                  { value: 'automatic', label: t.automaticMode },
-                  { value: 'manual', label: t.manualMode },
-                ]}
-              />
-              <StyledSelect
-                label={t.selectGameType}
-                value={{ value: gameType, label: t[`gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`] }}
-                onChange={(selectedOption) => handleGameTypeChange(selectedOption.value)}
-                icon={FaGamepad}
-                variant="game-schedule"
-                options={[
-                  { value: 'duo', label: t.gameTypeDuo },
-                  { value: 'trio', label: t.gameTypeTrio },
-                  { value: 'squad', label: t.gameTypeSquad },
-                  { value: 'beker', label: t.gameTypeBeker }
-                ]}
-              />
-              <StyledSelect
-                label={t.maxConsecutiveGames}
-                value={{ value: maxConsecutiveGames, label: maxConsecutiveGames.toString() }}
-                onChange={(selectedOption) => setMaxConsecutiveGames(Number(selectedOption.value))}
-                icon={FaListOl}
-                variant="game-schedule"
-                options={Array.from({ length: 10 }, (_, i) => ({
-                  value: i + 1,
-                  label: (i + 1).toString()
-                }))}
-              />
-              <StyledSelect
-                label={t.maxGames}
-                value={{ value: maxGames, label: maxGames.toString() }}
-                onChange={(selectedOption) => setMaxGames(Number(selectedOption.value))}
-                icon={FaListOl}
-                variant="game-schedule"
-                options={Array.from({ length: 10 }, (_, i) => ({
-                  value: i + 1,
-                  label: (i + 1).toString()
-                }))}
-              />
+      <PageSection title={t.configuration} variant="game-schedule">
+        <div className="game-schedule__inputs">
+          <StyledSelect
+            label={t.scheduleMode}
+            value={{
+              value: scheduleMode,
+              label: scheduleMode === 'manual' ? t.manualMode : t.automaticMode,
+            }}
+            onChange={(selectedOption) => setScheduleMode(selectedOption.value)}
+            icon={FaEdit}
+            variant="game-schedule"
+            options={[
+              { value: 'automatic', label: t.automaticMode },
+              { value: 'manual', label: t.manualMode },
+            ]}
+          />
+          <StyledSelect
+            label={t.selectGameType}
+            value={{
+              value: gameType,
+              label:
+                t[
+                  `gameType${gameType.charAt(0).toUpperCase() + gameType.slice(1)}`
+                ],
+            }}
+            onChange={(selectedOption) =>
+              handleGameTypeChange(selectedOption.value)
+            }
+            icon={FaGamepad}
+            variant="game-schedule"
+            options={[
+              { value: 'duo', label: t.gameTypeDuo },
+              { value: 'trio', label: t.gameTypeTrio },
+              { value: 'squad', label: t.gameTypeSquad },
+              { value: 'beker', label: t.gameTypeBeker },
+            ]}
+          />
+          <StyledSelect
+            label={t.maxConsecutiveGames}
+            value={{
+              value: maxConsecutiveGames,
+              label: maxConsecutiveGames.toString(),
+            }}
+            onChange={(selectedOption) =>
+              setMaxConsecutiveGames(Number(selectedOption.value))
+            }
+            icon={FaListOl}
+            variant="game-schedule"
+            options={Array.from({ length: 10 }, (_, i) => ({
+              value: i + 1,
+              label: (i + 1).toString(),
+            }))}
+          />
+          <StyledSelect
+            label={t.maxGames}
+            value={{ value: maxGames, label: maxGames.toString() }}
+            onChange={(selectedOption) =>
+              setMaxGames(Number(selectedOption.value))
+            }
+            icon={FaListOl}
+            variant="game-schedule"
+            options={Array.from({ length: 10 }, (_, i) => ({
+              value: i + 1,
+              label: (i + 1).toString(),
+            }))}
+          />
+        </div>
+
+        <div className="import-export-actions">
+          <AnimatedButton
+            onClick={exportConfiguration}
+            color="blue"
+            title={t.exportTooltip}
+          >
+            <FaDownload />
+            {' ' + t.exportConfiguration}
+          </AnimatedButton>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            onChange={importConfiguration}
+            style={{ display: 'none' }}
+          />
+          <AnimatedButton
+            onClick={triggerFileInput}
+            color="green"
+            title={t.importTooltip}
+          >
+            <FaUpload />
+            {' ' + t.importConfiguration}
+          </AnimatedButton>
+        </div>
+      </PageSection>
+
+      <PageSection
+        title={t.playersAndLocations}
+        variant="game-schedule"
+        className="grid-header"
+      >
+        <div className="grid-header__labels">
+          <span></span>
+          <span></span>
+          <span>{t.players}</span>
+        </div>
+        <div className="grid-header__players">
+          <div></div>
+          <div className="location-label-wrapper">
+            <span className="location-label">{t.location}</span>
           </div>
-
-          <div className="import-export-actions">
-            <AnimatedButton
-              onClick={exportConfiguration}
-              color="blue"
-              title={t.exportTooltip}
-            >
-              <FaDownload />
-              {" " + t.exportConfiguration}
-            </AnimatedButton>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json"
-              onChange={importConfiguration}
-              style={{ display: 'none' }}
-            />
-            <AnimatedButton
-              onClick={triggerFileInput}
-              color="green"
-              title={t.importTooltip}
-            >
-              <FaUpload />
-              {" " + t.importConfiguration}
-            </AnimatedButton>
-          </div>
-        </PageSection>
-
-        <PageSection title={t.playersAndLocations} variant="game-schedule" className="grid-header">
-          <div className="grid-header__labels">
-            <span></span>
-            <span></span>
-            <span>{t.players}</span>
-          </div>
-          <div className="grid-header__players">
-            <div></div>
-            <div className="location-label-wrapper">
-              <span className="location-label">{t.location}</span>
+          {playerNames.map((name, index) => (
+            <div key={index} className="player-column">
+              <StyledInput
+                bare
+                variant="game-schedule"
+                type="text"
+                value={name}
+                onChange={(e) => handlePlayerNameChange(index, e.target.value)}
+                placeholder={`Player ${index + 1}`}
+                style={{ textAlign: 'center' }}
+              />
+              <button onClick={() => handleRemovePlayer(index)}>
+                {t.remove}
+              </button>
             </div>
-            {playerNames.map((name, index) => (
-              <div key={index} className="player-column">
-                <StyledInput
-                  bare
-                  variant="game-schedule"
-                  type="text"
-                  value={name}
-                  onChange={(e) => handlePlayerNameChange(index, e.target.value)}
-                  placeholder={`Player ${index + 1}`}
-                  style={{ textAlign: 'center' }}
-                />
-                <button onClick={() => handleRemovePlayer(index)}>
-                  {t.remove}
-                </button>
-              </div>
-            ))}
-          </div>
+          ))}
+        </div>
 
-          <div className="grid">
-            {rows.map((row, rowIndex) => (
-              <div key={rowIndex} className="grid__row">
-                <button
-                  onClick={() => handleRemoveRow(rowIndex)}
-                  className="remove-btn"
-                >
-                  {t.remove}
-                </button>
-                <StyledInput
-                  bare
-                  variant="game-schedule"
-                  id={`location-${rowIndex}`}
-                  className="location-input"
-                  type="text"
-                  placeholder={t.location.slice(0, -2)}
-                  value={row.location}
-                  onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
-                />
-                {row.players.map((available, playerIndex) => {
-                  const isScheduled = row.manualPlayers?.[playerIndex];
-                  return (
-                    <button
-                      key={playerIndex}
-                      className={scheduleMode === 'manual'
+        <div className="grid">
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="grid__row">
+              <button
+                onClick={() => handleRemoveRow(rowIndex)}
+                className="remove-btn"
+              >
+                {t.remove}
+              </button>
+              <StyledInput
+                bare
+                variant="game-schedule"
+                id={`location-${rowIndex}`}
+                className="location-input"
+                type="text"
+                placeholder={t.location.slice(0, -2)}
+                value={row.location}
+                onChange={(e) => handleLocationChange(rowIndex, e.target.value)}
+              />
+              {row.players.map((available, playerIndex) => {
+                const isScheduled = row.manualPlayers?.[playerIndex];
+                return (
+                  <button
+                    key={playerIndex}
+                    className={
+                      scheduleMode === 'manual'
                         ? `availability-btn assignment-btn ${isScheduled ? 'scheduled' : 'not-scheduled'}`
-                        : `availability-btn ${available ? 'available' : 'unavailable'}`}
-                      onClick={() => scheduleMode === 'manual'
+                        : `availability-btn ${available ? 'available' : 'unavailable'}`
+                    }
+                    onClick={() =>
+                      scheduleMode === 'manual'
                         ? handleManualAssignment(rowIndex, playerIndex)
-                        : handlePlayerAvailability(rowIndex, playerIndex)}
-                    >
-                      {scheduleMode === 'manual'
-                        ? (isScheduled ? t.manualAssignment : t.manualAssignmentOff)
-                        : (available ? t.available : t.unavailable)}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid-actions">
-            <AnimatedButton onClick={handleAddLocation} color="blue">
-              {t.addLocation}
-            </AnimatedButton>
-            <AnimatedButton onClick={handleAddPlayer} color="blue">
-              {t.addPlayer}
-            </AnimatedButton>
-            <AnimatedButton onClick={handleResetAvailability} color="orange">
-              {t.resetAvailability}
-            </AnimatedButton>
-            <AnimatedButton
-              onClick={scheduleMode === 'manual' ? handleCreateManualSchedule : handleGenerateSchedule}
-              color="green"
-              disabled={isGenerating}
-            >
-              {isGenerating ? (
-                <span className="loading-content">
-                  <span className="spinner"></span>
-                  {t.generating}
-                </span>
-              ) : (
-                scheduleMode === 'manual' ? t.createManualSchedule : t.generateSchedule
-              )}
-            </AnimatedButton>
-          </div>
-
-          {isGenerating && (
-            <div className="loading-progress">
-              <div className="progress-info">
-                <span className="spinner"></span>
-                <span>{t.calculatingSchedule}</span>
-                <span className="calculation-count">
-                  {t.calculations}: {currentCalculations}
-                </span>
-              </div>
+                        : handlePlayerAvailability(rowIndex, playerIndex)
+                    }
+                  >
+                    {scheduleMode === 'manual'
+                      ? isScheduled
+                        ? t.manualAssignment
+                        : t.manualAssignmentOff
+                      : available
+                        ? t.available
+                        : t.unavailable}
+                  </button>
+                );
+              })}
             </div>
-          )}
-        </PageSection>
+          ))}
+        </div>
 
-        {generatedSchedule && (
-          <PageSection className="generated-schedule">
-            <h3 className={
-              generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">')
+        <div className="grid-actions">
+          <AnimatedButton onClick={handleAddLocation} color="blue">
+            {t.addLocation}
+          </AnimatedButton>
+          <AnimatedButton onClick={handleAddPlayer} color="blue">
+            {t.addPlayer}
+          </AnimatedButton>
+          <AnimatedButton onClick={handleResetAvailability} color="orange">
+            {t.resetAvailability}
+          </AnimatedButton>
+          <AnimatedButton
+            onClick={
+              scheduleMode === 'manual'
+                ? handleCreateManualSchedule
+                : handleGenerateSchedule
+            }
+            color="green"
+            disabled={isGenerating}
+          >
+            {isGenerating ? (
+              <span className="loading-content">
+                <span className="spinner"></span>
+                {t.generating}
+              </span>
+            ) : scheduleMode === 'manual' ? (
+              t.createManualSchedule
+            ) : (
+              t.generateSchedule
+            )}
+          </AnimatedButton>
+        </div>
+
+        {isGenerating && (
+          <div className="loading-progress">
+            <div className="progress-info">
+              <span className="spinner"></span>
+              <span>{t.calculatingSchedule}</span>
+              <span className="calculation-count">
+                {t.calculations}: {currentCalculations}
+              </span>
+            </div>
+          </div>
+        )}
+      </PageSection>
+
+      {generatedSchedule && (
+        <PageSection className="generated-schedule">
+          <h3
+            className={
+              generatedSchedule.startsWith('<div class="ttapp-schedule">') ||
+              generatedSchedule.includes('<div class="ttapp-schedule">')
                 ? 'success'
                 : 'error'
-            }>
-              {generatedSchedule.startsWith('<div class="ttapp-schedule">') || generatedSchedule.includes('<div class="ttapp-schedule">') ? (
-                t.scheduleGenerated
-              ) : (
-                t.scheduleError
-              )}
-            </h3>
-            {generatedSchedule.includes('<!--SEPARATOR-->') ? (
-              <div>
-                <div dangerouslySetInnerHTML={{ __html: generatedSchedule.split('<!--SEPARATOR-->')[0] }} ref={scheduleRef} />
-                <div className="code-runs-info">
-                  {generatedSchedule.split('<!--SEPARATOR-->')[1]}
-                </div>
+            }
+          >
+            {generatedSchedule.startsWith('<div class="ttapp-schedule">') ||
+            generatedSchedule.includes('<div class="ttapp-schedule">')
+              ? t.scheduleGenerated
+              : t.scheduleError}
+          </h3>
+          {generatedSchedule.includes('<!--SEPARATOR-->') ? (
+            <div>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: generatedSchedule.split('<!--SEPARATOR-->')[0],
+                }}
+                ref={scheduleRef}
+              />
+              <div className="code-runs-info">
+                {generatedSchedule.split('<!--SEPARATOR-->')[1]}
               </div>
-            ) : generatedSchedule.startsWith('<div class="ttapp-schedule">') ? (
-              <div dangerouslySetInnerHTML={{ __html: generatedSchedule }} ref={scheduleRef} />
-            ) : (
-              <pre>{generatedSchedule}</pre>
-            )}
-            <div className="generated-actions">
-              <AnimatedButton onClick={handleDownloadImage} color="blue">
-                <FaDownload /> {t.downloadAsImage}
-              </AnimatedButton>
             </div>
-          </PageSection>
-        )}
+          ) : generatedSchedule.startsWith('<div class="ttapp-schedule">') ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: generatedSchedule }}
+              ref={scheduleRef}
+            />
+          ) : (
+            <pre>{generatedSchedule}</pre>
+          )}
+          <div className="generated-actions">
+            <AnimatedButton onClick={handleDownloadImage} color="blue">
+              <FaDownload /> {t.downloadAsImage}
+            </AnimatedButton>
+          </div>
+        </PageSection>
+      )}
     </PageContainer>
   );
 }

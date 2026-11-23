@@ -2,7 +2,14 @@ import translations from '../Translation/Translations'; // Import translations
 
 export const MAX_CODE_RUNS = 2000;
 
-export function createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language) {
+export function createSchedule(
+  locations,
+  availability,
+  requiredPlayers,
+  maxConsecutiveGames,
+  maxGames,
+  language,
+) {
   const t = translations[language] || translations.en;
   const schedule = {};
   let codeRuns = 0;
@@ -17,8 +24,8 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
       consecutiveGames[player] = 0;
     });
 
-    const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
-    const awayLocations = locations.filter((loc) => loc.includes("UIT"));
+    const homeLocations = locations.filter((loc) => loc.includes('THUIS'));
+    const awayLocations = locations.filter((loc) => loc.includes('UIT'));
 
     try {
       locations.forEach((loc) => {
@@ -29,11 +36,11 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
           consecutiveGames,
           maxGames,
           maxConsecutiveGames,
-          locations
+          locations,
         );
 
         if (availablePlayers.length < requiredPlayers) {
-          throw new Error(t.errorNotEnoughPlayers.replace("{location}", loc));
+          throw new Error(t.errorNotEnoughPlayers.replace('{location}', loc));
         }
 
         // Simple random selection without home/away balancing constraints
@@ -66,7 +73,15 @@ export function createSchedule(locations, availability, requiredPlayers, maxCons
   throw new Error(t.errorMaxRetriesReached);
 }
 
-export async function createScheduleAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, onProgress) {
+export async function createScheduleAsync(
+  locations,
+  availability,
+  requiredPlayers,
+  maxConsecutiveGames,
+  maxGames,
+  language,
+  onProgress,
+) {
   const t = translations[language] || translations.en;
   const schedule = {};
   let codeRuns = 0;
@@ -78,7 +93,7 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
     if (codeRuns % 10 === 0 && onProgress) {
       onProgress(codeRuns);
       // Yield control to allow UI updates
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     }
 
     const playerMatches = {};
@@ -88,8 +103,8 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
       consecutiveGames[player] = 0;
     });
 
-    const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
-    const awayLocations = locations.filter((loc) => loc.includes("UIT"));
+    const homeLocations = locations.filter((loc) => loc.includes('THUIS'));
+    const awayLocations = locations.filter((loc) => loc.includes('UIT'));
 
     try {
       locations.forEach((loc) => {
@@ -100,11 +115,11 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
           consecutiveGames,
           maxGames,
           maxConsecutiveGames,
-          locations
+          locations,
         );
 
         if (availablePlayers.length < requiredPlayers) {
-          throw new Error(t.errorNotEnoughPlayers.replace("{location}", loc));
+          throw new Error(t.errorNotEnoughPlayers.replace('{location}', loc));
         }
 
         // Simple random selection without home/away balancing constraints
@@ -142,30 +157,54 @@ export async function createScheduleAsync(locations, availability, requiredPlaye
   throw new Error(t.errorMaxRetriesReached);
 }
 
-function getAvailablePlayers(loc, availability, playerMatches, consecutiveGames, maxGames, maxConsecutiveGames, locations) {
+function getAvailablePlayers(
+  loc,
+  availability,
+  playerMatches,
+  consecutiveGames,
+  maxGames,
+  maxConsecutiveGames,
+  locations,
+) {
   return Object.keys(availability).filter(
     (player) =>
       availability[player][locations.indexOf(loc)] &&
       playerMatches[player] < maxGames &&
-      consecutiveGames[player] < maxConsecutiveGames
+      consecutiveGames[player] < maxConsecutiveGames,
   );
 }
 
-function selectPlayers(loc, availablePlayers, homeAwayCount, homeLocations, requiredPlayers, maxConsecutiveGames) {
+function selectPlayers(
+  loc,
+  availablePlayers,
+  homeAwayCount,
+  homeLocations,
+  requiredPlayers,
+  maxConsecutiveGames,
+) {
   const isHome = homeLocations.includes(loc);
   const filteredPlayers = availablePlayers.filter(
-    (player) => homeAwayCount[player][isHome ? "home" : "away"] < maxConsecutiveGames
+    (player) =>
+      homeAwayCount[player][isHome ? 'home' : 'away'] < maxConsecutiveGames,
   );
 
   if (filteredPlayers.length >= requiredPlayers) {
-    return filteredPlayers.sort(() => 0.5 - Math.random()).slice(0, requiredPlayers);
+    return filteredPlayers
+      .sort(() => 0.5 - Math.random())
+      .slice(0, requiredPlayers);
   }
 
   // If not enough players meet the maxConsecutiveGames condition, fallback to selecting from all available players
-  return availablePlayers.sort(() => 0.5 - Math.random()).slice(0, requiredPlayers);
+  return availablePlayers
+    .sort(() => 0.5 - Math.random())
+    .slice(0, requiredPlayers);
 }
 
-function resetConsecutiveGames(availability, selectedPlayers, consecutiveGames) {
+function resetConsecutiveGames(
+  availability,
+  selectedPlayers,
+  consecutiveGames,
+) {
   Object.keys(availability).forEach((player) => {
     if (!selectedPlayers.includes(player)) {
       consecutiveGames[player] = 0;
@@ -180,8 +219,9 @@ export function validateLocations(locations, language, gameType) {
     return t.errorLocationsUnique;
   }
 
-  if (gameType !== "beker") { // Skip validation for "beker"
-    const homeCount = locations.filter((loc) => loc.includes("THUIS")).length;
+  if (gameType !== 'beker') {
+    // Skip validation for "beker"
+    const homeCount = locations.filter((loc) => loc.includes('THUIS')).length;
     if (homeCount < locations.length / 2) {
       return t.errorLocationsThuis;
     }
@@ -194,64 +234,121 @@ export function validateAvailability(locations, availability, language) {
   const t = translations[language] || translations.en;
   for (const [player, avail] of Object.entries(availability)) {
     if (avail.length !== locations.length) {
-      return t.errorAvailabilityLength.replace("{player}", player);
+      return t.errorAvailabilityLength.replace('{player}', player);
     }
   }
   return null;
 }
 
-function checkAvailablePlayersForLocation(locations, availability, requiredPlayers, language) {
+function checkAvailablePlayersForLocation(
+  locations,
+  availability,
+  requiredPlayers,
+  language,
+) {
   const t = translations[language] || translations.en;
   for (const loc of locations) {
     const availablePlayers = Object.keys(availability).filter(
-      (player) => availability[player][locations.indexOf(loc)]
+      (player) => availability[player][locations.indexOf(loc)],
     );
     if (availablePlayers.length < requiredPlayers) {
-      return t.errorNotEnoughPlayers.replace("{location}", loc);
+      return t.errorNotEnoughPlayers.replace('{location}', loc);
     }
   }
   return null;
 }
 
-export function createScheduleWithValidation(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, gameType) {
+export function createScheduleWithValidation(
+  locations,
+  availability,
+  requiredPlayers,
+  maxConsecutiveGames,
+  maxGames,
+  language,
+  gameType,
+) {
   const t = translations[language] || translations.en;
   const validationError =
     validateLocations(locations, language, gameType) ||
     validateAvailability(locations, availability, language) ||
-    checkAvailablePlayersForLocation(locations, availability, requiredPlayers, language);
+    checkAvailablePlayersForLocation(
+      locations,
+      availability,
+      requiredPlayers,
+      language,
+    );
 
   if (validationError) {
     return { error: validationError };
   }
 
   try {
-    const { schedule, codeRuns } = createSchedule(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language);
+    const { schedule, codeRuns } = createSchedule(
+      locations,
+      availability,
+      requiredPlayers,
+      maxConsecutiveGames,
+      maxGames,
+      language,
+    );
     return { schedule, codeRuns };
   } catch (error) {
-    return { error: t.errorUnableToGenerateSchedule.replace("{reason}", error.message) };
+    return {
+      error: t.errorUnableToGenerateSchedule.replace('{reason}', error.message),
+    };
   }
 }
 
-export async function createScheduleWithValidationAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, gameType, onProgress) {
+export async function createScheduleWithValidationAsync(
+  locations,
+  availability,
+  requiredPlayers,
+  maxConsecutiveGames,
+  maxGames,
+  language,
+  gameType,
+  onProgress,
+) {
   const t = translations[language] || translations.en;
   const validationError =
     validateLocations(locations, language, gameType) ||
     validateAvailability(locations, availability, language) ||
-    checkAvailablePlayersForLocation(locations, availability, requiredPlayers, language);
+    checkAvailablePlayersForLocation(
+      locations,
+      availability,
+      requiredPlayers,
+      language,
+    );
 
   if (validationError) {
     return { error: validationError };
   }
 
   try {
-    const { schedule, codeRuns } = await createScheduleAsync(locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language, onProgress);
+    const { schedule, codeRuns } = await createScheduleAsync(
+      locations,
+      availability,
+      requiredPlayers,
+      maxConsecutiveGames,
+      maxGames,
+      language,
+      onProgress,
+    );
     return { schedule, codeRuns };
   } catch (error) {
-    return { error: t.errorUnableToGenerateSchedule.replace("{reason}", error.message) };
+    return {
+      error: t.errorUnableToGenerateSchedule.replace('{reason}', error.message),
+    };
   }
 }
 
-export function printSchedule(schedule, players, homeAwayCount, language, availability = null) {
+export function printSchedule(
+  schedule,
+  players,
+  homeAwayCount,
+  language,
+  availability = null,
+) {
   const t = translations[language] || translations.en;
   const locationHeader = t.location;
   const homeHeader = t.home;
@@ -268,7 +365,8 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
   players.forEach((player, index) => {
     const isFirst = index === 0;
     const isLast = index === players.length - 1;
-    const cellClass = `pl-cell pl-playername ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
+    const cellClass =
+      `pl-cell pl-playername ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
     html += `<div class="${cellClass}">${player}</div>`;
   });
   html += '</div>';
@@ -295,7 +393,11 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
         classes.push('av1', 'scheduled');
       } else {
         // Player is not scheduled - check their availability
-        if (availability && availability[player] && typeof availability[player][locationIndex] === 'boolean') {
+        if (
+          availability &&
+          availability[player] &&
+          typeof availability[player][locationIndex] === 'boolean'
+        ) {
           if (availability[player][locationIndex]) {
             // Available but not scheduled - light green without checkmark
             classes.push('av1', 'not-scheduled');
@@ -335,7 +437,8 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
   players.forEach((player, index) => {
     const isFirst = index === 0;
     const isLast = index === players.length - 1;
-    const cellClass = `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
+    const cellClass =
+      `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
     html += `<div class="${cellClass}">${homeAwayCount[player].home}</div>`;
   });
   html += '</div>';
@@ -349,7 +452,8 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
   players.forEach((player, index) => {
     const isFirst = index === 0;
     const isLast = index === players.length - 1;
-    const cellClass = `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
+    const cellClass =
+      `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
     html += `<div class="${cellClass}">${homeAwayCount[player].away}</div>`;
   });
   html += '</div>';
@@ -363,7 +467,8 @@ export function printSchedule(schedule, players, homeAwayCount, language, availa
   players.forEach((player, index) => {
     const isFirst = index === 0;
     const isLast = index === players.length - 1;
-    const cellClass = `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
+    const cellClass =
+      `pl-cell pl-count ${isFirst ? 'first' : ''} ${isLast ? 'last' : ''}`.trim();
     html += `<div class="${cellClass}">${homeAwayCount[player].home + homeAwayCount[player].away}</div>`;
   });
   html += '</div>';
@@ -386,7 +491,7 @@ export function generateSchedule(gameType, locations, availability, language) {
     maxConsecutiveGames,
     maxGames,
     language,
-    gameType // Pass gameType to createScheduleWithValidation
+    gameType, // Pass gameType to createScheduleWithValidation
   );
 
   if (error) {
@@ -399,10 +504,10 @@ export function generateSchedule(gameType, locations, availability, language) {
     return acc;
   }, {});
 
-  const homeLocations = locations.filter((loc) => loc.includes("THUIS"));
+  const homeLocations = locations.filter((loc) => loc.includes('THUIS'));
   locations.forEach((loc) => {
     schedule[loc].forEach((player) => {
-      homeAwayCount[player][homeLocations.includes(loc) ? "home" : "away"]++;
+      homeAwayCount[player][homeLocations.includes(loc) ? 'home' : 'away']++;
     });
   });
 
@@ -410,26 +515,26 @@ export function generateSchedule(gameType, locations, availability, language) {
 }
 
 function setRequiredPlayers(gameType) {
-  if (gameType === "duo") return 2;
-  if (gameType === "trio") return 3;
-  if (gameType === "squad" || gameType === "beker") return 4;
-  throw new Error("Invalid game type.");
+  if (gameType === 'duo') return 2;
+  if (gameType === 'trio') return 3;
+  if (gameType === 'squad' || gameType === 'beker') return 4;
+  throw new Error('Invalid game type.');
 }
 
 function setMaxConsecutiveGames(gameType) {
-  if (gameType === "duo") return 3;
-  if (gameType === "trio") return 4;
-  if (gameType === "squad") return 7;
-  if (gameType === "beker") return 2;
-  throw new Error("Invalid game type.");
+  if (gameType === 'duo') return 3;
+  if (gameType === 'trio') return 4;
+  if (gameType === 'squad') return 7;
+  if (gameType === 'beker') return 2;
+  throw new Error('Invalid game type.');
 }
 
 function setMaxGames(gameType) {
-  if (gameType === "duo") return 5;
-  if (gameType === "trio") return 7;
-  if (gameType === "squad") return 9;
-  if (gameType === "beker") return 5;
-  throw new Error("Invalid game type.");
+  if (gameType === 'duo') return 5;
+  if (gameType === 'trio') return 7;
+  if (gameType === 'squad') return 9;
+  if (gameType === 'beker') return 5;
+  throw new Error('Invalid game type.');
 }
 
 // --- Nieuwe helper functies om pair-coverage af te dwingen ---
@@ -459,7 +564,9 @@ function computeCoveredPairsFromSchedule(schedule) {
 function computePlayerStatsFromSchedule(schedule, locations) {
   // returns { matches: {player:count}, consecutive: {player: max consecutive seen in schedule order} }
   const players = {};
-  Object.values(schedule).forEach((team) => team.forEach((p) => (players[p] = true)));
+  Object.values(schedule).forEach((team) =>
+    team.forEach((p) => (players[p] = true)),
+  );
   const matches = {};
   const consecutive = {};
   Object.keys(players).forEach((p) => {
@@ -472,7 +579,10 @@ function computePlayerStatsFromSchedule(schedule, locations) {
 
   // compute max consecutive occurrences across ordered locations
   const order = Object.keys(schedule); // relies on insertion order being locations array order
-  const currentConsec = Object.keys(players).reduce((acc, p) => ({ ...acc, [p]: 0 }), {});
+  const currentConsec = Object.keys(players).reduce(
+    (acc, p) => ({ ...acc, [p]: 0 }),
+    {},
+  );
   order.forEach((loc) => {
     const team = schedule[loc];
     Object.keys(currentConsec).forEach((p) => {
@@ -488,7 +598,15 @@ function computePlayerStatsFromSchedule(schedule, locations) {
   return { matches, consecutive };
 }
 
-function enforcePairCoverage(schedule, locations, availability, requiredPlayers, maxConsecutiveGames, maxGames, language) {
+function enforcePairCoverage(
+  schedule,
+  locations,
+  availability,
+  requiredPlayers,
+  maxConsecutiveGames,
+  maxGames,
+  language,
+) {
   const players = Object.keys(availability);
   const target = allPairsFromPlayers(players);
   let covered = computeCoveredPairsFromSchedule(schedule);
@@ -503,12 +621,15 @@ function enforcePairCoverage(schedule, locations, availability, requiredPlayers,
   while (iter < MAX_SWAP_ITER) {
     iter++;
     covered = computeCoveredPairsFromSchedule(schedule);
-    const missingPairs = [...target].filter((p) => !covered.has(p)).map((p) => JSON.parse(p));
+    const missingPairs = [...target]
+      .filter((p) => !covered.has(p))
+      .map((p) => JSON.parse(p));
 
     if (missingPairs.length === 0) return { success: true, schedule };
 
     // pick a missing pair to try to force together
-    const [a, b] = missingPairs[Math.floor(Math.random() * missingPairs.length)];
+    const [a, b] =
+      missingPairs[Math.floor(Math.random() * missingPairs.length)];
 
     // find locations where a plays and b plays
     const locsA = locations.filter((loc) => schedule[loc].includes(a));
@@ -541,7 +662,10 @@ function enforcePairCoverage(schedule, locations, availability, requiredPlayers,
           schedule[locB][idxB] = x;
 
           // compute stats to validate swap
-          const { matches, consecutive } = computePlayerStatsFromSchedule(schedule, locations);
+          const { matches, consecutive } = computePlayerStatsFromSchedule(
+            schedule,
+            locations,
+          );
 
           // check maxGames and maxConsecutiveGames constraints
           const violates =
@@ -558,7 +682,10 @@ function enforcePairCoverage(schedule, locations, availability, requiredPlayers,
           }
 
           // also ensure availability still holds (should, by checks above)
-          if (!availability[b][locations.indexOf(locA)] || !availability[x][locations.indexOf(locB)]) {
+          if (
+            !availability[b][locations.indexOf(locA)] ||
+            !availability[x][locations.indexOf(locB)]
+          ) {
             schedule[locA] = originalTeamA;
             schedule[locB] = originalTeamB;
             continue;
@@ -591,14 +718,21 @@ function enforcePairCoverage(schedule, locations, availability, requiredPlayers,
             schedule[locB][idxB] = a;
             schedule[locA][idxA] = x;
 
-            const { matches, consecutive } = computePlayerStatsFromSchedule(schedule, locations);
+            const { matches, consecutive } = computePlayerStatsFromSchedule(
+              schedule,
+              locations,
+            );
             const violates =
               matches[x] > maxGames ||
               matches[a] > maxGames ||
               consecutive[x] > maxConsecutiveGames ||
               consecutive[a] > maxConsecutiveGames;
 
-            if (violates || !availability[a][locations.indexOf(locB)] || !availability[x][locations.indexOf(locA)]) {
+            if (
+              violates ||
+              !availability[a][locations.indexOf(locB)] ||
+              !availability[x][locations.indexOf(locA)]
+            ) {
               schedule[locA] = originalTeamA;
               schedule[locB] = originalTeamB;
               continue;

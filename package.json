@@ -4,11 +4,11 @@
   "homepage": "https://hendriksen-mark.github.io/",
   "dependencies": {
     "@markhhh/dxf-writer": "^4.3.0",
-    "html2canvas": "^1.4.1",
+    "@markhhh/react-icons": "^5.7.0",
+    "html2canvas-pro": "^2.6.4",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-hot-toast": "2.6.1",
-    "react-icons": "https://github.com/hendriksen-mark/react-icons/releases/download/v5.6.0/react-icons-5.6.0.tgz",
     "react-select": "5.10.2",
     "sass-embedded": "1.108.2",
     "vite": "8.3.8"
@@ -18,10 +18,12 @@
     "build": "vite build",
     "serve": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "format": "prettier --write \"src/**/*.{js,jsx,scss,css}\""
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.3.0",
-    "gh-pages": "6.3.0"
+    "gh-pages": "6.3.0",
+    "prettier": "^3.10.1"
   }
 }

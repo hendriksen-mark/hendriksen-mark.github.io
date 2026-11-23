@@ -13,24 +13,13 @@ function StyledInput({
   const inputClass = `styled-input styled-input--${variant}${className ? ' ' + className : ''}`;
 
   if (bare) {
-    return (
-      <input
-        type={type}
-        className={inputClass}
-        {...rest}
-      />
-    );
+    return <input type={type} className={inputClass} {...rest} />;
   }
 
   return (
     <div className="input-group">
       {label && <label htmlFor={uid}>{label}</label>}
-      <input
-        id={uid}
-        type={type}
-        className={inputClass}
-        {...rest}
-      />
+      <input id={uid} type={type} className={inputClass} {...rest} />
     </div>
   );
 }

@@ -1,9 +1,26 @@
-import { FaCalendarAlt, FaCog, FaMicrochip, FaThermometerHalf, FaWifi, FaReact } from 'react-icons/fa';
-import { SiCreality, SiPihole, SiUptimekuma, SiNextcloud, SiHomebridge, SiHomeassistant, SiRaspberrypi, SiOctoprint, SiWeblate } from 'react-icons/si';
-import { GiHexagonalNut } from 'react-icons/gi';
-import { PiMonitorDuotone, PiSpeedometerFill } from 'react-icons/pi';
-import { IoIosSpeedometer } from 'react-icons/io';
-import { ShDiyhueDark, ShSureFinanceDark } from 'react-icons/sh';
+import {
+  FaCalendarAlt,
+  FaCog,
+  FaMicrochip,
+  FaThermometerHalf,
+  FaWifi,
+  FaReact,
+} from '@markhhh/react-icons/fa';
+import {
+  SiCreality,
+  SiPihole,
+  SiUptimekuma,
+  SiNextcloud,
+  SiHomebridge,
+  SiHomeassistant,
+  SiRaspberrypi,
+  SiOctoprint,
+  SiWeblate,
+} from '@markhhh/react-icons/si';
+import { GiHexagonalNut } from '@markhhh/react-icons/gi';
+import { PiMonitorDuotone, PiSpeedometerFill } from '@markhhh/react-icons/pi';
+import { IoIosSpeedometer } from '@markhhh/react-icons/io';
+import { ShDiyhueDark, ShSureFinanceDark } from '@markhhh/react-icons/sh';
 
 /**
  * Single source of truth for all home-page function cards.
@@ -178,10 +195,14 @@ export const FUNCTION_CARDS = [
 ];
 
 /** Ordered list of real (non-disabled) card IDs — drives colour hue spacing. */
-export const FUNCTION_IDS = FUNCTION_CARDS.filter((c) => !c.disabled).map((c) => c.id);
+export const FUNCTION_IDS = FUNCTION_CARDS.filter((c) => !c.disabled).map(
+  (c) => c.id,
+);
 
 /** Total number of real cards — used as the HSL hue divisor. */
 export const TOTAL_FUNCTIONS = FUNCTION_IDS.length;
 
 /** Lookup: card id → its index in FUNCTION_IDS (for colour generation). */
-export const VIEW_TO_INDEX = Object.fromEntries(FUNCTION_IDS.map((id, i) => [id, i]));
+export const VIEW_TO_INDEX = Object.fromEntries(
+  FUNCTION_IDS.map((id, i) => [id, i]),
+);

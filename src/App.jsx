@@ -7,9 +7,15 @@ import './App.scss';
 
 const Home = lazy(() => import('./Home/Home'));
 const GameSchedule = lazy(() => import('./GameSchedule/GameSchedule'));
-const ThreadCalculator = lazy(() => import('./ThreadCalculator/ThreadCalculator'));
-const ResistorCalculator = lazy(() => import('./ResistorCalculator/ResistorCalculator'));
-const SteinhartHartCalculator = lazy(() => import('./SteinhartHartCalculator/SteinhartHartCalculator'));
+const ThreadCalculator = lazy(
+  () => import('./ThreadCalculator/ThreadCalculator'),
+);
+const ResistorCalculator = lazy(
+  () => import('./ResistorCalculator/ResistorCalculator'),
+);
+const SteinhartHartCalculator = lazy(
+  () => import('./SteinhartHartCalculator/SteinhartHartCalculator'),
+);
 
 function AppContent() {
   const [currentView, setCurrentView] = useState('home');
@@ -22,7 +28,10 @@ function AppContent() {
         // Reset to default for home page (let Home.scss handle it)
         document.documentElement.style.background = '';
         document.body.style.background = '';
-        document.documentElement.style.setProperty('--select-primary-color', 'white');
+        document.documentElement.style.setProperty(
+          '--select-primary-color',
+          'white',
+        );
         return;
       }
 
@@ -43,7 +52,10 @@ function AppContent() {
           const saturation = dark ? 60 : 79; // Vibrant saturation for selects
           const lightness = dark ? 50 : 80;
           const vibrantColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-          document.documentElement.style.setProperty('--select-primary-color', vibrantColor);
+          document.documentElement.style.setProperty(
+            '--select-primary-color',
+            vibrantColor,
+          );
         }
       }
     };
@@ -84,9 +96,7 @@ function AppContent() {
     <div className="app">
       <Toaster position="top-right" />
       <main className="app__main">
-        <Suspense fallback={null}>
-          {renderView()}
-        </Suspense>
+        <Suspense fallback={null}>{renderView()}</Suspense>
       </main>
     </div>
   );

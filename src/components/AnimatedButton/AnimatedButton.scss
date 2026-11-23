@@ -122,7 +122,6 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
   .animated-button {
-
     // Enhanced shadows in dark mode
     &--blue:hover:not(:disabled) {
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);

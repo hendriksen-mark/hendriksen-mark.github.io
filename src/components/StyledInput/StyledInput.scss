@@ -15,35 +15,59 @@
 
 // Dynamic variant using CSS variable (for synced colors with select)
 @mixin input-variant-dynamic {
-  background: color-mix(in srgb, var(--select-primary-color) 15%, rgba(255, 255, 255, 0.1)) !important;
+  background: color-mix(
+    in srgb,
+    var(--select-primary-color) 15%,
+    rgba(255, 255, 255, 0.1)
+  ) !important;
   border: 1px solid rgba(127, 127, 127, 0.2) !important;
 
   &:hover {
-    background: color-mix(in srgb, var(--select-primary-color) 25%, rgba(255, 255, 255, 0.15)) !important;
+    background: color-mix(
+      in srgb,
+      var(--select-primary-color) 25%,
+      rgba(255, 255, 255, 0.15)
+    ) !important;
     border-color: var(--select-primary-color) !important;
     box-shadow: 0 4px 15px rgba(var(--select-primary-rgb, 0, 0, 0), 0.1) !important;
   }
 
   &:focus {
     outline: none;
-    background: color-mix(in srgb, var(--select-primary-color) 25%, rgba(255, 255, 255, 0.15)) !important;
+    background: color-mix(
+      in srgb,
+      var(--select-primary-color) 25%,
+      rgba(255, 255, 255, 0.15)
+    ) !important;
     border-color: var(--select-primary-color) !important;
     box-shadow: 0 4px 15px rgba(var(--select-primary-rgb, 0, 0, 0), 0.1) !important;
   }
 
   @media (prefers-color-scheme: dark) {
-    background: color-mix(in srgb, var(--select-primary-color) 8%, rgba(255, 255, 255, 0.1)) !important;
+    background: color-mix(
+      in srgb,
+      var(--select-primary-color) 8%,
+      rgba(255, 255, 255, 0.1)
+    ) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     backdrop-filter: blur(20px);
 
     &:hover {
-      background: color-mix(in srgb, var(--select-primary-color) 12%, rgba(255, 255, 255, 0.15)) !important;
+      background: color-mix(
+        in srgb,
+        var(--select-primary-color) 12%,
+        rgba(255, 255, 255, 0.15)
+      ) !important;
       border-color: var(--select-primary-color) !important;
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
     }
 
     &:focus {
-      background: color-mix(in srgb, var(--select-primary-color) 12%, rgba(255, 255, 255, 0.15)) !important;
+      background: color-mix(
+        in srgb,
+        var(--select-primary-color) 12%,
+        rgba(255, 255, 255, 0.15)
+      ) !important;
       border-color: var(--select-primary-color) !important;
       box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
     }

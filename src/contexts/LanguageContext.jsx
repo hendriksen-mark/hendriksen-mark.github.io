@@ -24,7 +24,7 @@ export const LanguageProvider = ({ children }) => {
 
   const value = {
     language,
-    setLanguage
+    setLanguage,
   };
 
   return (
